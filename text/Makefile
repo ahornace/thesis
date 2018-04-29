@@ -1,5 +1,3 @@
-export TEXINPUTS=../tex//:
-
 all: thesis.pdf
 
 # LaTeX must be run multiple times to get references right
