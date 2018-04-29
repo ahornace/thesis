@@ -11,7 +11,7 @@ script:
 
 deploy:
   provider: releases
-  github-token: $API_KEY
+  api_key: $API_KEY
   file:
     text/thesis.pdf
   skip_cleanup: true
