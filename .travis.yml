@@ -1,0 +1,21 @@
+sudo: required
+
+dist: trusty
+
+before_install:
+- sudo apt-get -qq update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended
+  texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended texlive-pstricks
+  texlive-lang-czechslovak aspell aspell-en aspell-en
+
+script:
+  make
+
+deploy:
+  provider: releases
+  github-token: $API_KEY
+  file:
+    text/thesis.pdf
+  skip_cleanup: true
+  on:
+    repo: Orviss/thesis
+    tags: true
