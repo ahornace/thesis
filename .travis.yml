@@ -1,11 +1,10 @@
 sudo: required
 
-dist: trusty
+os: osx
+osx_image: xcode9.3
 
 before_install:
-- sudo apt-get -qq update && sudo apt-get install -y --no-install-recommends texlive-fonts-recommended
-  texlive-latex-extra texlive-fonts-extra dvipng texlive-latex-recommended texlive-pstricks
-  texlive-lang-czechslovak aspell aspell-en aspell-en
+  brew tap caskroom/cask && brew cask install mactex
 
 script:
   make
