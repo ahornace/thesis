@@ -7,7 +7,7 @@ before_install:
   brew tap caskroom/cask && brew cask install mactex
 
 script:
-  make
+  PATH=/Library/TeX/texbin:$PATH && make
 
 deploy:
   provider: releases
