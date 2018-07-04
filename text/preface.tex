@@ -1,3 +1,53 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
+Internet has become an unavoidable component of everyday life of billions of people. Among other things, it serves as a
+source of knowledge which is available literally at our fingertips. However, it is not possible for a single person to
+filter or find relevant information from such a huge dataset. As a result, many search engines emerged which try to
+provide this functionality. Sometimes, users do not know for what they are exactly looking or the search engine can
+predict for what the user could be looking based on some criteria. These criteria consist mainly of what the user
+already typed into the system or the user's search history. Nevertheless; many others may be integrated as well, e.g.
+the system can better predict search based on some personal information about the user (age, gender, etc.) or
+searches of other users.
+
+
+Suggester, or autocomplete, functionality tries to achieve this deficiency by giving the user the possibility to choose
+from a handful of choices it deemed the most attractive for the user. Therefore, suggester implementations were added to
+many search engines (e.g. Google\footnote{\url{http://google.com}}). However, OpenGrok\footnote{\url{http://opengrok.org}}
+search engine does not contain any suggester implementation.
+
+\section{Target of the thesis}
+
+The thesis aims to fulfill the following targets:
+\begin{itemize}
+    \item Integrate suggester functionality into OpenGrok.
+    \item Suggestions provided by the suggester should be meaningful and helpful.
+    \item The suggester should provide support for rich configuration.
+    \item Evaluate the impact of the suggester on the system running the OpenGrok instance.
+    \item Evaluate if and how OpenGrok usage changed, that includes:
+    \begin{itemize}
+        \item Evaluation of the suggester usage. If it is used at all and if it provides suggestions which are
+        selected in the end.
+        \item Evaluation of search results. Mainly, compare if the number of searches with results of size 0 was reduced.
+    \end{itemize}
+\end{itemize}
+
+\section{Structure}
+
+Chapter \ref{chap:opengrok} \textbf{OpenGrok} provides a quick overview of OpenGrok project. What tools it uses and what
+makes OpenGrok project extraordinary.
+
+Chapter \ref{chap:analysis} \textbf{Analysis} discusses problems that arose during the implementation process and how
+they were resolved.
+
+Chapter \ref{chap:user} \textbf{User Documentation} contains pictures of the added functionality and explains how it
+should be used.
+
+Chapter \ref{chap:program} \textbf{Program Documentation} describes implementation specific properties of the work.
+In other words, how exactly was the new content integrated into the OpenGrok project.
+
+Chapter \ref{chap:impact} \textbf{Impact on the OpenGrok Project} provides detailed description, comparison and
+evaluation of the functionality that affected the OpenGrok project.
+
+% Chapter \ref{chap:epilog} % TODO: conclusion has no number so this does not work properly
+% \textbf{Conclusion} concludes the work done and lists possible future extensions or enhancementes.

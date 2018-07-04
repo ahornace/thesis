@@ -51,6 +51,9 @@
 \usepackage{paralist}       % improved enumerate and itemize
 \usepackage[usenames]{xcolor}  % typesetting in color
 
+% custom packages
+\usepackage{pgfplots} % plots
+
 %%% Basic information on the thesis
 
 % Thesis title in English (exactly as in the formal assignment)
@@ -117,6 +120,9 @@ Abstract.
 \include{preface}
 \include{chap01}
 \include{chap02}
+\include{chap03}
+\include{chap04}
+\include{chap05}
 
 \include{epilog}
 
@@ -146,9 +152,7 @@ Abstract.
 %%% should be uploaded to SIS and optionally also included in the thesis on a~CD/DVD.
 %%% Allowed file formats are specified in provision of the rector no. 72/2017.
 \appendix
-\chapter{Attachments}
-
-\section{First Attachment}
+\include{attachments}
 
 \openright
 \end{document}

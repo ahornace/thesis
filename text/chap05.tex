@@ -1,0 +1,63 @@
+\chapter{Impact on the OpenGrok project}
+\label{chap:impact}
+
+\textit{Change impact analysis}\footnote{\url{https://en.wikipedia.org/wiki/Change\_impact\_analysis}} is a field of
+study which task is to determine what impact the changes may have on the system. Sometimes, it is very hard to analyze
+the impact of a change. Even more so in a large projects with a huge codebase. Analysis of the main decisions made is
+described in detail in the chapter \ref{chap:analysis}. The main aspects of the added changes that can be discussed are:
+\begin{itemize}
+    \item Impact on the search results. Discussed in more detail in \ref{search_res_impact}.
+    \item Impact on the hardware requirements. Discussed in more detail in \ref{hw_req_impact}.
+\end{itemize}
+
+\section{Impact on the Search Results}
+\label{search_res_impact}
+It is hard to compare search results; therefore, search engines as well. Which search engine performs better, the one
+that returns only a few relevant documents but omitted many in the process or the one that returns all relevant
+documents but includes some that are not?
+In information retrieval field there are measurements which take this into account, most notable are \textbf{precision}
+and \textbf{recall}\footnote{\url{https://en.wikipedia.org/wiki/Precision\_and\_recall}}.
+
+\textbf{Precision} is the fraction of retrieved documents that are relevant to the query. Equation can be seen on
+\ref{precision_eq}.
+
+\begin{equation}
+\label{precision_eq}
+precision = \frac{\vert \{relevant\ documents\} \cap \{ retrieved\ documents \} \vert}{\vert \{ retrieved\ documents \} \vert}
+\end{equation}
+
+\textbf{Recall} is the fraction of the relevant documents that are successfully retrieved. Equation can be seen on
+\ref{recall_eq}.
+
+\begin{equation}
+\label{recall_eq}
+recall = \frac{\vert \{relevant\ documents\} \cap \{ retrieved\ documents \} \vert}{\vert \{ relevant\ documents \} \vert}
+\end{equation}
+
+However, suggester does not impact these measurements directly. The same query returns the same results with or without
+the suggester. Nevertheless, suggester affects them indirectly:
+\begin{itemize}
+    \item There are less queries which yield no results – if the user types a few characters and there are no suggestions then he
+    can immediately see that there are no terms with that prefix. Therefore, the result will be empty.
+    \item Probably negative impact on precision because of the scoring described in \ref{prefix_scoring}. The terms which
+    are in more documents have greater scores. Thus, these terms are promoted and are more likely to be chosen by the user.
+    Therefore, the size of retrieved documents set will be greater. However, the initial scoring might be mitigated
+    by taking into account previous users' searches as described in \ref{previous_searches}.
+\end{itemize}
+
+It is not easy to achieve feasible values for both precision and recall. In many information retrieval systems when one is
+being increased the other one decreases. This is most notable in Boolean Information Retrieval Model
+\footnote{\url{https://en.wikipedia.org/wiki/Standard\_Boolean\_model}}.
+
+\section{Impact on the hardware requirements}
+\label{hw_req_impact}
+Since suggester is mostly independent from the existing solution it only increases hardware consumption.
+The most affected resources are:
+\begin{itemize}
+    \item \textbf{CPU} – in simple situations where only a prefix is typed the CPU load is not that high because it
+    is a lookup in % bullshit
+    \item \textbf{Memory} –
+    \item \textbf{Disk} –
+\end{itemize}
+
+
