@@ -984,13 +984,26 @@ This time period should be configurable. There are a few options from which to c
     \item \textbf{Exact time} – is a good option when it is known when system load will be small (e.g. during the night).
     \item \textbf{Cron format}\footnote{\url{https://en.wikipedia.org/wiki/Cron}} – \label{cron} cron is a job scheduler for Unix
     operating system. When and which jobs should be run is specified in the special file called \textit{cron table}. The problem
-    is that the Java does not support native support for processing this format and some library must be used, the most notable are:
+    is that the Java does not have native support for processing this format and some library must be used, the most notable are:
     \begin{itemize}
-        \item cron4j
-        \item cron-utils
-        \item quartz
+        \item cron4j\footnote{\url{http://www.sauronsoftware.it/projects/cron4j/}} – simple library which allows to
+        create simple scheduler with specified cron format and
+        \textit{Runnable}\footnote{\url{https://docs.oracle.com/javase/10/docs/api/java/lang/Runnable.html}} that is to be performed.
+        The provided interface is clean and to the point. However, at the time of writing, the library is no longer maintained and
+        was not updated in 5 years.
+        \item cron-utils\footnote{\url{https://github.com/jmrozanec/cron-utils}} - a small library for parsing and
+        converting various cron formats. It also provides a feature which allows to compute the time to the next execution
+        based on the cron format.
+        \item quartz\footnote{\url{http://www.quartz-scheduler.org}} – is an enterprise job scheduler library which
+        allows to create truly complex jobs.
     \end{itemize}
 \end{itemize}
+
+\textbf{Chosen solution} – it was desired to allow the administrators the most freedom. For that, the cron format was
+deemed the best option. It was a hard choice to pick between the mentioned libraries. In the end, \textit{cron4j} was ruled out
+because of its oldness and the \textit{quartz} because of its complexity. \textit{cron-utils} can be quite easily combined with
+\textit{ScheduledExecutorService}\footnote{\url{https://docs.oracle.com/javase/10/docs/api/java/util/concurrent/ScheduledExecutorService.html}}
+to create the needed functionality.
 
 \subsubsection{Most Popular Completion – Complex Queries}
 \label{previous_searches}
