@@ -67,7 +67,7 @@ Indexer is a submodule which main purpose is for each project to:
 \subsubsection{Index}
 \label{indexer:index}
 
-OpenGrok heavily relies on Apache Lucene\footnote{\url{https://lucene.apache.org}}, a search engine library
+OpenGrok heavily relies on Apache Lucene\footnote{\url{https://lucene.apache.org}} \citep{lucene_in_action}, a search engine library
 written in Java. Every source file is considered to be a \textit{document}. Every \textit{document} has multiple
 \textit{field}s which contain text data. This text data is then tokenized by specific rules (e.g. remove stop words,
 stemming, etc.) into tokens. In the Lucene context \textit{term} is a pair of \textit{field} and \textit{token}.
