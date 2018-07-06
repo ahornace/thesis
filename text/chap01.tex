@@ -173,7 +173,42 @@ More detailed information with examples can be found on \textit{/help.jsp} web p
 
 \subsection{Navigating results}
 
+OpenGrok presents search results similarly as can be seen on figure \ref{opengrok_results}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=145mm]{../img/opengrok_results.png}
+    \caption{OpenGrok search results}
+    \label{opengrok_results}
+\end{figure}
+
+On the picture \ref{opengrok_results} numbers represent:
+\begin{enumerate}
+    \item Results are paged as is a custom in many applications.
+    \item Directory where the result documents are located.
+    \item Document that satisfied the search criteria.
+    \item Line number and content of the line where the match was found.
+\end{enumerate}
+
 \subsection{Traversing source code}
+
+OpenGrok presents files' content similarly to modern
+IDEs\footnote{\url{https://en.wikipedia.org/wiki/Integrated_development_environment}}. This can be noticed on figure
+\ref{opengrok_source} where numbers represent:
+
+\begin{enumerate}
+    \item Line numbers.
+    \item File content.
+    \item Current code scope of the content that is displayed.
+    \item Window with quick navigation links across the source file.
+\end{enumerate}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=145mm]{../img/opengrok_source.png}
+    \caption{OpenGrok file content}
+    \label{opengrok_source}
+\end{figure}
 
 \section{Similar Tools}
 It is hard to compare because all of these tools are complex and each of them provides unique feel and solution to problems.
