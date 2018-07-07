@@ -872,11 +872,56 @@ efficiency. There are multiple options how to achieve this functionality:
                 \item Maximum key size – must be the same as maximum term size in Lucene which 32767 bytes.
             \end{itemize}
     \end{itemize}
-
-    Benchmark comparing MapDB, Chronicle Map, LMDB and some other solutions can be found here:
-    \url{https://github.com/lmdbjava/benchmarks/blob/master/results/20160710/README.md}.
-
 \end{itemize}
+
+Benchmarks comparing MapDB, Chronicle Map, LMDB for Java and some other solutions performed by the LMDB for Java creators
+can be found here:
+\url{https://github.com/lmdbjava/benchmarks/blob/master/results/20160710/README.md}.
+
+Benchmark for similar usage as in our case comparing MapDB, Chronicle Map and LMDB for Java can be seen on graph \ref{comp_maps}.
+The performed test consists of getting the integer value for every 20th term of \textit{English words} dataset.
+The details on how the benchmark was performed and how it can be replicated can be found in \ref{benchmark_attachment}.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            ybar,
+            bar width=20pt,
+            xlabel={Dataset},
+            ylabel={Time (seconds)},
+            ymin=0,
+            ytick=\empty,
+            xtick=data,
+            axis x line=bottom,
+            axis y line=left,
+            enlarge x limits=0.2,
+            symbolic x coords={English words},
+            xticklabel style={anchor=base,yshift=-\baselineskip},
+            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
+        ]
+        \addplot[ybar, fill=white, error bars/.cd, y dir=both, y explicit] plot coordinates {
+        (English words, 0.003) += (English words, 0.001) -= (English words, 0.001)
+        };
+
+        \addplot[ybar, fill=gray, error bars/.cd, y dir=both, y explicit] plot coordinates {
+        (English words, 0.007) += (English words, 0.001) -= (English words, 0.001)
+        };
+
+        \addplot[ybar, fill=black!20, error bars/.cd, y dir=both, y explicit] plot coordinates {
+        (English words, 0.054) += (English words, 0.001) -= (English words, 0.001)
+        };
+
+        \legend{Chronicle Map, LMDB for Java, MapDB}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Comparison of lookup times for selected key-value stores}
+    \label{comp_maps}
+\end{figure}
+
+Although MapDB provides the nicest high-level interface and there is no need to specify its size in advance,
+its lookup speeds were lacking behind the other options.
+In the end, Chronicle Map was chosen to serve as a key-value store because it proved to have a very solid performance.
 
 As mentioned in \ref{possible_implementations}, the best option for simple prefix queries is a WFST data structure.
 Mainly because its low memory footprint and fast lookups.
