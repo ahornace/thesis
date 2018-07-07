@@ -747,6 +747,38 @@ multiple clauses. The algorithm looks at all clauses and removes the clauses whi
 occurrence. The clause in which the suggester query resides is preserved by default. When the algorithm ends the result
 is a stripped query which contains only queries that affect the suggestions.
 
+\paragraph{Example}
+Let's suppose that the query entered into one of the search fields has a form as in equation \ref{grouping_query_example}.
+And that the suggestions are wanted for the prefix $t3$.
+
+\begin{equation}
+\label{grouping_query_example}
+(t1\ \&\&\ ((t2\ \vert\vert\ t3)\ \&\&\ t4))\ \vert\vert\ t5
+\end{equation}
+
+The result documents with prefix $t3$ must contain the terms $t1, t4$. The result query which represents the documents that
+contain $t1, t4$ terms
+is written in \ref{grouping_query_dependency} (${*}\colon{*}$ represents \textit{MatchAllDocsQuery}).
+
+\begin{equation}
+\label{grouping_query_dependency}
+({+}t1\ {+}({+}({+}{*}\colon{*})\ {+}t4))
+\end{equation}
+
+The tree like structure is shown on picture \ref{group_tree} where colors represent:
+\begin{itemize}
+    \item Blue – suggestions prefix.
+    \item Red – ignored.
+    \item Green – accepted.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=80mm]{../img/complex_query.pdf}
+    \caption{Grouping queries example tree representation}
+    \label{group_tree}
+\end{figure}
+
 \subsection{Dealing with fuzzy factor}
 It is possible to specify a fuzzy factor for the queries which indicates how well should the query match the documents.
 
