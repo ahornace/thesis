@@ -1084,8 +1084,40 @@ to create the needed functionality.
 
 \subsubsection{Most Popular Completion – Complex Queries}
 \label{previous_searches}
+There are multiple possible approaches how to enhance the suggester with the use of complex queries:
+\begin{itemize}
+    \item Different term boosting – boost terms based on their popularity but also take into account other
+    query parts. For example, if the search would be restricted to Java file types then the suggester could
+    only boost terms which were searched for when this condition held true.
+    \item Suggest the whole complex query – if the starts to write a part of a complex query then it could be recognized
+    by the suggester which could suggest this already known query. However, this might not be user friendly since there
+    are multiple search fields which content would have to modified. Or the whole query would need to be written by the
+    use of field specifiers which might make the query badly readable.
+\end{itemize}
 
-\subsubsection{Processing Apache HTTP server logs}
+Possible implementation of both suggested approaches would require additional data structures and could slow down the
+suggester. For now, they are deemed only as a possible extension.
+
+As a result, the complex query is only dismantled into simple term queries which are used to update the popularity term counts.
+
+\subsubsection{Increasing search counts for specific terms}
+Administrators might already have some search data stored. These data could be used to initialize or update the
+popularity term counts.
+
+There are 2 possible approaches how to do this:
+\begin{itemize}
+    \item By processing HTTP search request URLs:
+        \begin{itemize}
+            \item Target endpoint: POST /suggest/add text/plain
+            \item Example data:
+            http://demo.opengrok.org/search?project=opengrok\&q=test
+        \end{itemize}
+    \item By processing JSON data:
+        \begin{itemize}
+            \item Target endpoint: POST /suggest/add application/json
+            \item Example data: [{"project": "opengrok", "field": "full", "token": "test", "increment": 1}]
+        \end{itemize}
+\end{itemize}
 
 \subsection{Public API}
 
