@@ -51,13 +51,54 @@ being increased the other one decreases. This is most notable in Boolean Informa
 
 \section{Impact on the hardware requirements}
 \label{hw_req_impact}
-Since suggester is mostly independent from the existing solution it only increases hardware consumption.
 The most affected resources are:
 \begin{itemize}
     \item \textbf{CPU} – in simple situations where only a prefix is typed the CPU load is not that high because it
-    is a lookup in % bullshit
-    \item \textbf{Memory} –
-    \item \textbf{Disk} –
+    is a lookup in WFST data structure which is optimized for this kind of scenarios. However, in other cases
+    index searches are performed which can consume a lot of CPU resources.
+    \item \textbf{Memory} – WFST data structures are held in memory. Although their memory footprint is very low,
+    one data structure needs to be created per Lucene field per project which can sum up to a signifcant value.
+    Also, data for most popular completion are stored in the Chronicle Map implementation which provide additional
+    memory consumption.
+    \item \textbf{Disk} – the WFST data structure are stored on the disk to provide a quick startup.
+    Data for most popular completion need to be stored as well.
 \end{itemize}
 
+\section{Impact on the demo instance}
+For monitoring the impact of the suggester, a demo instance was created which can be accessed on the url
+\url{http://demo.opengrok.org}. This instance contains 5 projects:
+\begin{itemize}
+    \item \textbf{elasticsearch}\footnote{\url{https://github.com/elastic/elasticsearch}} – scalable search engine built
+    upon Apache Lucene.
+    \item \textbf{NetBeans}\footnote{\url{https://github.com/apache/incubator-netbeans}} – NetBeans IDE in development
+    under ASF\footnote{\url{https://en.wikipedia.org/wiki/Apache\_Software\_Foundation}}.
+    \item \textbf{IntelliJ IDEA Community Edition}\footnote{\url{https://github.com/JetBrains/intellij-community}} –
+    open-source edition of the popular IDE.
+    \item \textbf{Lucene/Solr}\footnote{\url{https://github.com/apache/lucene-solr}} – combined repository for Apache
+    Lucene and Apache Solr.
+    \item \textbf{OpenGrok}
+\end{itemize}
+However, real instances may and often do contain more projects.
 
+The demo instance uses Apache Tomcat servlet container. Many solutions exist which provide a possibility to monitor
+applications in a Tomcat instance. From those the most significant are:
+\begin{itemize}
+    \item \textbf{JMX\footnote{\url{https://en.wikipedia.org/wiki/Java\_Management\_Extensions}} remote} –
+    Tomcat provides possiblity to manage and monitor the applications via JMX. Many applications use this functionality
+    to their advantage.
+    \item \textbf{JavaMelody}\footnote{\url{https://github.com/javamelody/javamelody}} – can be added to the project as a
+    dependency and creates a simple page with monitoring information available at \textit{application\_URI/monitoring}.
+    Provides monitoring of CPU, memory usage, HTTP requests count and many others. Also allows exporting data in
+    various formats, e.g. PDF, JSON. The main disadvantage is that it is embedded into the application and may influence
+    the gathered data. However, this overhead is small, e.g. the memory overhead did not exceed 3MiB.
+    \item \textbf{PSI Probe}\footnote{\url{https://github.com/javamelody/javamelody}} – deployed as a separate
+    application into the Apache Tomcat instance. Uses JMX exported by Tomcat. The disadvantages are:
+    \begin{itemize}
+        \item Cannot export data in common exchange formats. However, raw XML data are created under the Tomcat
+        home directory.
+        \item Data are not persistent.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Chosen solution} JavaMelody was chosen because of its simplicity and because it provided all the needed
+features despite the small overhead.
