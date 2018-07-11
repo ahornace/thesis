@@ -2,30 +2,30 @@
 \label{chap:analysis}
 
 This chapter is dedicated to the problems that arose during the work on the project and explains the major decisions
-that were made. Chapter is divided into the following sections:
+that were made. The chapter is divided into the following sections:
 \begin{itemize}
     \item \ref{general_architecture} \textbf{General Architecture} – explains the chosen suggester architecture and
     how it could be combined into the overall OpenGrok architecture.
     \item \ref{opengrok_modifications} \textbf{Opengrok Modifications} – describes the major modifications that had
     to be made in OpenGrok code to enable suggester functionality.
-    \item \ref{suggester_module} \textbf{Suggester} – provides detailed explanation how the suggester functionality
+    \item \ref{suggester_module} \textbf{Suggester} – provides detailed explanation of how the suggester functionality
     was implemented.
 \end{itemize}
 
 \section{General Architecture}
 \label{general_architecture}
-One of the most important aspects of software products is their architecture. If architecture does not count with some
-quality attributes then they are very hard to implement in the underlying code. When designing high level architecture,
+One of the most important aspects of software products is their architecture. If the architecture does not take into account some
+quality attributes then they are very hard to implement in the underlying code. When designing a high level architecture,
 there were multiple solutions from which to choose:
 \begin{itemize}
     \item \textbf{Implement suggester in the Web module} – probably the easiest solution. There would be no inter-tier
     boundaries; therefore, no need to define public API
     \footnote{\url{https://en.wikipedia.org/wiki/Application\_programming\_interface}}. Also, there would be no need
-    to add any other configurations to build scripts. However, this seems like a step towards a monolithic application
-    \footnote{\url{https://en.wikipedia.org/wiki/Monolithic\_application}} which proved to be harder to maintain in the
+    to add any other configurations to the build scripts. However, this seems like a step towards a monolithic application
+    \footnote{\url{https://en.wikipedia.org/wiki/Monolithic\_application}} which has proven to be harder to maintain in the
     long run.
     \item \textbf{Implement suggester as a separate module} – suggester could be implemented as an additional module to
-    already modular architecture described in \ref{opengrok_modules}. This new module could be a dependency of the Web
+    the already modular architecture described in \ref{opengrok_modules}. This new module could be a dependency of the Web
     module which would need to be modified to parse and process the data that are passed in. These data then could be
     passed to the new module via its public API. The result would look like shown on a figure \ref{opengrok_modules_changed_img}.
     \begin{figure}[htbp]
@@ -36,45 +36,45 @@ there were multiple solutions from which to choose:
     \end{figure}
     \item \textbf{Implement suggester as a separate service} – this is a step towards microservices architecture
     \footnote{\url{https://en.wikipedia.org/wiki/Microservices}}. The suggester would run as a separate program
-    listening on different port and possibly on different machine. Therefore; the implementation could be in any
+    listening on a different port and possibly on a different machine. Therefore; the implementation could be in any
     programming language and not necessarily in Java. Also, this could enable easy scalability of this service,
-    e.g. one service per project. However, the suggester would still need access to the index files.
+    e.g. one service per project. However, the suggester would still require access to the index files.
 \end{itemize}
 
 \textbf{Chosen solution} – in the end, the second proposal was chosen. Implementing suggester as a separate module is a
 good compromise between a separate service and implementing it in the Web module. The main reason for this choice was that
 OpenGrok does not support installation or scalability across multiple machines and these features are not planned to be
 implemented in the near future. Therefore, it could be hard for users to set up and configure this new service.
-However, suggester module needs to have public API and does not depend on any other OpenGrok modules. Therefore, it
+However, the suggester module needs to have a public API and does not depend on any other OpenGrok modules. Therefore, it
 will not require a lot of changes to bundle it as a separate service if the need arises in the future.
 
 \section{OpenGrok Modifications}
 \label{opengrok_modifications}
 
-As discussed in \ref{general_architecture}, Suggester is added as a separate module which is a dependency of the
-OpenGrok Web module. Therefore, changes to the Web module are required. OpenGrok uses Maven module structure.
-Thus, Suggester module has to respect it as well.
+As discussed in \ref{general_architecture}, the Suggester is added as a separate module which is a dependency of the
+OpenGrok Web module. Therefore, changes to the Web module are required. OpenGrok uses the Maven module structure.
+Thus, the Suggester module has to respect it as well.
 
 \subsection{Frontend}
 
-As described in \ref{opengrok-web} section, OpenGrok provides web interface. Some parts of the web need to be modified
-for Suggester support.
+As described in \ref{opengrok-web} section, OpenGrok provides a web interface. Some parts of the web need to be modified
+for the Suggester support.
 
 \subsubsection{Configuring suggester}
-OpenGrok provides configuration REST API endpoint for querying or manipulating the configuration of the Web application.
+OpenGrok provides REST API endpoint for querying or manipulating the configuration of the Web application.
 This endpoint could be used to retrieve the suggester configuration and apply it.
-However, this endpoint is only reachable from the targeted machine because of the security reasons.
-Therefore, it is needed to bypass this and provide one endpoint which will return only the suggester configuration.
+However, this endpoint is only reachable from the targeted machine because of security reasons.
+Therefore, it is needed to bypass this limitation and provide one endpoint which will return only the suggester configuration.
 This endpoint could also filter the information which is redundant to the JavaScript implementation.
 
 \subsubsection{Showing the suggestions}
 \label{showing_suggestions}
 
-Suggester needs to detect if user pressed a key while having selected a specific input for which it is enabled. Upon
-detecting this change it needs to process the data, send it to the backend part of the software, processs the returned
+The Suggester needs to detect if the user pressed a key while having a specific input selected for which it is enabled. Upon
+detecting this change, it needs to process the data, send it to the backend part of the software, processs the returned
 result and show it to
 the user. All this should be as quick as possible so the user considers it to be seamless. Simplified picture of the
-steps that need to be taken is shown on the figure \ref{suggest_sequence}.
+steps that need to be taken is shown in the figure \ref{suggest_sequence}.
 
 \begin{figure}[htbp]
 \centering
@@ -83,7 +83,7 @@ steps that need to be taken is shown on the figure \ref{suggest_sequence}.
 \label{suggest_sequence}
 \end{figure}
 
-There are many libraries which provide "JavaScript" functionality as shown on figure \ref{suggest_sequence},
+There are many libraries which provide "JavaScript" functionality as shown in figure \ref{suggest_sequence},
 the most notable are:
 \begin{itemize}
     \item jQuery UI Autocomplete\footnote{\url{https://jqueryui.com/autocomplete/}}
@@ -92,13 +92,13 @@ the most notable are:
 \end{itemize}
 
 All of the above require jQuery\footnote{\url{http://jquery.com}} library which is already included in the OpenGrok.
-In the end, jQuery UI Autocomplete was chosen because jQuery UI was already used by OpenGrok. Although, Autocomplete
-module was not included. jQuery UI Autocomplete provides an easy-to-use API and is easily customizable, these factors
+In the end, jQuery UI Autocomplete was chosen because jQuery UI was already used by OpenGrok. Although, the Autocomplete
+module was not included. jQuery UI Autocomplete provides an easy-to-use API and is easily customizable; these factors
 also contributed to the decision of picking this library.
 
 \paragraph{Data format}
 As mentioned, user's input must be sent to the backend part of the software, processed and
-returned back. jQuery UI Autocomplete supports JSON\footnote{\url{https://www.json.org}} format by default. This format
+returned back. jQuery UI Autocomplete supports the JSON\footnote{\url{https://www.json.org}} format by default. This format
 is widely used and performs better than XML in this
 specific situation (\url{https://www.w3schools.com/js/js_json_xml.asp}). Also OpenGrok's REST API supports
 automatic conversion to JSON objects via the Jackson\footnote{\url{https://github.com/FasterXML/jackson}} library.
@@ -106,18 +106,18 @@ Therefore, it is a solid choice.
 
 \subsubsection{Detecting the token for suggestions}
 As referenced in \ref{opengrok_usage}, it is possible to write multiple tokens into one \textit{input} HTML tag.
-Imagine the text: "car engine". With only this information the Suggester is not able to tell if it should add
-suggestions for "car" prefix or "engine" prefix or something totally different. Therefore, the Suggester also requires the position of the last typed
+Imagine the text: "car engine". With only this information the Suggester is not able to tell if it should show
+suggestions for the "car" prefix or "engine" prefix or something totally different. Therefore, the Suggester also requires the position of the last typed
 key.
 
 The position needs to be retrieved and set by the JavaScript part of the web page. This functionality could be written in
-pure JavaScript; however, simple, small, and easy-to-use library jQuery caret (\url{https://github.com/acdvorak/jquery.caret})
+pure JavaScript; however, simple, small, and easy-to-use library \textit{jQuery caret} (\url{https://github.com/acdvorak/jquery.caret})
 was used instead.
 
 \subsection{Backend}
 As stated in \ref{showing_suggestions}, the server part needs to have a service which returns results based on the
-input written by the user to the web page. And as mentioned in \ref{opengrok-web}, Web module is a web application compliant with
-servlet API, therefore; new servlet which listens to the user's input and returns suggestions needs to be added.
+input typed by the user. And as mentioned in \ref{opengrok-web}, the Web module is a web application compliant with
+the servlet API; therefore, a new servlet which listens to the user's input and returns suggestions needs to be added.
 
 \subsubsection{How to implement the suggester servlet}
 The servlet represents a simple REST API endpoint
@@ -129,7 +129,7 @@ There is a lot of options how this could be achieved; however, the most notable 
      However, some boilerplate code would need
     to be written which could be avoided.
     \item Use JAX-RS API and its implementation Jersey\footnote{\url{https://jersey.github.io}}. With this approach the
-    result code could be clean and much easier to understand because of the use of provided annotations from JAX-RS API.
+    code can be clean and much easier to understand because of the use of provided annotations from JAX-RS API.
     Not to mention that Jersey provides additional features:
     \begin{itemize}
         \item Dependency injection.
@@ -143,39 +143,41 @@ there is no dependency overhead. As a result, the second option was chosen.
 
 \subsubsection{Processing user input}
 \label{processing_user_input}
-As referenced in \ref{opengrok_usage}, OpenGrok web interface provides multiple of HTML \textit{input} fields which
+As referenced in \ref{opengrok_usage}, OpenGrok web interface provides multiple HTML \textit{input} fields which
 represent different Lucene \textit{fields} which should be searched. Each of these input fields can contain some value.
-Therefore, all these values are passed to the server along with the information of currently selected input field and
+Therefore, all these values are passed to the server along with the information of the currently selected input field and
 the caret position in it.
 
 Each of these fields can include any form of Lucene query, as stated in \ref{opengrok_usage}. Since these queries might
-get very complicated, proper parser is needed. Lucene has a good support for this, which is also leveraged in OpenGrok
-which has custom query parser which is almost identical to the one served by Lucene. However, character position is
+get very complicated, a proper parser is needed. Exactly for this purpose, OpenGrok provides modified parsers from Lucene library.
+
+
+The character position is
 useless after the parsing is done – it is not possible to find the token it referenced anymore. Therefore, a small
-trick will be used. Before parsing the text data, a short, random but regarding the text unique, string of characters
+trick can be used. Before parsing the text data, a short, random but regarding the text unique string of characters
 is generated and inserted at the mentioned position. From now on, it is possible to use just this identifier since it
-uniquely identifies the token in which the user is currently interested. However, this has also a small disadvantage.
-If the query typed by the user is not correct then Lucene's parser generates \textit{ParseException} which contains
+uniquely identifies the token in which the user is currently interested. However, this presents also a small disadvantage.
+If the query typed by the user is not correct, then Lucene parser generates \textit{ParseException} which contains
 this identifier; therefore, it might be a little harder to decode the original query from the exception's message.
 
 \subsubsection{Reacting to the Events}
 
-Running OpenGrok Web instance has REST API which allows Indexer or administrators to indicate that some event occurred.
-More information can be found at \ref{opengrok_rest}. Events that the suggester should be able to react to:
+Running OpenGrok Web instance has REST API which allows the Indexer or administrators to indicate that some event occurred.
+More information can be found in \ref{opengrok_rest}. Events that the Suggester should be able to react to:
 \begin{itemize}
     \item \textbf{Configuration change} – \textit{PUT /api/v1/configuration}
 
     Suggester should rebuild to be in concordance with the new configuration.
     \item \textbf{Indication to refresh index searchers} – \textit{PUT /api/v1/system/refresh}
 
-    Most of the time this message indicates that the reindex of the data was done. Suggester
+    Most of the time this message indicates that the reindex of the data has been done. The Suggester
     should update its data to be up to date.
 
     \item \textbf{Marking project as indexed} – \textit{PUT /api/v1/projects/{project}/indexed}
 
-    OpenGrok can know of projects which are not yet indexed. It is not possible to search in these projects;
-    therefore, there is no need for suggester to know about them. However, this changes if the project is marked as indexed.
-    Suggester should then build its inner data to support suggestions for the project.
+    OpenGrok can be aware of projects which are not yet indexed. It is not possible to search in these projects;
+    as a result, there is no need for suggester to know about them. However, this changes if the project is marked as indexed.
+    The Suggester should then build its inner data to support suggestions for the project.
 
     \item \textbf{Project delete} – \textit{DELETE /api/v1/projects/{project}}
 
@@ -185,7 +187,7 @@ More information can be found at \ref{opengrok_rest}. Events that the suggester 
 \section{Suggester}
 \label{suggester_module}
 This section looks at the Suggester module in more detail. First of all, it describes all the queries the suggester supports.
-Then, looks at the fuzzy and boost factors. After that, discusses how to leverage previous searches. At last, mentions some
+Then, it looks at the fuzzy and boost factors. After that, it discusses how to leverage the previous searches. At last, it mentions some
 additional properties that were needed by this module.
 
 \subsection{Prefix Query}
@@ -199,17 +201,17 @@ It can be divided into 2 parts:
 \end{itemize}
 
 These parts are then combined together as: \textit{\{prefix\}*}.
-It is probably the most used case because of the suggester nature. If user types any simple text (even without \textit{*}) then
+It is probably the most used case because of the suggester's nature. If the user types any simple text (even without \textit{*}) then
 the suggester automatically appends \textit{*} to the end and considers this as a prefix query to provide adequate suggestions.
 
-Since prefix queries will be used that often then the suggester needs to be optimized for this type of queries.
+Since the prefix queries will be used that often then the suggester needs to be optimized for this type of queries.
 
 \subsubsection{Scoring}
 \label{prefix_scoring}
-Every term needs to have a \textit{score} associated with it so the suggester could decide which term is better suited
+Every term needs to have a \textit{score} associated with it so the suggester can decide which term is better suited
 to appear as a suggestion. Therefore, the problem is not only to find the terms with a specific prefix but to find $n$
 terms with the best scores having the specific prefix. Let's assume that the suggester does not have any information
-about previous searches. This case is discussed in
+about the previous searches. This case is discussed in
 \ref{previous_searches}. The suggester has access to the Lucene index provided by the Indexer. % TODO: add refs?
 Therefore; it has access to:
 \begin{itemize}
@@ -219,13 +221,13 @@ Therefore; it has access to:
 \end{itemize}
 
 \paragraph{IDF\protect\footnote{\url{https://en.wikipedia.org/wiki/Tf\%E2\%80\%93idf\%23Inverse\_document\_frequency\_2}}}
-At a first glance, it might seem a good idea to use inverse document frequency as a metric. The formula for computing this metric can be seen at \ref{IDF_eq}.
+At a first glance, it might seem as a good idea to use inverse document frequency as a metric. The formula for computing this metric can be seen at \ref{IDF_eq}.
 \begin{equation}
 \label{IDF_eq}
 IDF(t) = \log{\frac{D}{N}}
 \end{equation}
-Basically, it says how important is the term in the document set. If the term occurrs in every document then it is probably
-a very common word and if provided in query it does not reduce the result set.
+Basically, it says how important the term is in the document set. If the term occurrs in every document, then it is probably
+a very common word. If provided in the query, it does not reduce the size of the result set significantly.
 However, this importance is correct if the term is
 provided by the user in the query. If the suggester were to use it, then it would suggest terms that are used the least, e.g. only once.
 Therefore; this is not a good scoring option.
@@ -254,14 +256,14 @@ structure suitable for our purposes. However, it does not support efficient look
 be needed to traverse the whole subtree for a specific prefix to find the terms with the best scores.
 
 \paragraph{Ternary search tree\protect\footnote{\url{https://en.wikipedia.org/wiki/Ternary\_search\_tree}}} – is a
-special case of a Trie. Same as Trie, it does not have any support for more efficient lookup based on scores.
+special case of Trie. Same as Trie, it does not have any support for more efficient lookup based on scores.
 
 \paragraph{FST\protect\footnote{\url{https://en.wikipedia.org/wiki/Finite-state\_transducer}}} \label{FST} – is a finite state
 automaton which can produce output. Special case of FST is a weighted FST (WFST) where each transition can have an
 associated weight. It is possible to construct a WFST which will provide a very efficient algorithm for finding the
 $n$ terms with the best scores. This algorithm is explained in \citep{Mohri02anefficient}. However, this algorithm returns
 terms with the lowest scores and based on the chosen scoring it is needed for it to return the terms with the highest
-scores. This can be achieved by a neat trick, it is possible to invert the score by the formula \ref{invert_score}.
+scores. This can be achieved by a neat trick; it is possible to invert the score by the formula \ref{invert_score}.
 \begin{equation}
 \label{invert_score}
 newScore = maxPossibleScoreValue - score
@@ -281,20 +283,20 @@ An efficient construction of minimal, acyclic and deterministic WFST is explaine
 
 \paragraph{Comparison}
 
-Two kinds of dataset were used:
+Two datasets were used:
 \begin{itemize}
-    \item \textbf{English words} – list of \textbf{370099} words freely available at \url{https://github.com/dwyl/english-words}.
-    \item \textbf{Linux kernel} – \textit{full} field of indexed Linux kernel with \textbf{3459733} terms.
+    \item \textbf{English words} – list of \textbf{370,099} words freely available at \url{https://github.com/dwyl/english-words}.
+    \item \textbf{Linux kernel} – \textit{full} field of indexed Linux kernel with \textbf{3,459,733} terms.
 \end{itemize}
 
 % TODO: useful info average term length in Linux kernel: 22.033919380483987
 
-Measured was average time of specific operations on the data structures.
-Description of the test cases:
+Measured was the average time of specific operations on the data structures.
+The description of the test cases:
 \begin{itemize}
     \item \textbf{"non" Prefix Lookup} – is a lookup of 10 words with the prefix "non" which is the most occurring prefix
     of length 3 in the English words dataset with 7479 occurrences. Linux kernel has only 644 occurrences. Results can be seen
-    on graph \ref{comp_non}.
+    on the graph \ref{comp_non}.
 
     \begin{figure}[htbp]
         \centering
@@ -330,7 +332,7 @@ Description of the test cases:
         \label{comp_non}
     \end{figure}
     \item \textbf{One Letter Prefix Lookup} – is a lookup of 10 words with the prefix of each letter from the basic alphabet.
-    Results can be seen on graph \ref{comp_one}.
+    Results can be seen the on the graph \ref{comp_one}.
 
     \begin{figure}[htbp]
         \centering
@@ -367,7 +369,7 @@ Description of the test cases:
     \end{figure}
 
     \item \textbf{Two Letter Prefix Lookup} – is a lookup of 10 words with the prefix which is a combination of 2 letters
-    from the basic alphabet. Results can be seen on graph \ref{comp_two}.
+    from the basic alphabet. Results can be seen on the graph \ref{comp_two}.
 
     \begin{figure}[htbp]
         \centering
@@ -403,7 +405,7 @@ Description of the test cases:
         \label{comp_two}
     \end{figure}
 
-    \item \textbf{Build time} – performs build of the data structure from the scratch. Results can be seen on graph
+    \item \textbf{Build time} – performs build of the data structure from the scratch. Results can be seen on the graph
     \ref{comp_build}.
 
     \begin{figure}[htbp]
@@ -442,7 +444,7 @@ Description of the test cases:
 
 
     \item \textbf{Memory usage} – approximate sizes the data structures use in the computer's main memory.
-     The result can be seen on graph \ref{comp_mem}. The data was measured by calling method
+     The result can be seen on the graph \ref{comp_mem}. The data was measured by calling method
      \textit{ramBytesUsed()} which is a custom method commonly implemented in Lucene's data structures.
      The drastic
     difference is mainly due to WFST's implementation which was optimized to use as little memory as possible while
@@ -455,8 +457,8 @@ Description of the test cases:
         \item Constant arc size for the arcs into certain depth which allows binary search among the arcs. (Random
         access is not possible because it would require more memory which would not be used.)
     \end{itemize}
-    It can be noted that some of these optimizations may hinder the performance. However, the result seems to be a good
-    compromise.
+    It can be noted that some of these optimizations may hinder the performance. However, the results show that the WFST
+    performs well and is memory usage efficient.
 
     \begin{figure}[htbp]
         \centering
@@ -765,7 +767,7 @@ is written in \ref{grouping_query_dependency} (${*}\colon{*}$ represents \textit
 ({+}t1\ {+}({+}({+}{*}\colon{*})\ {+}t4))
 \end{equation}
 
-The tree like structure is shown on picture \ref{group_tree} where colors represent:
+The tree like structure is shown in the picture \ref{group_tree} where colors represent:
 \begin{itemize}
     \item Blue – suggestions prefix.
     \item Red – ignored.
@@ -912,7 +914,7 @@ efficiency. There are multiple options how to achieve this functionality:
 Benchmarks comparing MapDB, Chronicle Map, LMDB for Java and some other solutions performed by the LMDB for Java creators
 can be found in \citep{lmdb}.
 
-Benchmark for similar usage as in our case comparing MapDB, Chronicle Map and LMDB for Java can be seen on graph \ref{comp_maps}.
+Benchmark for similar usage as in our case comparing MapDB, Chronicle Map and LMDB for Java can be seen on the graph \ref{comp_maps}.
 The performed test consists of getting the integer value for every 20th term of \textit{English words} dataset.
 The details on how the benchmark was performed and how it can be replicated can be found in \ref{benchmark_attachment}.
 

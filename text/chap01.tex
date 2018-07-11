@@ -7,7 +7,7 @@ OpenGrok is an open-source search engine written in
 Java\footnote{\url{https://en.wikipedia.org/wiki/Java\_(programming\_language)}}
 freely available at \url{https://github.com/oracle/opengrok} under CDDL
 license\footnote{\url{https://en.wikipedia.org/wiki/Common\_Development\_and\_Distribution\_License}}.
-However, OpenGrok is different to most of the search engines which purpose is to traverse web and find the most relevant
+However, OpenGrok is different to most of the search engines, purpose of which is to traverse web and find the most relevant
 webpages. OpenGrok provides searching across codebases. For instance, if you would like to know which files are using
 \textit{mmap} function in \textit{Linux kernel}\footnote{\url{https://en.wikipedia.org/wiki/Linux\_kernel}} then
 OpenGrok is the tool for that purpose. It understands a variety of
@@ -21,9 +21,9 @@ The other most notable features of OpenGrok are:
     \item Support for multiple version control systems\footnote{\url{https://en.wikipedia.org/wiki/Version\_control}},
         e.g. git, mercurial, etc.
         \begin{itemize}
-            \item Support for searching in repository history.
+            \item Support for searching in the repository history.
             \item Possibility to annotate a file.
-            \item Possibility to see history for a specific file.
+            \item Possibility to see the history for a specific file.
         \end{itemize}
     \item Support for cross-referencing.
     \item Support for navigation in source files. For instance, by providing list of methods.
@@ -43,7 +43,7 @@ OpenGrok is split into multiple modules:
     \item distribution – does not contain any code and serves for combining all of the above into one distribution unit.
 \end{itemize}
 
-Visualization of these modules and how they are dependent on each other can be seen on figure \ref{opengrok_modules_img}.
+Visualization of these modules and how they are dependent on each other can be seen in figure \ref{opengrok_modules_img}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=100mm]{../img/opengrok_modules.pdf}
@@ -51,16 +51,16 @@ Visualization of these modules and how they are dependent on each other can be s
 \label{opengrok_modules_img}
 \end{figure}
 
-Multiple modules support in one project is achieved by Maven\footnote{\url{https://maven.apache.org}} build tool.
+Multiple-module support in one project is achieved by Maven\footnote{\url{https://maven.apache.org}} build tool.
 There is one main \textit{pom.xml} in the root of the project which aggregates all the modules.
 
 \subsection{Indexer}
 \label{indexer}
 
-Indexer is a submodule which main purpose is for each project to:
+Indexer is a submodule, main purpose of which is for each project to:
 \begin{itemize}
-    \item Generate main lookup index. Detailed description in \ref{indexer:index}.
-    \item Generate history index for repositories. Detailed description in \ref{indexer:history}.
+    \item Generate the main lookup index. Detailed description in \ref{indexer:index}.
+    \item Generate the history index for repositories. Detailed description in \ref{indexer:history}.
     \item Generate xref. Detailed description in \ref{indexer:xref}.
 \end{itemize}
 
@@ -84,7 +84,7 @@ This form of data representation is very efficient for document lookup.
 \subsubsection{History}
 \label{indexer:history}
 
-OpenGrok uses history index for quick access to history information of every file in a project. OpenGrok first discovers
+OpenGrok uses the history index for quick access to history information of every file in a project. OpenGrok first discovers
 what kind of version control system the project is using and then executes appropriate commands to retrieve the project's
 history (e.g. some form of \textit{git log}). Since executing these commands is not very efficient (new process has to
 be created), OpenGrok does this at the indexing phase to provide better performance later. Serialized form of Java object
@@ -102,8 +102,8 @@ aforementioned information.
 \subsection{Web}
 \label{opengrok-web}
 
-The previous section \ref{indexer:index} describes how the data are processed to create index. However, these data need
-to be presented to the end user. Web submodule serves exactly this purpose. It is distributed as a
+The previous section \ref{indexer:index} describes how the data are processed to create the index. However, these data need
+to be presented to the end user. The Web submodule serves exactly this purpose. It is distributed as a
 WAR\footnote{\url{https://en.wikipedia.org/wiki/WAR\_(file\_format)}} which can be used by many
 servlet containers\footnote{\url{https://en.wikipedia.org/wiki/Web\_container}}. OpenGrok correctly runs in
 Apache Tomcat\footnote{\url{http://tomcat.apache.org}}; nevertheless, there is no Tomcat vendor lock-in; therefore,
@@ -112,30 +112,30 @@ other servlet containers should work properly as well.
 \subsubsection{Configuration}
 \label{opengrok_configuration}
 
-Since OpenGrok has two modules (Indexer and Web) which can be run separately, it needs a way how to pass relevant
-information between those. However, it might be possible that Indexer finished its work after a long period of time
+Since OpenGrok has two modules (Indexer and Web) which can be run separately, it needs a way to pass relevant
+information between those. However, it might be possible that Indexer finishes its work after a long period of time
 (in some cases it might take days) and the Web module is not reachable. Therefore, to not lose all of the information
-needed by Web module the Indexer stores it in a configuration file. It is stored as an
+needed by the Web module, the Indexer stores it in a configuration file. It is stored as an
 XML\footnote{\url{https://en.wikipedia.org/wiki/XML}} encoded class which needs to be read by Web on its startup.
-If Web module does not find the configuration on the expected place (can be configured in \textit{web.xml}) then an
-error is shown on the main page and the usage is not possible. Of course, there are ways how to change the configuration
+If the Web module does not find the configuration at the expected place (can be configured in \textit{web.xml}) then an
+error is shown on the main page and the usage is not possible. Of course, there are ways to change the configuration
 of the running OpenGrok application via the REST API \footnote{\url{https://en.wikipedia.org/wiki/Representational\_state\_transfer}}
 described in the \ref{opengrok_rest}.
 
 \subsubsection{REST API}
 \label{opengrok_rest}
 
-Opengrok provides REST API support. This is a relatively new feature. Before that, OpenGrok has known a concept of
-\textit{Messages} – custom serialization of Java objects passed to Web application via custom port.
-So far most of the REST API calls can be only made from the machine on which the OpenGrok runs.
-This is mainly because these REST API calls are meant as a means of communication between Indexer and Web application
+Opengrok provides REST API support. This is a relatively new feature. Before that, OpenGrok had known a concept of
+\textit{Messages} – custom serialization of Java objects passed to the Web application via a custom port.
+So far, most of the REST API calls can be only made from the machine on which the OpenGrok runs.
+This is mainly because these REST API calls are meant as a means of communication between the Indexer and Web application
 or for administrators maintaining the OpenGrok instance. More information can be found at
 \url{https://github.com/oracle/opengrok/wiki/Web-services}.
 
 \section{Usage}
 \label{opengrok_usage}
 The main purpose of the OpenGrok project is to provide ability to search codebases of software projects. This is done
-mainly through its web interface. The main OpenGrok page can be seen on the figure \ref{opengrok_main}.
+mainly through its web interface. The main OpenGrok page can be seen in the figure \ref{opengrok_main}.
 
 \begin{figure}[htbp]
     \centering
@@ -152,28 +152,28 @@ The numbers in the figure \ref{opengrok_main} signify:
        \begin{itemize}
         \item \textbf{Full search} – specifies the text the document should contain. Represents \textit{full} field in
         underlying Lucene implementation.
-        \item \textbf{Definition} – specifies the definition of which symbol the document should contain.
-        Represents \textit{defs} field in underlying Lucene implementation.
+        \item \textbf{Definition} – specifies the definition of a symbol the document should contain.
+        Represents \textit{defs} field in the underlying Lucene implementation.
         \item \textbf{Symbol} – specifies the symbol the document should contain.
-        Represents \textit{refs} field in underlying Lucene implementation.
-        \item \textbf{File Path} – specifies the path the document should have.
-        Represents \textit{path} field in underlying Lucene implementation.
-        \item \textbf{History} – specifies the history the document should have.
-        Represents \textit{hist} field in underlying Lucene implementation.
+        Represents \textit{refs} field in the underlying Lucene implementation.
+        \item \textbf{File Path} – specifies the path the document should possess.
+        Represents \textit{path} field in the underlying Lucene implementation.
+        \item \textbf{History} – specifies the history the document should possess.
+        Represents \textit{hist} field in the underlying Lucene implementation.
         \item \textbf{Type} – restricts the search for documents of the type.
-        Represents \textit{type} field in underlying Lucene implementation.
+        Represents \textit{type} field in the underlying Lucene implementation.
        \end{itemize}
     \item Repository list.
 \end{enumerate}
 
-It is possible to add values to multiple search fields to make the search more specific. Into the search fields can be
-typed any query written in Lucene syntax.
+It is possible to add values to multiple search fields to make the search more specific. Furthermore, any query written
+in Lucene syntax can be typed into the search fields.
 
-More detailed information with examples can be found on \textit{/help.jsp} web page of the running OpenGrok Web application instance.
+More detailed information with examples can be found on the \textit{/help.jsp} web page of the running OpenGrok Web application instance.
 
 \subsection{Navigating results}
 
-OpenGrok presents search results similarly as can be seen on figure \ref{opengrok_results}.
+OpenGrok presents search results similarly to what can be seen in figure \ref{opengrok_results}.
 
 \begin{figure}[htbp]
     \centering
@@ -182,18 +182,18 @@ OpenGrok presents search results similarly as can be seen on figure \ref{opengro
     \label{opengrok_results}
 \end{figure}
 
-On the picture \ref{opengrok_results} numbers represent:
+In the picture \ref{opengrok_results} numbers represent:
 \begin{enumerate}
     \item Results are paged as is a custom in many applications.
     \item Directory where the result documents are located.
-    \item Document that satisfied the search criteria.
+    \item Document that satisfies the search criteria.
     \item Line number and content of the line where the match was found.
 \end{enumerate}
 
 \subsection{Traversing source code}
 
 OpenGrok presents files' content similarly to modern
-IDEs\footnote{\url{https://en.wikipedia.org/wiki/Integrated_development_environment}}. This can be noticed on figure
+IDEs\footnote{\url{https://en.wikipedia.org/wiki/Integrated_development_environment}}. This can be noticed in figure
 \ref{opengrok_source} where numbers represent:
 
 \begin{enumerate}
@@ -211,13 +211,14 @@ IDEs\footnote{\url{https://en.wikipedia.org/wiki/Integrated_development_environm
 \end{figure}
 
 \section{Similar Tools}
-It is hard to compare because all of these tools are complex and each of them provides unique feel and solution to problems.
-Therefore, the list will only mention if those tools contain suggester functionality. Still, this might not be the best
-indicator because they might provide different solutions, e.g. instant search which might make the suggester a redundant asset.
-List of similar tools:
+It is hard to compare OpenGrok to other similar tools because all of these are complex and each of them provides a unique
+feel and solution to the problems.
+Therefore, the list only mentions if these tools contain suggester functionality. Still, this might not be the best
+indicator because they might provide different solutions, e.g. instant search which might render the suggester a redundant asset.
+The list of similar tools:
 \begin{itemize}
-    \item \textbf{SourceGraph} \url{https://about.sourcegraph.com} – SourceGraph does support instant search feature.
-    While writing some text to the search field it immediately displays the files in which the text was found. The figure
+    \item \textbf{SourceGraph} \url{https://about.sourcegraph.com} – SourceGraph supports the instant search feature.
+    While typing some text into the search field, it immediately displays the files in which the text has been found. The figure
     \ref{sourcegraph} shows how this feature looks like.
 
     \begin{figure}[htbp]
@@ -228,10 +229,10 @@ List of similar tools:
     \end{figure}
 
     \item \textbf{searchcode} \url{https://searchcode.com/} – it seems that searchcode does not support neither
-    autocomplete or instant search feature.
+    autocomplete nor instant search feature.
 
     \item \textbf{livegrep} \url{https://livegrep.com/} – supports instant search. Immediately shows files and their contents
-    where the text was found. The look of this application can be seen on figure \ref{livegrep}.
+    where the text has been found. The look of this application can be seen in figure \ref{livegrep}.
 
     \begin{figure}[htbp]
         \centering
