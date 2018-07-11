@@ -891,6 +891,7 @@ efficiency. There are multiple options how to achieve this functionality:
         than specified, the performance of the data structure decreases marginally.
         \item Average key size – does not affect maximum key size.
     \end{itemize}
+    Another disadvantage is that some Java options are needed for it to work with Java 9 and later releases.
 
     \item \textbf{MapDB}\footnote{\url{http://www.mapdb.org}} – similar to Chronicle Map but no hints are necessary.
 
@@ -903,6 +904,7 @@ efficiency. There are multiple options how to achieve this functionality:
                 \item Number of entries – can be overestimated.
                 \item Maximum key size – must be the same as maximum term size in Lucene which 32767 bytes.
             \end{itemize}
+        \item Some Java options needed for Java 9 and later.
     \end{itemize}
 \end{itemize}
 
@@ -1134,6 +1136,7 @@ As specified in \ref{opengrok_overview}, the OpenGrok allows the administrators 
 access. Therefore, suggester must not allow unauthorized users to see suggestions because it would be considered as a security issue.
 
 \subsection{Configuration}
+\label{suggester_config}
 As mentioned in \ref{opengrok_configuration}, OpenGrok can be configured using a configuration file.
 Suggester should be also configurable to allow the users to specify how they want the suggester to perform.
 Instead of creating its own separate way how to handle configuration, it will depend on the already existing solution in

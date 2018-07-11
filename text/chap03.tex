@@ -75,3 +75,62 @@ The numbers in the figure \ref{suggestions_error} represent:
 
 \section{Administrator guide}
 \label{administrator_guide}
+
+There are multiple ways how to modify the suggester configuration described in \ref{suggester_config}:
+\begin{itemize}
+    \item By modifying the XML OpenGrok's configuration described in \ref{opengrok_configuration}. Example:
+\begin{code}
+<java version="1.8.0_162" class="java.beans.XMLDecoder">
+  <object
+      class="org.opensolaris.opengrok.configuration.Configuration"
+      id="Configuration0">
+    <void property="suggesterConfig">
+      <void property="allowComplexQueries">
+        <boolean>false</boolean>
+      </void>
+      <void property="allowMostPopular">
+        <boolean>false</boolean>
+      </void>
+      <void property="allowedFields">
+        <object class="java.util.Collections" method="singleton">
+          <string>defs</string>
+        </object>
+      </void>
+      <void property="allowedProjects">
+        <object class="java.util.Collections" method="singleton">
+          <string>fruitonserver</string>
+        </object>
+      </void>
+      <void property="enabled">
+        <boolean>false</boolean>
+      </void>
+      <void property="maxProjects">
+        <int>2</int>
+      </void>
+      <void property="maxResults">
+        <int>11</int>
+      </void>
+      <void property="minChars">
+        <int>2</int>
+      </void>
+      <void property="rebuildCronConfig">
+        <string>5 * * * *</string>
+      </void>
+      <void property="showProjects">
+        <boolean>false</boolean>
+      </void>
+      <void property="showScores">
+        <boolean>true</boolean>
+      </void>
+      <void property="showTime">
+        <boolean>true</boolean>
+      </void>
+      <void property="suggesterBuildTerminationTimeSec">
+        <int>500</int>
+      </void>
+    </void>
+  </object>
+</java>
+\end{code}
+    \item By using REST API configuration endpoint.
+\end{itemize}
