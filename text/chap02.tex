@@ -907,8 +907,7 @@ efficiency. There are multiple options how to achieve this functionality:
 \end{itemize}
 
 Benchmarks comparing MapDB, Chronicle Map, LMDB for Java and some other solutions performed by the LMDB for Java creators
-can be found here:
-\url{https://github.com/lmdbjava/benchmarks/blob/master/results/20160710/README.md}.
+can be found in \citep{lmdb}.
 
 Benchmark for similar usage as in our case comparing MapDB, Chronicle Map and LMDB for Java can be seen on graph \ref{comp_maps}.
 The performed test consists of getting the integer value for every 20th term of \textit{English words} dataset.
@@ -1151,7 +1150,7 @@ properties of the suggester:
     \item \textbf{Allowed projects} – specifies set of projects for which the suggester should be enabled. Default value: \textit{all}.
     \item \textbf{Maximum projects} – specifies how many maximum projects can be selected at the same time and the suggestions will work.
     Default value: \textit{unlimited}.
-    \item \textbf{Allowed fields} – specifies for which fields should be the suggester enabled. For instance, it might be
+    \item \textbf{Allowed fields} – specifies the fields for which the suggester should be enabled. For instance, it might be
     desired that the suggestions should only work for \textit{full} field. Default value: \textit{all}.
     \item \textbf{Allow complex queries} – specifies if the suggester should support complex queries. If set to
     \textit{false} then only simple prefix lookups by using the WFST data structure will be performed. Default value:
@@ -1163,7 +1162,7 @@ properties of the suggester:
     \item \textbf{Show projects} – specifies if the suggestions should show in which project the term was found.
     If there are multiple projects then showing all the names is not feasible; therefore, only the number of projects will be shown.
     Default value: \textit{false}.
-    \item \textbf{Show time} – specifies if the time it took the suggester to find the queries should be displayed.
+    \item \textbf{Show time} – specifies if the time it took the suggester to find the suggestions should be displayed.
     Default value: \textit{false}.
     \item \textbf{Rebuild cron config} – specifies how often should the suggester rebuild the WFST data structures.
     The value must be in Unix cron format, decision is described in \ref{cron}.  Default value: \textit{0 0 * * *} (every day at midnight).
