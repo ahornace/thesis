@@ -73,7 +73,13 @@ This endpoint could also filter the information which is redundant to the JavaSc
 The Suggester needs to detect if the user pressed a key while having a specific input selected for which it is enabled. Upon
 detecting this change, it needs to process the data, send it to the backend part of the software, processs the returned
 result and show it to
-the user. All this should be as quick as possible so the user considers it to be seamless. Simplified picture of the
+the user. All this should be as quick as possible so the user considers it to be seamless.
+
+Showing suggestions is considered to be a response to control activation. This is an indication that some control member
+(in our case keyboard key) has been physically activated. Based on \citep{response_time}, the response
+should take no more than $100ms$ in order for the system to be considered unobtrusive.
+
+Simplified picture of the
 steps that need to be taken is shown in the figure \ref{suggest_sequence}.
 
 \begin{figure}[htbp]
