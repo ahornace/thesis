@@ -713,6 +713,13 @@ Based on the unary operator the prefix has assigned, the suggester needs to:
     needs to be performed.
 \end{itemize}
 
+
+If the query contains multiple terms, then more efficient data structure for autocompletion than reverse index exists
+\citep{Bast06output-sensitiveautocompletion}. Authors describe a tree-like data structure called \textit{AUTOTREE}. In the
+empirical study the authors have shown that the \textit{AUTOTREE} outperforms the basic reverse index. However,
+the \textit{AUTOTREE} data structure would have to be created for every field and some minor changes would have to be made.
+Therefore, for now, it is considered as a possible improvement of the suggester performance.
+
 \paragraph{Scoring}
 The scoring should follow the same principle as in \ref{prefix_scoring} because of the consistency. However,
 the document frequency has to be taken from the result set of the bare query and not the whole index.
