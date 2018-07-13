@@ -156,5 +156,14 @@ There are multiple ways how to modify the suggester configuration described in \
   </object>
 </java>
 \end{code}
-    \item By using REST API configuration endpoint.
+    \item By using REST API configuration endpoint. It is possible to send a JSON representation of the suggester
+    configuration. Only the properties which differ from the default configuration needs to be specified. Example data:
+\begin{code}
+{"enabled": "false"}
+\end{code}
+    Suggester configuration endpoint:
+\begin{code}
+/api/v1/configuration/suggesterConfig
+\end{code}
+
 \end{itemize}
