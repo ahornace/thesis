@@ -841,6 +841,7 @@ The tree like structure is shown in the picture \ref{group_tree} where colors re
 \end{figure}
 
 \subsection{Dealing with fuzzy factor}
+\label{fuzzy}
 It is possible to specify a fuzzy factor for the queries which indicates how well should the query match the documents.
 
 \subsubsection{Fuzzy search}
@@ -1236,3 +1237,16 @@ properties of the suggester:
     threads that build the suggester data structures. Slow machines should specify more time. This option is mainly here
     to prevent the suggester to hang in the initialization. Default value: \textit{1800} (30 minutes).
 \end{itemize}
+
+\subsection{Tolerating errors}
+Although it is possible to use fuzzy factor as specified in \ref{fuzzy}, the Suggester is not error tolerant.
+This could be a good extension to the prefix queries \ref{prefix_query}.
+For instance, if the user types prefix \textit{sh} even though
+the index contains the term \textit{schwarz}, it won't be among the suggestions. This might prove very useful if the
+user made a typing error or is not sure about the spelling of the term.
+
+\citep{Chaudhuri09extendingautocompletion} studies the possibility of tolerating errors for prefix autocompletion.
+Authors defined prefix $p$ as a \textit{k-prefix} of string $s$ if there is some extension of $p$ that is within edit
+distance $k$ of $s$. $s$ is called a \textit{k-extension}. Then, for some prefix it is possible to consider its
+k-extensions up to some constant $k$. Authors presented Trie and Q-gram based algorithms. However, this would need
+another data structures and does not work for other types of queries. Therefore, it is considered as a possible extension.
