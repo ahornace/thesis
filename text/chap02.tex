@@ -594,11 +594,57 @@ opposite to the data structure which would provide efficient implementation of t
 \end{itemize}
 
 The first option is not feasible because of the added size to the already existing index. Comparison between the
-second and the third option can be found in the table ...
+second and the third option can be seen on the graph \ref{comp_phrase}.
 
-% TODO: add table
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            ybar,
+            bar width=20pt,
+            xlabel={Case},
+            ylabel={Time (seconds)},
+            ymin=0,
+            ytick=\empty,
+            xtick=data,
+            axis x line=bottom,
+            axis y line=left,
+            enlarge x limits=0.2,
+            symbolic x coords={Few documents, Many documents},
+            xticklabel style={anchor=base,yshift=-\baselineskip},
+            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
+        ]
+        \addplot[ybar, fill=white, error bars/.cd, y dir=both, y explicit] plot coordinates {
+        (Few documents, 0.003) += (Few documents, 0.01) -= (Few documents, 0.01)
+        (Many documents, 0.019) += (Many documents, 0.001) -= (Many documents, 0.001)
+        };
 
-Based on the results in ... it is clear that ...
+        \addplot[ybar, fill=gray, error bars/.cd, y dir=both, y explicit] plot coordinates {
+        (Few documents, 0.0001)
+        (Many documents, 0.195) += (Many documents, 0.003) -= (Many documents, 0.003)
+        };
+        \legend{Iterating over terms, Disk access}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Comparison between iterating over terms and disk access for getting the term at a specific position in document}
+    \label{comp_phrase}
+\end{figure}
+
+\textit{Few documents} query matched only 2 documents whereas \textit{Many documents} query matched 738 documents.
+The number of terms was 24355. For details about how the measurement was performed consult the attachment
+\ref{benchmark_attachment}.
+It can be noticed that for a small number of matched documents the second option is
+faster than the third option. However, this changes when the number of matched documents is large. Nevertheless,
+the second option has a few additional drawbacks:
+\begin{itemize}
+    \item It needs access to OpenGrok's Indexer module to be able to tokenize the files.
+    \item There might be problems if the source code is out of sync with the index. This happens when the project source code
+    is updated (e.g. \textit{git pull}) and Indexer is performing reindex.
+\end{itemize}
+
+Due to these drawbacks, the implementation where the data would be gathered by reading and tokenizing the documents was not
+implemented despite the increased performance for a small number of documents. It might be considered as a possible
+extension.
 
 \subsubsection{Scoring}
 It would be possible to use the same scoring as in \ref{prefix_scoring}. However, the scoring is not specific enough.
