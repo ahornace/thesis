@@ -308,19 +308,19 @@ The description of the test cases:
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                ybar,
+                ybar=20pt,
                 bar width=20pt,
                 xlabel={Dataset},
                 ylabel={Time (seconds)},
                 ymin=0,
-                ytick=\empty,
                 xtick=data,
                 axis x line=bottom,
                 axis y line=left,
-                enlarge x limits=0.2,
+                enlarge x limits=0.5,
                 symbolic x coords={Linux kernel, English words},
                 xticklabel style={anchor=base,yshift=-\baselineskip},
-                nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
+                nodes near coords={\pgfmathprintnumber\pgfplotspointmeta},
+                legend style={at={(0.5,-0.25)},anchor=north,legend columns=-1}
             ]
             \addplot[ybar, fill=white, error bars/.cd, y dir=both, y explicit] plot coordinates {
             (English words, 0.0001)
@@ -344,16 +344,15 @@ The description of the test cases:
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                ybar,
+                ybar=20pt,
                 bar width=20pt,
                 xlabel={Dataset},
                 ylabel={Time (seconds)},
                 ymin=0,
-                ytick=\empty,
                 xtick=data,
                 axis x line=bottom,
                 axis y line=left,
-                enlarge x limits=0.2,
+                enlarge x limits=0.5,
                 symbolic x coords={Linux kernel, English words},
                 xticklabel style={anchor=base,yshift=-\baselineskip},
                 nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
@@ -381,16 +380,15 @@ The description of the test cases:
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                ybar,
+                ybar=20pt,
                 bar width=20pt,
                 xlabel={Dataset},
                 ylabel={Time (seconds)},
                 ymin=0,
-                ytick=\empty,
                 xtick=data,
                 axis x line=bottom,
                 axis y line=left,
-                enlarge x limits=0.2,
+                enlarge x limits=0.5,
                 symbolic x coords={Linux kernel, English words},
                 xticklabel style={anchor=base,yshift=-\baselineskip},
                 nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
@@ -418,16 +416,15 @@ The description of the test cases:
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                ybar,
+                ybar=20pt,
                 bar width=20pt,
                 xlabel={Dataset},
                 ylabel={Time (seconds)},
                 ymin=0,
-                ytick=\empty,
                 xtick=data,
                 axis x line=bottom,
                 axis y line=left,
-                enlarge x limits=0.2,
+                enlarge x limits=0.5,
                 symbolic x coords={Linux kernel, English words},
                 xticklabel style={anchor=base,yshift=-\baselineskip},
                 nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
@@ -470,16 +467,16 @@ The description of the test cases:
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                ybar,
+                ybar=20pt,
                 bar width=20pt,
                 xlabel={Dataset},
                 ylabel={Memory usage (MiB)},
+                y label style={at={(axis description cs:-0.1,.5)}},
                 ymin=0,
-                ytick=\empty,
                 xtick=data,
                 axis x line=bottom,
                 axis y line=left,
-                enlarge x limits=0.2,
+                enlarge x limits=0.5,
                 symbolic x coords={Linux kernel, English words},
                 xticklabel style={anchor=base,yshift=-\baselineskip},
                 nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
@@ -600,22 +597,23 @@ second and the third option can be seen on the graph \ref{comp_phrase}.
     \centering
     \begin{tikzpicture}
         \begin{axis}[
-            ybar,
+            ybar=20pt,
             bar width=20pt,
             xlabel={Case},
             ylabel={Time (seconds)},
+            y label style={at={(axis description cs:-0.1,.5)}},
             ymin=0,
-            ytick=\empty,
             xtick=data,
             axis x line=bottom,
             axis y line=left,
-            enlarge x limits=0.2,
+            enlarge x limits=0.5,
             symbolic x coords={Few documents, Many documents},
             xticklabel style={anchor=base,yshift=-\baselineskip},
-            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
+            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta},
+            legend style={at={(0.5,-0.25)},anchor=north,legend columns=-1}
         ]
         \addplot[ybar, fill=white, error bars/.cd, y dir=both, y explicit] plot coordinates {
-        (Few documents, 0.003) += (Few documents, 0.01) -= (Few documents, 0.01)
+        (Few documents, 0.003) += (Few documents, 0.001) -= (Few documents, 0.001)
         (Many documents, 0.019) += (Many documents, 0.001) -= (Many documents, 0.001)
         };
 
@@ -982,19 +980,19 @@ The details on how the benchmark was performed and how it can be replicated can 
     \centering
     \begin{tikzpicture}
         \begin{axis}[
-            ybar,
+            ybar=20pt,
             bar width=20pt,
             xlabel={Dataset},
             ylabel={Time (seconds)},
             ymin=0,
-            ytick=\empty,
             xtick=data,
             axis x line=bottom,
             axis y line=left,
             enlarge x limits=0.2,
             symbolic x coords={English words},
             xticklabel style={anchor=base,yshift=-\baselineskip},
-            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
+            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta},
+            legend style={at={(0.5,-0.25)},anchor=north,legend columns=-1}
         ]
         \addplot[ybar, fill=white, error bars/.cd, y dir=both, y explicit] plot coordinates {
         (English words, 0.003) += (English words, 0.001) -= (English words, 0.001)
@@ -1045,16 +1043,15 @@ terms.
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                ybar,
+                ybar=10pt,
                 bar width=20pt,
                 xlabel={Dataset},
                 ylabel={Memory usage (MiB)},
                 ymin=0,
-                ytick=\empty,
                 xtick=data,
                 axis x line=bottom,
                 axis y line=left,
-                enlarge x limits=0.2,
+                enlarge x limits=0.5,
                 symbolic x coords={Linux kernel, English words},
                 xticklabel style={anchor=base,yshift=-\baselineskip},
                 nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
@@ -1172,14 +1169,29 @@ There are 2 possible approaches how to do this:
 \begin{itemize}
     \item By processing HTTP search request URLs:
         \begin{itemize}
-            \item Target endpoint: POST /suggest/add text/plain
+            \item Target endpoint:
+            \begin{itemize}
+                \item Request method: POST
+                \item Endpoint: /suggest/add
+                \item Media type: application/json
+            \end{itemize}
             \item Example data:
-            http://demo.opengrok.org/search?project=opengrok\&q=test
+\begin{code}
+["http://demo.opengrok.org/search?project=opengrok\&q=test"]
+\end{code}
         \end{itemize}
     \item By processing JSON data:
         \begin{itemize}
-            \item Target endpoint: POST /suggest/add application/json
-            \item Example data: [{"project": "opengrok", "field": "full", "token": "test", "increment": 1}]
+            \item Target endpoint:
+            \begin{itemize}
+                \item Request method: POST
+                \item Endpoint: /suggest/add
+                \item Media type: application/json
+            \end{itemize}
+            \item Example data:
+\begin{code}
+[{"project": "opengrok", "field": "full", "token": "test", "increment": 1}]
+\end{code}
         \end{itemize}
 \end{itemize}
 
