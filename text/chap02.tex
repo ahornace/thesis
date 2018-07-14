@@ -27,7 +27,7 @@ there were multiple solutions from which to choose:
     \item \textbf{Implement suggester as a separate module} – suggester could be implemented as an additional module to
     the already modular architecture described in \ref{opengrok_modules}. This new module could be a dependency of the Web
     module which would need to be modified to parse and process the data that are passed in. These data then could be
-    passed to the new module via its public API. The result would look like shown on a figure \ref{opengrok_modules_changed_img}.
+    passed to the new module via its public API. The result would look like shown in the Figure \ref{opengrok_modules_changed_img}.
     \begin{figure}[htbp]
     \centering
     \includegraphics[width=100mm]{../img/opengrok_modules_changed.pdf}
@@ -60,14 +60,14 @@ Thus, the Suggester module has to respect it as well.
 As described in \ref{opengrok-web} section, OpenGrok provides a web interface. Some parts of the web need to be modified
 for the Suggester support.
 
-\subsubsection{Configuring suggester}
+\subsubsection{Configuring Suggester}
 OpenGrok provides REST API endpoint for querying or manipulating the configuration of the Web application.
 This endpoint could be used to retrieve the suggester configuration and apply it.
 However, this endpoint is only reachable from the targeted machine because of security reasons.
 Therefore, it is needed to bypass this limitation and provide one endpoint which will return only the suggester configuration.
 This endpoint could also filter the information which is redundant to the JavaScript implementation.
 
-\subsubsection{Showing the suggestions}
+\subsubsection{Showing the Suggestions}
 \label{showing_suggestions}
 
 The Suggester needs to detect if the user pressed a key while having a specific input selected for which it is enabled. Upon
@@ -86,7 +86,7 @@ Showing suggestions is considered to be a response to control activation. This i
 should take no more than $100ms$ in order for the system to be considered unobtrusive.
 
 Simplified picture of the
-steps that need to be taken is shown in the figure \ref{suggest_sequence}.
+steps that need to be taken is shown in the Figure \ref{suggest_sequence}.
 
 \begin{figure}[htbp]
 \centering
@@ -95,7 +95,7 @@ steps that need to be taken is shown in the figure \ref{suggest_sequence}.
 \label{suggest_sequence}
 \end{figure}
 
-There are many libraries which provide "JavaScript" functionality as shown in figure \ref{suggest_sequence},
+There are many libraries which provide "JavaScript" functionality as shown in Figure \ref{suggest_sequence},
 the most notable are:
 \begin{itemize}
     \item jQuery UI Autocomplete\footnote{\url{https://jqueryui.com/autocomplete/}}
@@ -116,7 +116,7 @@ specific situation (\url{https://www.w3schools.com/js/js_json_xml.asp}). Also Op
 automatic conversion to JSON objects via the Jackson\footnote{\url{https://github.com/FasterXML/jackson}} library.
 Therefore, it is a solid choice.
 
-\subsubsection{Detecting the token for suggestions}
+\subsubsection{Detecting the Token for Suggestions}
 As referenced in \ref{opengrok_usage}, it is possible to write multiple tokens into one \textit{input} HTML tag.
 Imagine the text: "car engine". With only this information the Suggester is not able to tell if it should show
 suggestions for the "car" prefix or "engine" prefix or something totally different. Therefore, the Suggester also requires the position of the last typed
@@ -131,7 +131,7 @@ As stated in \ref{showing_suggestions}, the server part needs to have a service 
 input typed by the user. And as mentioned in \ref{opengrok-web}, the Web module is a web application compliant with
 the servlet API; therefore, a new servlet which listens to the user's input and returns suggestions needs to be added.
 
-\subsubsection{How to implement the suggester servlet}
+\subsubsection{How to Implement the Suggester Servlet}
 The servlet represents a simple REST API endpoint
 because it needs to respond to HTTP GET requests and return the response in JSON.
 There is a lot of options how this could be achieved; however, the most notable are:
@@ -153,7 +153,7 @@ There is a lot of options how this could be achieved; however, the most notable 
 Since OpenGrok Web has already REST API support and both JAX-RS API and Jersey already on the classpath,
 there is no dependency overhead. As a result, the second option was chosen.
 
-\subsubsection{Processing user input}
+\subsubsection{Processing User Input}
 \label{processing_user_input}
 As referenced in \ref{opengrok_usage}, OpenGrok web interface provides multiple HTML \textit{input} fields which
 represent different Lucene \textit{fields} which should be searched. Each of these input fields can contain some value.
@@ -205,7 +205,7 @@ additional properties that were needed by this module.
 \subsection{Prefix Query}
 \label{prefix_query}
 To start with, let's look at the simplest and at the same time probably the most used case. \textbf{Prefix query} is a special case of
-\textit{Wildcard query} \ref{wildcard_query}. % TODO: add ref?
+\textit{Wildcard query} \ref{wildcard_query}.
 It can be divided into 2 parts:
 \begin{itemize}
     \item \textbf{prefix} – text which represents the prefix of all the terms this query accepts.
@@ -256,7 +256,7 @@ This metric gives results which are expected of the suggester; therefore, it is 
 
 % TODO: find some work on this?
 
-\subsubsection{Possible implementations}
+\subsubsection{Possible Implementations}
 \label{possible_implementations}
 As mentioned before, the implementation should be fast to be able to fulfill the users' expectations. Although, at the
 same time, it should not waste memory resources. One data structure per Lucene field per project is needed. The OpenGrok
@@ -282,7 +282,7 @@ newScore = maxPossibleScoreValue - score
 \end{equation}
 An efficient construction of minimal, acyclic and deterministic WFST is explained in \citep{Mihov01directconstruction}.
 
-\textbf{Example} – WFST with terms and weights: $CAR = 10, CARS = 15, CART = 5$ can be seen on \ref{wfst_example}.
+\textbf{Example} – WFST with terms and weights: $CAR = 10, CARS = 15, CART = 5$ can be seen in \ref{wfst_example}.
 
 \begin{figure}[htbp]
 \centering
@@ -555,7 +555,7 @@ Evaluation of the query is straightforward. Lucene performs lookup for each toke
 results which provides all the documents which contain all of these tokens. Then it checks if the tokens are indeed
 next to each other and on correct positions.
 
-\subsubsection{Getting the suggestions}
+\subsubsection{Getting the Suggestions}
 \paragraph{Using shingles}
 Shingle\footnote{\url{https://en.wikipedia.org/wiki/W-shingling}} is an n-gram of words. It would be possible to create
 shingles of specific count (e.g. 2 to 5 words) during the indexing phase. Each shingle would be treated as a single term.
@@ -636,7 +636,7 @@ second and the third option can be seen on the graph \ref{comp_phrase}.
 \end{figure}
 
 \textit{Few documents} query matched only 2 documents whereas \textit{Many documents} query matched 738 documents.
-The number of terms was 24355. For details about how the measurement was performed consult the attachment
+The number of terms was 24355. For details about how the measurement was performed consult the Attachment
 \ref{benchmark_attachment}.
 It can be noted that for a small number of matched documents the second option is
 faster than the third option. However, this changes when the number of matched documents is large. Nevertheless,
@@ -814,7 +814,7 @@ occurrence. The clause in which the suggester query resides is preserved by defa
 is a stripped query which contains only queries that affect the suggestions.
 
 \paragraph{Example}
-Let's suppose that the query entered into one of the search fields has a form as in equation \ref{grouping_query_example}.
+Let's suppose that the query entered into one of the search fields has a form as in Equation \ref{grouping_query_example}.
 And that the suggestions are wanted for the prefix $t3$.
 
 \begin{equation}
@@ -845,23 +845,23 @@ The tree like structure is shown in the picture \ref{group_tree} where colors re
     \label{group_tree}
 \end{figure}
 
-\subsection{Dealing with fuzzy factor}
+\subsection{Dealing with Fuzzy Factor}
 \label{fuzzy}
 It is possible to specify a fuzzy factor for the queries which indicates how well should the query match the documents.
 
-\subsubsection{Fuzzy search}
+\subsubsection{Fuzzy Search}
 Lucene supports fuzzy searches which are based on the Levenshtein Distance
 \footnote{\url{https://en.wikipedia.org/wiki/Levenshtein_distance}} algorithm. This option can be specified by typing
 $\sim$ after the searched term and followed by the value of the fuzzy factor. However, it can only be specified for the
 single term query. The Suggester supports this option. By writing the $\sim$ with the fuzzy factor after the term the
 suggester will suggest the terms which satisfy this condition.
 
-\subsubsection{Proximity search}
+\subsubsection{Proximity Search}
 Proximity search is a phrase query with a specified fuzzy value. The fuzzy value represents the allowed edit distance of the
 tokens of the phrase query. The implementation is very similar to \ref{suggest_phrase_query}. However, the suggestions
 take the fuzzy factor into account and will contain terms that satisfy this condition.
 
-\subsection{Dealing with boost factor}
+\subsection{Dealing with Boost Factor}
 Lucene supports term boosting by writing \textbf{\^} after the searched term and followed by the value of the boost factor.
 The default boost factor is 1. It must be positive but can be less than 1. The boost factor specifies how the term is relevant
 in regard to other terms. In the query \ref{boost} the term \textit{term1} is more relevant than the term \textit{term2}.
@@ -874,7 +874,7 @@ term1\ \hat{}\ 3\ \&\&\ term2
 It might be possible for complex queries to take this information and boost those suggested terms that are in the same
 document as boosted term. However, for now, the boost factor is ignored by the suggester.
 
-\subsection{Promoting suggestions based on previous searches}
+\subsection{Promoting Suggestions Based on the Previous Searches}
 The \textbf{reciprocal rank} of a query response is the multiplicative inverse of the rank of the first correct answer.
 That means, if the first correct answer was on the third place then reciprocal rank would be $\frac{1}{3}$.
 
@@ -1168,7 +1168,7 @@ suggester. For now, they are deemed only as a possible extension.
 
 As a result, the complex query is only dismantled into simple term queries which are used to update the popularity term counts.
 
-\subsubsection{Increasing search counts for specific terms}
+\subsubsection{Increasing Search Counts for Specific Terms}
 Administrators might already have some search data stored. These data could be used to initialize or update the
 popularity term counts.
 
@@ -1205,7 +1205,7 @@ There are 2 possible approaches how to do this:
 \subsection{Public API}
 
 
-\subsection{Do not suggest the same term already in the query}
+\subsection{Do not Suggest the Same Term Already in the Query}
 It can easily happen that user selects the first suggested item for some prefix $p$. If the user were to write the same
 prefix again then the suggester should not offer the term that is already in the query.
 
@@ -1257,7 +1257,7 @@ properties of the suggester:
     to prevent the suggester to hang in the initialization. Default value: \textit{1800} (30 minutes).
 \end{itemize}
 
-\subsection{Tolerating errors}
+\subsection{Tolerating Errors}
 Although it is possible to use fuzzy factor as specified in \ref{fuzzy}, the Suggester is not error tolerant.
 This could be a good extension to the prefix queries \ref{prefix_query}.
 For instance, if the user types prefix \textit{sh} even though
