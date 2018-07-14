@@ -501,11 +501,11 @@ The description of the test cases:
 
 How to reproduce these benchmarks and description of the machine on which they were run can be found in \ref{benchmark_attachment}.
 
-Based on the provided results it can be noticed that WFST performs much better at lookups. Mainly at lookups with a short prefix.
-Also, the memory usage is inarguably better in WFST data structures. However, its build time is worse by a small margin than TST's.
+Based on the provided results, it can be noted that WFST performs much better at lookups. Mainly at lookups with a short prefix.
+Also, the memory usage is inarguably better in the WFST data structures. However, its build time is worse by a small margin than TST's.
 
 OpenGrok installation can easily contain dozens of projects, each of these projects contains 5 Lucene fields
-(full, defs, refs, path, hist) which needs to have suggester support. Depending on the size of the projects,
+(full, defs, refs, path, hist) which needs to have a suggester support. Depending on the size of the projects,
 TST implementation could take many GiBs of the memory which is not feasible.
 
 To conclude, WFST is a better option in almost every aspect except the build time which is not that important because of
@@ -513,14 +513,15 @@ the possibility of saving the data structures on the disk; and therefore, avoid 
 
 \subsection{Wildcard Query}
 \label{wildcard_query}
-The specific case of \textit{prefix*} is covered in the previous section \ref{prefix_query}. Therefore, in this section
-will be covered all the other cases of wildcard queries. The implementation of WFST cannot be used because its nature.
-There is no way how to efficiently find in WFST tokens for the query of type \textit{*sufffix}. The required result is
-the same as for prefix query: to find the terms which are accepted by the query with the top score. However, the data
+The specific case of \textit{prefix*} is covered in the previous section \ref{prefix_query}. Therefore,
+all the other cases of wildcard queries will be covered in this section.
+The implementation of WFST cannot be used because of its nature.
+There is no way to efficiently search in WFST tokens for the query of type \textit{*sufffix}. The required result is
+the same as for the prefix query: to find the terms which are accepted by the query with the top score. However, the data
 structure which could achieve this for generic wildcard query with the WFST performance is not known to the author.
-Nonetheless, the Lucene evaluation of wildcard queries could be leveraged. Automaton specific to the wildcard query is
-created and then the terms are filtered using this automaton. The implemenation is slower as WFST because all the terms
-needs to filtered once if they are accepted by the automaton then they need to be filtered for the second time based on
+Nonetheless, the Lucene evaluation of wildcard queries could be leveraged. An automaton specific to the wildcard query is
+created and then the terms are filtered using this automaton. The implemenation is slower than WFST because all the terms
+need to be filtered once if they are accepted by the automaton then they need to be filtered for the second time based on
 their score.
 
 \subsubsection{Scoring}
@@ -539,9 +540,9 @@ The tokens must be surrounded by double quotes, e.g. \textit{"token1 token2"}. I
 \subsubsection{Evaluation}
 \label{prefix_evaluation}
 As mentioned in \ref{indexer:index},
-Lucene stores data in reverse document index. However, to be able to determine if one token is immediately followed by another
+Lucene stores data in the reverse document index. However, to be able to determine if one token is immediately followed by another
 token, their position needs to be stored and accessed. Lucene can be configured to store this information as well.
-It can be easily determined if Lucene stored this data by checking if Lucene index contains a file with a \textit{.pos}
+It can easily be determined if Lucene stored this data by checking if Lucene index contains a file with a \textit{.pos}
 suffix.
 
 Evaluation of the query is straightforward. Lucene performs lookup for each token in the phrase query and intersects the
@@ -575,7 +576,7 @@ provided prefix.
 
 \paragraph{Getting the token at specific position}
 Based on the document identifier and token position it should be easy to get the needed term. However, Lucene does not
-provide any functionality how to do this efficiently because the nature of the reverse document index is a complete
+provide any functionality to do this efficiently because the nature of the reverse document index is a complete
 opposite to the data structure which would provide efficient implementation of this operation. Possible solutions are:
 \begin{itemize}
     \item Implement data structure which would efficiently lookup a term based on a position and document identifier.
@@ -583,11 +584,11 @@ opposite to the data structure which would provide efficient implementation of t
     it would slow down the indexing phase even more which might already take a few hours or even days if the projects
     being indexed are very huge.
     \item Read and tokenize the document with the specified identifier. Nonetheless, this might be a slow operation if there
-    was a lot of documents accepted by the query because of the necessary
+    were a lot of documents accepted by the query because of the necessary
     I/O\footnote{\url{https://en.wikipedia.org/wiki/Input/output}} operations.
     \item Use the already existing reverse document index. It is possible to lookup all the terms based on the prefix.
     Then filter the terms which do not occur in the documents which were found by the phrase query and those which
-    do not have correct position in the document.
+    do not have the correct position in the document.
 \end{itemize}
 
 The first option is not feasible because of the added size to the already existing index. Comparison between the
@@ -631,7 +632,7 @@ second and the third option can be seen on the graph \ref{comp_phrase}.
 \textit{Few documents} query matched only 2 documents whereas \textit{Many documents} query matched 738 documents.
 The number of terms was 24355. For details about how the measurement was performed consult the attachment
 \ref{benchmark_attachment}.
-It can be noticed that for a small number of matched documents the second option is
+It can be noted that for a small number of matched documents the second option is
 faster than the third option. However, this changes when the number of matched documents is large. Nevertheless,
 the second option has a few additional drawbacks:
 \begin{itemize}
@@ -652,12 +653,12 @@ the scoring based on the term frequency in the context of phrase query provides 
 
 \subsection{Range Queries}
 Range queries have many similarities with wildcard queries \ref{wildcard_query} in terms of implementation for the
-suggester. The main difference is in creation of the automaton. Range query contains lower and upper term. The
+suggester. The main difference is in creation of the automaton. Range query contains a lower and upper term. The
 suggestions depends on which of the terms is used as a prefix.
 
 \subsubsection{Lower Term as a Prefix}
 First of all, the automaton $A_{int}$ which represents a binary interval is created between the lower and upper term. Then,
-automaton $A_{prefix}$ which accepts all terms with prefix specified in the lower bound is needed. The result automaton is the
+the automaton $A_{prefix}$ which accepts all terms with prefix specified in the lower bound is needed. The result automaton is the
 intersection of these two, as in \ref{lt_automaton}.
 
 \begin{equation}
@@ -667,7 +668,7 @@ A_{result} = A_{int} \cap A_{prefix}
 
 \subsubsection{Upper Term as a Prefix}
 Similarly, the automaton $A_{prefix}$ which accepts all terms with prefix specified in the upper bound is created. Then,
-another binary interval automaton $A_{int}$ is needed; however, this one has no lower bound specified and for upper bound the
+another binary interval automaton $A_{int}$ is needed; however, this one has no lower bound specified and for the upper bound the
 lower term of the query is used. The result automaton needs to be created as a difference between the prefix automaton
 and the binary interval automaton, as in \ref{ut_automaton}.
 
@@ -759,7 +760,7 @@ Based on the unary operator the prefix has assigned, the suggester needs to:
     Nevertheless, suggesting terms that cannot appear in the result document set does not make much sense. Thus, it is performed
     as in \textit{+} unary operator.
     \item \textbf{-} – the suggested term must not appear in the result set and as mentioned, it cannot be used in a
-    query with a single term; therefore, it's purpose is to reduce the result set. Thus, the same solution as for \textit{+}
+    query with a single term; therefore, its purpose is to reduce the result set. Thus, the same solution as for \textit{+}
     needs to be performed.
 \end{itemize}
 
@@ -777,7 +778,7 @@ the document frequency has to be taken from the result set of the bare query and
 \subsection{Grouping Queries}
 \label{grouping_queries}
 With boolean operators (\ref{boolean_ops}) it is possible to create complex queries. However, it is not possible to
-combine queries in an easy manner. That's where grouping operators \textbf{(} and \textbf{)} has their use. For instance,
+combine queries in an easy manner. That's where grouping operators \textbf{(} and \textbf{)} have their use. For instance,
 it is possible to combine results of two queries as can be seen in \ref{grouping_query}.
 
 \begin{equation}
@@ -785,7 +786,7 @@ it is possible to combine results of two queries as can be seen in \ref{grouping
 (query1)\ \vert\vert\ (query2)
 \end{equation}
 
-It is also possible to use grouping operators to remove the confusion caused by the omition of precedence for the binary
+It is also possible to use grouping operators to remove the confusion caused by the omission of precedence for the binary
 boolean operators. Therefore, it is possible to write queries as shown in \ref{grouping_query2}.
 
 \begin{equation}
@@ -798,12 +799,12 @@ Grouping operators can be nested, thus; it is easy to create truly complex queri
 \subsubsection{Suggester}
 
 At first, the query is parsed into multiple simple queries which are then combined together to create one complex
-\textit{BooleanQuery}. It is possible to imagine the top-down decomposition into tree-like structure. % TODO: add images
+\textit{BooleanQuery}. It is possible to imagine the top-down decomposition into a tree-like structure.
 One leaf is the suggester query. This clause is marked and replaced by \textit{MatchAllDocsQuery} which matches every
 document. % TODO: add explanation
 It is possible to start at this leaf and go towards the root. On each node on the path towards the root there may be
-multiple clauses. The algorithm looks at all clauses and removes the clauses which have specified \textit{SHOULD}
-occurrence. The clause in which the suggester query resides is preserved by default. When the algorithm ends the result
+multiple clauses. The algorithm looks at all clauses and removes the clauses which have a specified \textit{SHOULD}
+occurrence. The clause in which the suggester query resides is preserved by default. When the algorithm ends, the result
 is a stripped query which contains only queries that affect the suggestions.
 
 \paragraph{Example}
@@ -845,19 +846,19 @@ It is possible to specify a fuzzy factor for the queries which indicates how wel
 \subsubsection{Fuzzy search}
 Lucene supports fuzzy searches which are based on the Levenshtein Distance
 \footnote{\url{https://en.wikipedia.org/wiki/Levenshtein_distance}} algorithm. This option can be specified by typing
-$\sim$ after the searched term and followed by the value of the fuzzy factor. However, it can be only specified for the
-single term query. Suggester supports this option. By writing the $\sim$ with the fuzzy factor after the term the
+$\sim$ after the searched term and followed by the value of the fuzzy factor. However, it can only be specified for the
+single term query. The Suggester supports this option. By writing the $\sim$ with the fuzzy factor after the term the
 suggester will suggest the terms which satisfy this condition.
 
 \subsubsection{Proximity search}
-Proximity search is a phrase query with specified fuzzy value. The fuzzy value represents the allowed edit distance of the
+Proximity search is a phrase query with a specified fuzzy value. The fuzzy value represents the allowed edit distance of the
 tokens of the phrase query. The implementation is very similar to \ref{suggest_phrase_query}. However, the suggestions
 take the fuzzy factor into account and will contain terms that satisfy this condition.
 
 \subsection{Dealing with boost factor}
 Lucene supports term boosting by writing \textbf{\^} after the searched term and followed by the value of the boost factor.
-Default boost factor is 1. It must be positive but can be less than 1. The boost factor specifies how is the term relevant
-in regard to other terms. In a query \ref{boost} the term \textit{term1} is more relevant then the term \textit{term2}.
+The default boost factor is 1. It must be positive but can be less than 1. The boost factor specifies how the term is relevant
+in regard to other terms. In the query \ref{boost} the term \textit{term1} is more relevant than the term \textit{term2}.
 
 \begin{equation}
 \label{boost}
@@ -879,7 +880,7 @@ average of reciprocal ranks for a set of queries $Q$. Mathematically, it is defi
 MRR = \frac{1}{\vert Q \vert} \sum_{i=1}^{\vert Q \vert} reciprocalRank_i
 \end{equation}
 
-In \citep{Bar-yossef11context-sensitivequery} are presented multiple approaches to the suggestions based on previous
+In \citep{Bar-yossef11context-sensitivequery} multiple approaches are presented to the suggestions based on previous
 searches:
 \begin{itemize}
     \item \textbf{Most popular completion} – wisdom of the crowds. For some prefix the suggester suggests the terms
@@ -913,8 +914,8 @@ $term1$ was searched for $i$ times then the score could be changed by a number $
 It is also possible to take into account how recent the searches were and if there is a multiple recent searches for some
 term then increase its score by a higher value. For instance, this could arise in a situation if some error was found in
 method $m()$ of some well known library, then multiple users will probably be searching for it in a small time interval.
-However, the suggester will focus only on basic implementation that considers only the term search count mainly because
-its simplicity. Time factor is a possible extension to an existing solution.
+However, the suggester will focus only on the basic implementation that considers only the term search count mainly because
+its simplicity. The time factor is a possible extension to an existing solution.
 
 It is needed to have a key-value store for storing the number of searches for the terms. This store should be persistent
 so the data would not be lost after the restart of the application. Also this store should allow parallel access for
@@ -942,7 +943,7 @@ efficiency. There are multiple options how to achieve this functionality:
     provide the sufficient speed performance.
 
     \item \textbf{Chronicle Map}\footnote{\url{https://chronicle.software/products/map/}} – provides a Java Map like
-    interface and stores data off-heap. Data can be persistent by the use of memory mapped
+    interface and stores data off-heap. The data can be persistent by the use of memory mapped
     files\footnote{\url{https://en.wikipedia.org/wiki/Memory-mapped\_file}}. On Linux machines it takes an advantage
     of lazy page allocation so the memory and disk usage can be small if it contains only a few entries.
     Disadvantages are that some hints are needed for the data structure to perform efficiently:
@@ -963,7 +964,7 @@ efficiency. There are multiple options how to achieve this functionality:
         \item Hints needed:
             \begin{itemize}
                 \item Number of entries – can be overestimated.
-                \item Maximum key size – must be the same as maximum term size in Lucene which 32767 bytes.
+                \item Maximum key size – must be the same as the maximum term size in Lucene which is 32767 bytes.
             \end{itemize}
         \item Some Java options needed for Java 9 and later.
     \end{itemize}
@@ -972,7 +973,7 @@ efficiency. There are multiple options how to achieve this functionality:
 Benchmarks comparing MapDB, Chronicle Map, LMDB for Java and some other solutions performed by the LMDB for Java creators
 can be found in \citep{lmdb}.
 
-Benchmark for similar usage as in our case comparing MapDB, Chronicle Map and LMDB for Java can be seen on the graph \ref{comp_maps}.
+A benchmark for similar usage as in our case comparing MapDB, Chronicle Map and LMDB for Java can be seen on the graph \ref{comp_maps}.
 The performed test consists of getting the integer value for every 20th term of \textit{English words} dataset.
 The details on how the benchmark was performed and how it can be replicated can be found in \ref{benchmark_attachment}.
 
@@ -1015,21 +1016,21 @@ The details on how the benchmark was performed and how it can be replicated can 
 
 Although MapDB provides the nicest high-level interface and there is no need to specify its size in advance,
 its lookup speeds were lacking behind the other options.
-In the end, Chronicle Map was chosen to serve as a key-value store because it proved to have a very solid performance.
+In the end, Chronicle Map was chosen to serve as a key-value store because it had proven to have a very solid performance.
 
 As mentioned in \ref{possible_implementations}, the best option for simple prefix queries is a WFST data structure.
-Mainly because its low memory footprint and fast lookups.
-Every term has assigned a score based on its occurrence frequency as mentioned in \ref{prefix_scoring}. This score
+Mainly because of its low memory footprint and fast lookups.
+Every term has a score assigned based on its occurrence frequency as mentioned in \ref{prefix_scoring}. This score
 can be computed at the start and does not change very often – only after performing reindex.
 
-The best and easiest solution would be to change term score in WFST directly. However, this is not possible because
-Lucene's implementation of WFST is read-only. Let's examine possible modifications to WFST to allow changing score of the
+The best and easiest solution would be to change the term score in WFST directly. However, this is not possible because
+Lucene's implementation of WFST is read-only. Let's examine possible modifications to WFST to allow changing the score of the
 terms.
 \begin{itemize}
     \item WFST is stored in a byte array (\textit{byte[]}) or multiple byte arrays to allow low memory footprint. The
-    arc values are very often small because they represent only difference to the smallest term in the subtree. Lucene
+    arc values are very often small because they only represent difference to the smallest term in the subtree. Lucene
     implementation leverages this and for small values less bytes need to be written. For instance, take an \textit{int}
-    data type, it needs 4 bytes to be stored properly. However, in WFST implementation it takes between 1 and 5 bytes.
+    data type – it needs 4 bytes to be stored properly. However, in the WFST implementation it takes between 1 and 5 bytes.
     The smaller values need less space. Per byte, the highest order bit indicates whether the next byte is part of this
     number and the remaining 7 bits contain the actual value. Even though this allows for a very efficient memory requirements,
     the modifications are a problem. If we were to increase some value, then it might take more bytes than it actually has available.
@@ -1037,7 +1038,7 @@ terms.
     One solution might be that there would be another array where the content would be copied and then the references
     would be swapped. However, this does not allow parallel modifications.
     Another solution is to discard the variable length of the values and allocate a constant size for them,
-    e.g. 4 bytes for \textit{int}. This however increases memory footprint as can be seen on \ref{enc_comp}.
+    e.g. 4 bytes for \textit{int}. This however increases the memory footprint as can be seen on \ref{enc_comp}.
 
     \begin{figure}[htbp]
         \centering
@@ -1080,7 +1081,7 @@ terms.
     \end{figure}
 
     The memory usage increased by approximately $22\%$ for \textit{English words} dataset. However, it can be
-    almost doubled as can be seen on \textit{Linux kernel} dataset where approximately $92\%$ size increase can be noticed.
+    almost doubled as can be seen on \textit{Linux kernel} dataset where approximately $92\%$ size increase can be noted.
     The graph \ref{enc_comp} also shows the case when the encoding would use \textit{long} datatype. Although Lucene's \textit{Lookup}
     interface specificies \textit{long} datatype, WFST implementation supports only \textit{int} so far.
 
