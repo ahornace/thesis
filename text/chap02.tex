@@ -1249,7 +1249,10 @@ properties of the suggester:
     \item \textbf{Maximum projects} – specifies how many maximum projects can be selected at the same time and the suggestions will work.
     Default value: \textit{unlimited}.
     \item \textbf{Allowed fields} – specifies the fields for which the suggester should be enabled. For instance, it might be
-    desired that the suggestions should only work for \textit{full} field. Default value: \textit{all}.
+    desired that the suggestions should only work for \textit{full} field. OpenGrok uses some fields to store
+    private data and it is not desired to create suggester data structures for those fields. Therefore, only the main
+    search fields are specified by default.
+    Default value: \textit{full, defs, refs, path, hist, type}.
     \item \textbf{Allow complex queries} – specifies if the suggester should support complex queries. If set to
     \textit{false} then only simple prefix lookups by using the WFST data structure will be performed. Default value:
     \textit{true}.
