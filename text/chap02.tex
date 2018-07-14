@@ -1202,8 +1202,20 @@ There are 2 possible approaches how to do this:
         \end{itemize}
 \end{itemize}
 
-\subsection{Public API}
+\subsubsection{User Specific Suggestions}
+The Suggester might be further extended to provide suggestions based on the user specific previous searches. Google does
+something similar as is highlighted by the number $1$ in the Figure \ref{google_previous}. Since authorization is optional
+in OpenGrok, it would be best to store the previous search data in browser
+cookies\footnote{\url{https://en.wikipedia.org/wiki/HTTP_cookie}}. This data could then be processed and
+prepended to the returned suggestions from the Suggester.
+However, the implementation of this feature is considered as a possible extension.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=100mm]{../img/google_previous.png}
+    \caption{Suggestions based on the user specific previous searches by Google}
+    \label{google_previous}
+\end{figure}
 
 \subsection{Do not Suggest the Same Term Already in the Query}
 It can easily happen that user selects the first suggested item for some prefix $p$. If the user were to write the same
