@@ -1217,6 +1217,17 @@ However, the implementation of this feature is considered as a possible extensio
     \label{google_previous}
 \end{figure}
 
+\subsection{Promoting Suggestions Based on the Code Properties}
+OpenGrok is a search engine for codebases which could be leveraged by the suggester. Following are things that could
+be taken into account:
+\begin{itemize}
+    \item \textbf{Indentation} – the more the line is indented, the less significant it probably is.
+    \item \textbf{Type} – the term might have different importance based on its type in the code. For example, a
+    class name, method name, global variable name, or local variable name could have different importance factors.
+\end{itemize}
+
+However, this might be difficult to implement and is presented only as a possible extension for the future.
+
 \subsection{Do not Suggest the Same Term Already in the Query}
 It can easily happen that user selects the first suggested item for some prefix $p$. If the user were to write the same
 prefix again then the suggester should not offer the term that is already in the query.
