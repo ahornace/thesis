@@ -1169,6 +1169,7 @@ suggester. For now, they are deemed only as a possible extension.
 As a result, the complex query is only dismantled into simple term queries which are used to update the popularity term counts.
 
 \subsubsection{Increasing Search Counts for Specific Terms}
+\label{increasing_search_counts}
 Administrators might already have some search data stored. These data could be used to initialize or update the
 popularity term counts.
 
@@ -1179,7 +1180,7 @@ There are 2 possible approaches how to do this:
             \item Target endpoint:
             \begin{itemize}
                 \item Request method: POST
-                \item Endpoint: /suggest/add
+                \item Endpoint: /suggest/init/queries
                 \item Media type: application/json
             \end{itemize}
             \item Example data:
@@ -1192,7 +1193,7 @@ There are 2 possible approaches how to do this:
             \item Target endpoint:
             \begin{itemize}
                 \item Request method: POST
-                \item Endpoint: /suggest/add
+                \item Endpoint: /suggest/init/raw
                 \item Media type: application/json
             \end{itemize}
             \item Example data:
@@ -1295,3 +1296,6 @@ Authors defined prefix $p$ as a \textit{k-prefix} of string $s$ if there is some
 distance $k$ of $s$. $s$ is called a \textit{k-extension}. Then, for some prefix it is possible to consider its
 k-extensions up to some constant $k$. Authors presented Trie and Q-gram based algorithms. However, this would need
 another data structures and does not work for other types of queries. Therefore, it is considered as a possible extension.
+
+\subsection{Retrieving Popularity Data}
+\label{retrieving_popularity_data}
