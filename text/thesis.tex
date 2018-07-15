@@ -86,13 +86,19 @@
 % An optional dedication: you can thank whomever you wish (your supervisor,
 % consultant, a person who lent the software, etc.)
 \def\Dedication{%
-I would like to thank my supervisor, Mgr. Vladimír Kotal, for the possibility to work on the OpenGrok project and for
+I would like to thank my supervisor, Mgr. Vladimír Kotal, for the opportunity to work on the OpenGrok project and for
 his guidance and useful advice. I also thank my family for their support during my studies.
 }
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \def\Abstract{%
-Abstract.
+The suggester functionality is an important feature of modern search engines. The aim of the thesis is to implement
+it for the OpenGrok project. OpenGrok search engine is based on Apache Lucene and supports its query syntax.
+Presented suggester implementation supports this query syntax and provides suggestions not only for the prefixes but
+also for wildcards, regular expressions, or phrases. The implementation also takes into account the possibility of
+grouping queries. That means, if one query is already specified and user is typing another query, then the first
+query will restrict the suggestions for the second query. The promotion of specific suggestions is based on the
+underlying Lucene index data structure and most popular completion.
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces
