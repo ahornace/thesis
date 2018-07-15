@@ -61,7 +61,66 @@ The most affected resources are:
     Also, data for most popular completion are stored in the Chronicle Map implementation which provide additional
     memory consumption.
     \item \textbf{Disk} – the WFST data structure are stored on the disk to provide a quick startup.
-    Data for most popular completion need to be stored as well.
+    Data for most popular completion need to be stored as well. Comparison of disk consumptions for different datasets
+    can be seen on the graph \ref{comp_suggester_size}. The data show how much percentage of the index size the suggester
+    data take. The data was measured on the machine with operating system
+    macOS\footnote{\url{https://en.wikipedia.org/wiki/MacOS}} and
+    APFS\footnote{\url{https://en.wikipedia.org/wiki/Apple_File_System}} file system so the Chronicle Map did not take the
+    advantage of lazy page allocation.
+
+    \begin{figure}[htbp]
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=145mm,
+                ybar,
+                xlabel={Dataset},
+                ylabel={Size with comparison to the index size (\%)},
+                ymin=0,
+                ymax=100,
+                xtick={graal, jenkins, jQuery, kafka, kotlin, Linux kernel, lucene-solr, OpenGrok, openssl, swift, average},
+                axis x line=bottom,
+                axis y line=left,
+                x label style={at={(axis description cs:0.5,-0.1)}},
+                enlarge x limits=0.15,
+                symbolic x coords={graal, Linux kernel, lucene-solr, OpenGrok, jenkins, jQuery, kafka, kotlin, openssl, swift, average},
+                x tick label style={rotate=45,anchor=east},
+                nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
+            ]
+            \addplot[ybar, fill=white] plot coordinates {
+            (graal, 35.38)
+            (jenkins, 36.25)
+            (jQuery, 81.25)
+            (kafka, 41.18)
+            (kotlin, 25.74)
+            (Linux kernel, 46.64)
+            (lucene-solr, 46.27)
+            (OpenGrok, 40.32)
+            (openssl, 65.71)
+            (swift, 34.33)
+            };
+            \addplot[ybar, fill=black] plot coordinates {
+            (average, 45.30)
+            };
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Comparison of suggester data size with index size}
+        \label{comp_suggester_size}
+    \end{figure}
+
+    Projects mentioned on the graph \ref{comp_suggester_size} were:
+    \begin{itemize}
+        \item \textbf{graal} – \url{https://github.com/oracle/graal}
+        \item \textbf{jenkins} – \url{https://github.com/jenkinsci/jenkins}
+        \item \textbf{jQuery} – \url{https://github.com/jquery/jquery}
+        \item \textbf{kafka} – \url{https://github.com/apache/kafka}
+        \item \textbf{kotlin} – \url{https://github.com/JetBrains/kotlin}
+        \item \textbf{Linux kernel} – \url{https://github.com/torvalds/linux}
+        \item \textbf{lucene-solr} – \url{https://github.com/apache/lucene-solr}
+        \item \textbf{OpenGrok} – \url{https://github.com/oracle/opengrok}
+        \item \textbf{openssl} – \url{https://github.com/openssl/openssl}
+        \item \textbf{swift} – \url{https://github.com/apple/swift}
+    \end{itemize}
 \end{itemize}
 
 \section{Impact on the Demo Instance}
@@ -91,7 +150,7 @@ applications in a Tomcat instance. From those the most significant are:
     Provides monitoring of CPU, memory usage, HTTP requests count and many others. Also allows exporting data in
     various formats, e.g. PDF, JSON. The main disadvantage is that it is embedded into the application and may influence
     the gathered data. However, this overhead is small, e.g. the memory overhead did not exceed 3MiB.
-    \item \textbf{PSI Probe}\footnote{\url{https://github.com/javamelody/javamelody}} – deployed as a separate
+    \item \textbf{PSI Probe}\footnote{\url{https://psi-probe.github.io/psi-probe/}} – deployed as a separate
     application into the Apache Tomcat instance. Uses JMX exported by Tomcat. The disadvantages are:
     \begin{itemize}
         \item Cannot export data in common exchange formats. However, raw XML data are created under the Tomcat
@@ -102,3 +161,45 @@ applications in a Tomcat instance. From those the most significant are:
 
 \textbf{Chosen solution} JavaMelody was chosen because of its simplicity and because it provided all the needed
 features despite the small overhead.
+
+\subsection{Disk Usage}
+The demo instance is running on a machine with Linux operating system. Therefore, Chronicle Map takes an advantage of
+lazy page allocation and the sizes are significantly smaller in comparison with the sizes on the graph \ref{comp_suggester_size}.
+The actual disk usage can be seen on the graph \ref{comp_suggester_size_demo}.
+It should be noted that the Chronicle Maps were almost empty.
+Similar sizes might be expected as on \ref{comp_suggester_size} if the Chronicle Maps start to fill up.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=100mm,
+            ybar,
+            xlabel={Dataset},
+            ylabel={Size with comparison to the index size (\%)},
+            ymin=0,
+            ymax=100,
+            xtick={elasticsearch, incubator-netbeans, intellij-community, lucene-solr, opengrok, average},
+            axis x line=bottom,
+            axis y line=left,
+            x label style={at={(axis description cs:0.5,-0.2)}},
+            enlarge x limits=0.15,
+            symbolic x coords={elasticsearch, incubator-netbeans, intellij-community, lucene-solr, opengrok, average},
+            x tick label style={rotate=45,anchor=east},
+            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta}
+        ]
+        \addplot[ybar, fill=white] plot coordinates {
+        (elasticsearch, 11.11)
+        (incubator-netbeans, 5.00)
+        (intellij-community, 6.99)
+        (lucene-solr, 14.70)
+        (opengrok, 19.05)
+        };
+        \addplot[ybar, fill=black] plot coordinates {
+        (average, 11.37)
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Comparison of suggester data size with index size on demo instance}
+    \label{comp_suggester_size_demo}
+\end{figure}
