@@ -50,8 +50,8 @@ exposes the suggester functionality is the \textit{Suggester} class. Its public 
 \label{public_api}
 The public API consists of the following methods:
 \begin{itemize}
-    \item \textit{init(Collection\textless Path\textgreater)} – initializes all the data structures based on the paths
-    to the indexes.
+    \item \textit{init(Collection\textless NamedIndexDir\textgreater)} – initializes all the data structures based on the paths
+    to the indexes and their names (project names).
     \item \textit{remove(Iterable\textless String\textgreater)} – removes all the data structures stored for the
     specified names.
     \item \textit{search(List\textless NamedIndexReader\textgreater, SuggesterQuery, Query)} –

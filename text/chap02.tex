@@ -1243,6 +1243,16 @@ value.
 As specified in \ref{opengrok_overview}, the OpenGrok allows the administrators to specify to which projects have the users
 access. Therefore, suggester must not allow unauthorized users to see suggestions because it would be considered as a security issue.
 
+\subsection{Restricting Load}
+The Suggester may consume significant amount of resources for some specific queries (mainly Phrase Queries).
+Therefore, the Suggester should
+respect the paradigm "best effort"\footnote{https://en.wikipedia.org/wiki/Best-effort\_delivery}. The suggestions are not
+the integral part of the search engine. Thus, if their resource requirements are too high then they should not prevent
+users from using the basic OpenGrok functionality. As a result, the Suggester will try to find suggestions for some
+query up to some pre-defined time threshold and if it is not able to complete the request in this time limit then
+it will return only partial result. This also solves the problem of an attacker who would send many requests containing
+the worst queries for some dataset.
+
 \subsection{Configuration}
 \label{suggester_config}
 As mentioned in \ref{opengrok_configuration}, OpenGrok can be configured using a configuration file.
@@ -1283,6 +1293,9 @@ properties of the suggester:
     \item \textbf{Build Termination Time in Seconds} – specifies after how much time the suggester should kill the
     threads that build the suggester data structures. Slow machines should specify more time. This option is mainly here
     to prevent the suggester to hang in the initialization. Default value: \textit{1800} (30 minutes).
+    \item \textbf{Time threshold} – specifies time threshold for suggestions in milliseconds.
+    If the computation exceeds this time, it will be stopped and partial results will be returned.
+    Default value: \textit{2000} (2 seconds).
 \end{itemize}
 
 \subsection{Tolerating Errors}
