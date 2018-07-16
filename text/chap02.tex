@@ -1223,18 +1223,19 @@ There are 2 possible approaches how to do this:
 
 \subsubsection{User Specific Suggestions}
 The Suggester might be further extended to provide suggestions based on the user specific previous searches. Google does
-something similar as is highlighted by the number $1$ in the Figure \ref{google_previous}. Since authorization is optional
-in OpenGrok, it would be best to store the previous search data in browser
-cookies\footnote{\url{https://en.wikipedia.org/wiki/HTTP_cookie}}. This data could then be processed and
-prepended to the returned suggestions from the Suggester.
-However, the implementation of this feature is considered as a possible extension.
-
+something similar as is highlighted by the number $1$ in the Figure \ref{google_previous}.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=100mm]{../img/google_previous.png}
     \caption{Suggestions based on the user specific previous searches by Google}
     \label{google_previous}
 \end{figure}
+Since authorization is optional
+in OpenGrok, it would be best to store the previous search data in browser
+cookies\footnote{\url{https://en.wikipedia.org/wiki/HTTP_cookie}}. This data could then be processed and
+prepended to the returned suggestions from the Suggester. Furthermore, it might be possible to combine personalized
+suggestions with the relative query popularity as described in \citep{Cai_time-sensitivepersonalized}.
+However, the implementation of this feature is considered as a possible extension.
 
 \subsection{Promoting Suggestions Based on the Code Properties}
 OpenGrok is a search engine for codebases which could be leveraged by the suggester. Following are things that could
