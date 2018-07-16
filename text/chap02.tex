@@ -267,15 +267,29 @@ tens of thousands of terms or even more (in some cases millions).
 structure suitable for our purposes. However, it does not support efficient lookup based on scores. It would
 be needed to traverse the whole subtree for a specific prefix to find the terms with the best scores.
 
-\paragraph{Ternary search tree\protect\footnote{\url{https://en.wikipedia.org/wiki/Ternary\_search\_tree}}} – is a
+\paragraph{TST\protect\footnote{\url{https://en.wikipedia.org/wiki/Ternary\_search\_tree}}} – (ternary search tree) is a
 special case of Trie. Same as Trie, it does not have any support for more efficient lookup based on scores.
 
-\paragraph{FST\protect\footnote{\url{https://en.wikipedia.org/wiki/Finite-state\_transducer}}} \label{FST} – is a finite state
+\paragraph{FST\protect\footnote{\url{https://en.wikipedia.org/wiki/Finite-state\_transducer}}} \label{FST} –
+(finite state transducer) is a finite state
 automaton which can produce output. Special case of FST is a weighted FST (WFST) where each transition can have an
-associated weight. It is possible to construct a WFST which will provide a very efficient algorithm for finding the
+associated weight. More formally, a weighted finite-state transducer $T$ over a semiring $\mathbb{K}$ is
+an 8-tuple $T = (\Sigma,\Delta,Q,I,F,E,\lambda,\rho)$ where:
+\begin{itemize}
+    \item $\Sigma$ is the finite input alphabet of the transducer;
+    \item $\Delta$ is the finite output alphabet;
+    \item $Q$ is a finite set of states;
+    \item $I \subseteq Q$ the set of initial states;
+    \item $F \subseteq Q$ the set of final states;
+    \item $E \subseteq Q\times(\Sigma\cup\{\varepsilon\})\times(\Delta\cup \{\varepsilon\}) \times \mathbb{K} \times Q$ a finite set of transitions;
+    \item $\lambda : I \mapsto \mathbb{K}$ the initial weight function;
+    \item $\rho : F \mapsto \mathbb{K}$ the final weight function mapping $F$ to $\mathbb{K}$.
+\end{itemize}
+An overview of WFST algorithms can be found in \citep{Mohri2004WeightedFT}.
+It is possible to construct a WFST which will provide a very efficient algorithm for finding the
 $n$ terms with the best scores. This algorithm is explained in \citep{Mohri02anefficient}. However, this algorithm returns
 terms with the lowest scores and based on the chosen scoring it is needed for it to return the terms with the highest
-scores. This can be achieved by a neat trick; it is possible to invert the score by the formula \ref{invert_score}.
+scores. This can be achieved by a neat trick; it is possible to invert the score by the Equation \ref{invert_score}.
 \begin{equation}
 \label{invert_score}
 newScore = maxPossibleScoreValue - score
