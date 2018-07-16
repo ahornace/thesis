@@ -953,6 +953,7 @@ efficiency. There are multiple options how to achieve this functionality:
     interface and stores data off-heap. The data can be persistent by the use of memory mapped
     files\footnote{\url{https://en.wikipedia.org/wiki/Memory-mapped\_file}}. On Linux machines it takes an advantage
     of lazy page allocation so the memory and disk usage can be small if it contains only a few entries.
+    It is distributed under GNU GPLv3 license \citep{gnu}.
     Disadvantages are that some hints are needed for the data structure to perform efficiently:
     \begin{itemize}
         \item Number of entries – can be overestimated. However, the authors specify that it would be best to specify
@@ -963,6 +964,7 @@ efficiency. There are multiple options how to achieve this functionality:
     Another disadvantage is that some Java options are needed for it to work with Java 9 and later releases.
 
     \item \textbf{MapDB}\footnote{\url{http://www.mapdb.org}} – similar to Chronicle Map but no hints are necessary.
+    It is distributed under Apache license \citep{apache}.
 
     \item \textbf{LMDB for Java}\footnote{\url{https://github.com/lmdbjava/lmdbjava}} – Java mapping for
     LMDB\footnote{\url{https://symas.com/lmdb/}}. Major drawbacks:
@@ -975,6 +977,7 @@ efficiency. There are multiple options how to achieve this functionality:
             \end{itemize}
         \item Some Java options needed for Java 9 and later.
     \end{itemize}
+    It is distributed under Apache license \citep{apache}.
 \end{itemize}
 
 Benchmarks comparing MapDB, Chronicle Map, LMDB for Java and some other solutions performed by the LMDB for Java creators
