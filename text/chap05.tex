@@ -245,7 +245,10 @@ can be noted; however, later requests were taking only a few miliseconds on aver
     \begin{tikzpicture}
         \begin{axis}[
             xlabel=Time,
-            ylabel=Response time (ms)
+            ylabel=Response time (ms),
+            ymin=0,
+            axis x line=bottom,
+            axis y line=left
         ]
         \addplot[no marks, smooth] coordinates {
             (0.0,235)
@@ -2205,7 +2208,11 @@ The graph can be seen in Figure \ref{load_test_multiple_projects}.
     \begin{tikzpicture}
         \begin{axis}[
             xlabel=Time,
-            ylabel=Response time (ms)
+            ylabel=Response time (ms),
+            axis x line=bottom,
+            axis y line=left,
+            ymin=0,
+            y label style={at={(axis description cs:-0.1,0.5)}},
         ]
         \addplot[no marks, smooth] coordinates {
             (0.0,2220)
