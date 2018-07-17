@@ -97,6 +97,31 @@ In the figure \ref{suggestions_minisearch} the numbers represent:
     \item Suggestions window as described before.
 \end{enumerate}
 
+\subsubsection{Timeout}
+As specified in \ref{restricting_load}, the system may be under load and it might return only partial result or no
+suggestions at all. In the case of partial result, the message \textit{"Partial result due to timeout"} will be
+displayed at the bottom of the suggestions window similarly as in Figure \ref{partial_result}.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=100mm]{../img/partial_result.png}
+    \caption{Message if only partial result was returned}
+    \label{partial_result}
+\end{figure}
+If no suggestions were returned, then
+it may signify two cases:
+\begin{itemize}
+    \item The query will yield no results. In that case a message \textit{"No matches found"} will be displayed as in
+    Figure \ref{no_matches}.
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=100mm]{../img/no_matches.png}
+        \caption{Message if no matches were found for the specified query}
+        \label{no_matches}
+    \end{figure}
+
+    \item The system timed out and did not find any possible suggestions. In that case no suggestions window will be displayed.
+\end{itemize}
+
 \section{Administrator Guide}
 \label{administrator_guide}
 
