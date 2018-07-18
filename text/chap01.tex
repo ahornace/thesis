@@ -126,8 +126,7 @@ Opengrok provides REST API support. This is a relatively new feature. Before tha
 \textit{Messages} – custom serialization of Java objects passed to the Web application via a custom port.
 So far, most of the REST API calls can be only made from the machine on which the OpenGrok runs.
 This is mainly because these REST API calls are meant as a means of communication between the Indexer and Web application
-or for administrators maintaining the OpenGrok instance. More information can be found at
-\url{https://github.com/oracle/opengrok/wiki/Web-services}.
+or for administrators maintaining the OpenGrok instance. More information can be found in \citep{web_services_wiki}.
 
 \section{Usage}
 \label{opengrok_usage}
@@ -148,7 +147,8 @@ The numbers in the Figure \ref{opengrok_main} signify:
     \item Search fields.
        \begin{itemize}
         \item \textbf{Full search} – specifies the text the document should contain. Represents \textit{full} field in
-        underlying Lucene implementation.
+        underlying Lucene implementation. It is possible to specify the search criteria for other fields by using the
+        Lucene's \textit{\{field\}:\{value\}} format.
         \item \textbf{Definition} – specifies the definition of a symbol the document should contain.
         Represents \textit{defs} field in the underlying Lucene implementation.
         \item \textbf{Symbol} – specifies the symbol the document should contain.

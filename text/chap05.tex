@@ -229,14 +229,14 @@ negative way. The properties of the used machine can be found in Attachment \ref
 \label{load_test_prefix}
 This test case consists of $2,000$ requests sent during a $10$ second period. The requests were linearly distributed.
 To simulate a real-world use, the following queries were sent at random:
-\begin{itemize}
-    \item Prefix \textit{long} in \textit{full} field.
-    \item Prefix \textit{m} in \textit{path} field.
-    \item Prefix \textit{D} in \textit{refs} field.
+\begin{enumerate}
+    \item Prefix \texttt{long} in \textit{full} field.
+    \item Prefix \texttt{m} in \textit{path} field.
+    \item Prefix \texttt{D} in \textit{refs} field.
     \item Empty prefix in \textit{defs} field.
     \item Empty prefix in \textit{full} field.
-    \item Prefix \textit{c} in \textit{full} field.
-\end{itemize}
+    \item Prefix \texttt{c} in \textit{full} field.
+\end{enumerate}
 The requests specified all 22 projects. The results can be seen on the graph \ref{load_test_prefix_fig}. The slow startup
 can be noted; however, later requests were taking only a few miliseconds on average.
 
@@ -246,6 +246,7 @@ can be noted; however, later requests were taking only a few miliseconds on aver
         \begin{axis}[
             xlabel=Time,
             ylabel=Response time (ms),
+            width=120mm,
             ymin=0,
             axis x line=bottom,
             axis y line=left
@@ -2196,7 +2197,7 @@ can be noted; however, later requests were taking only a few miliseconds on aver
 
 \subsection{Worst case across all projects}
 \label{load_worst}
-Query $". \vert"$ was used where $\vert$ represents a caret positon. Term $.$ occurs in $205,943$ files. All these files
+Query \texttt{". $\vert$"} was used where $\vert$ represents a caret positon. Term $.$ occurs in $205,943$ files. All these files
 need to be checked for the $.$ position and then all terms are traversed to check if they occur at the positions next to the
 $.$ term. Time threshold was set to the default value: $2$ seconds. The test case sends this request $1,000$ times
 linearly distributed during a $10$ second time period. It can be noted that the system was not able to satisfy the requests;
@@ -2209,6 +2210,7 @@ The graph can be seen in the Figure \ref{load_test_multiple_projects}.
         \begin{axis}[
             xlabel=Time,
             ylabel=Response time (ms),
+            width=120mm,
             axis x line=bottom,
             axis y line=left,
             ymin=0,
@@ -3219,18 +3221,171 @@ The graph can be seen in the Figure \ref{load_test_multiple_projects}.
 \end{figure}
 
 \subsection{Real-world simulation}
-This test case tries to simulate real-world usage. It contains all the simple prefix queries specified in \ref{load_test_prefix},
-the worst case specified in \ref{load_worst}, and the following queries (lone $\vert$ signifies the caret position):
-\begin{itemize}
-    \item $.\ p\vert$ in \textit{full} field.
-    \item $type\colon java\ full\colon p\vert$
-    \item $type\colon java\ full\colon public\ path\colon p\vert$
-    \item $type\colon c\ full\colon/\vert[aA].*/$
-    \item $type\colon java\ full\colon/\vert[aA].*/$
-    \item $(org\ \vert\vert\ buf)\ \&\&\ \vert$ in \textit{defs} field.
-    \item $a?$ in \textit{full} field.
-    \item $[a\ TO\ b\vert]$ in \textit{full} field.
-    \item $a*t\vert$ in \textit{full} field.
-\end{itemize}
+This test case tries to simulate the real-world usage. It contains all the simple prefix queries specified in \ref{load_test_prefix} (labeled 1-6),
+the worst case specified in \ref{load_worst} (labeled 7), and the following queries (lone $\vert$ signifies the caret position):
+\begin{enumerate}
+    \setcounter{enumi}{7}
+    \item \texttt{".\ p$\vert$"} in \textit{full} field.
+    \item \texttt{type:java full:p$\vert$}
+    \item \texttt{type:java full:public path:p$\vert$}
+    \item \texttt{type:c full:/$\vert$[aA].*/}
+    \item \texttt{type:java full:/$\vert$[aA].*/}
+    \item \texttt{public . v$\vert$} in \textit{full} field.
+    \item \texttt{(org $\vert\vert$ buf) \&\&\ $\vert$} in \textit{defs} field.
+    \item \texttt{$\vert$a?} in \textit{full} field.
+    \item \texttt{[a TO b$\vert$]} in \textit{full} field.
+    \item \texttt{a*t$\vert$} in \textit{full} field.
+\end{enumerate}
 
-The requests specified all the 22 projects at once.
+The requests specified all the 22 projects at once. 600 requests were sent during 30 second period.
+Figure \ref{real_world_use_count} shows how many requests ended successfully and how many with partial results. None of
+the requests returned an empty result. The times of the specific queries can be seen in the Figure \ref{real_world_use_time}.
+It can be noted that the worst query was not able to successfully finish within the specified time. Therefore, it
+influenced all the queries that followed.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=135mm,
+            ybar stacked,
+            xlabel={Query},
+            ylabel={Requests count},
+            axis x line=bottom,
+            axis y line=left,
+            ymin=0,
+            ymax=45,
+            enlarge x limits=0.05,
+            nodes near coords,
+            symbolic x coords={0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,14,15,16,17},
+            xtick=data,
+            legend style={at={(0.5,-0.15)},anchor=north,legend columns=-1}
+        ]
+        \addplot[ybar, fill=green] plot coordinates {
+            (15,29)
+            (8,12)
+            (5,38)
+            (1,44)
+            (6,40)
+            (2,25)
+            (14,18)
+            (16,28)
+            (17,27)
+            (13,27)
+            (3,24)
+            (10,42)
+            (12,41)
+            (11,40)
+            (4,39)
+            (9,35)
+            (7,0)
+        };
+        \addplot[ybar, fill=red] plot coordinates {
+            (15,0)
+            (8,20)
+            (5,0)
+            (1,0)
+            (6,0)
+            (2,0)
+            (14,24)
+            (16,3)
+            (17,0)
+            (13,0)
+            (3,0)
+            (10,0)
+            (12,2)
+            (11,3)
+            (4,0)
+            (9,1)
+            (7,38)
+        };
+        \legend{Successful response, Partial result}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Comparison of successful vs partial result count in real-world load test}
+    \label{real_world_use_count}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            ybar=0pt,
+            width=145mm,
+            bar width=5pt,
+            xlabel={Query},
+            ylabel={Time (milliseconds)},
+            ymin=0,
+            xtick=data,
+            axis x line=bottom,
+            axis y line=left,
+            enlarge x limits=0.05,
+            symbolic x coords={0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17},
+            legend style={at={(0.5,-0.1)},anchor=north,legend columns=-1}
+        ]
+        \addplot[ybar, fill=green] plot coordinates {
+        (1,2.0)
+        (2,2.0)
+        (3,3.0)
+        (4,3.0)
+        (5,2.0)
+        (6,2.0)
+        (7,2004.0)
+        (8,467.0)
+        (9,49.0)
+        (10,3.0)
+        (11,116.0)
+        (12,53.0)
+        (13,320.0)
+        (14,619.0)
+        (15,4.0)
+        (16,79.0)
+        (17,23.0)
+        };
+
+        \addplot[ybar, fill=blue] plot coordinates {
+        (1,6.954545454545454)
+        (2,4.16)
+        (3,10.0)
+        (4,4.0)
+        (5,3.9473684210526314)
+        (6,5.85)
+        (7,2015.8947368421052)
+        (8,1767.09375)
+        (9,1382.0277777777778)
+        (10,1279.4761904761904)
+        (11,1263.3488372093022)
+        (12,1390.8837209302326)
+        (13,1265.962962962963)
+        (14,1649.6666666666667)
+        (15,1214.551724137931)
+        (16,1189.0)
+        (17,1247.3703703703704)
+        };
+
+        \addplot[ybar, fill=red] plot coordinates {
+        (1,116.0)
+        (2,12.0)
+        (3,143.0)
+        (4,5.0)
+        (5,7.0)
+        (6,61.0)
+        (7,2079.0)
+        (8,2013.0)
+        (9,2006.0)
+        (10,1957.0)
+        (11,2008.0)
+        (12,2006.0)
+        (13,1928.0)
+        (14,2009.0)
+        (15,1915.0)
+        (16,2004.0)
+        (17,1932.0)
+        };
+
+        \legend{Minimum, Average, Maximum}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{The times for specific queries}
+    \label{real_world_use_time}
+\end{figure}
