@@ -3237,7 +3237,7 @@ the worst case specified in \ref{load_worst} (labeled 7), and the following quer
     \item \texttt{a*t$\vert$} in \textit{full} field.
 \end{enumerate}
 
-The requests specified all the 22 projects at once. 600 requests were sent during 30 second period.
+The requests specified all the 22 projects at once. 600 requests were sent during a 30 second period.
 Figure \ref{real_world_use_count} shows how many requests ended successfully and how many with partial results. None of
 the requests returned an empty result. The times of the specific queries can be seen in the Figure \ref{real_world_use_time}.
 It can be noted that the worst query was not able to successfully finish within the specified time. Therefore, it
@@ -3299,10 +3299,10 @@ influenced all the queries that followed.
             (9,1)
             (7,38)
         };
-        \legend{Successful response, Partial result}
+        \legend{Successful responses, Partial results}
         \end{axis}
     \end{tikzpicture}
-    \caption{Comparison of successful vs partial result count in real-world load test}
+    \caption{Comparison of successful and partial result counts in the real-world load test}
     \label{real_world_use_count}
 \end{figure}
 
@@ -3386,6 +3386,6 @@ influenced all the queries that followed.
         \legend{Minimum, Average, Maximum}
         \end{axis}
     \end{tikzpicture}
-    \caption{The times for specific queries}
+    \caption{Times for specific queries}
     \label{real_world_use_time}
 \end{figure}

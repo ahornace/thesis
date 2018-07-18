@@ -2,3 +2,39 @@
 \label{chap:epilog}
 
 \addcontentsline{toc}{chapter}{Conclusion}
+
+The target of the thesis was to implement an autocomplete functionality for the OpenGrok search engine. The implemented
+solution enabled this functionality for all the basic query types supported by OpenGrok. These query types were prefix queries,
+wildcard queries, regexp queries, range queries, fuzzy queries, and phrase queries. Based on the data size and number of projects
+that are searched, the suggestions might take a long time to compute. Therefore, if the suggester is not able to return
+the results in a specified time, only partial results are returned.
+
+The suggestions also provide correct results for multiple Lucene fields. That means, multiple data structures
+which store different information need to be maintained for every project in the OpenGrok instance.
+
+To improve the suggestion quality, the most popular completion was used. The suggester remembers the search counts
+for every term and promotes the terms with the highest search counts. If no search data are available, the suggester
+uses the underlying statistics of the document set. It is also possible to initialize or update this data by using the API
+provided to administrators.
+
+The solution provides a possibility to configure many aspects of the suggester to truly satisfy the users' needs.
+Among others, it is possible to specify minimum characters needed for suggestions to appear or to completely disable
+the suggestions.
+
+There is no need to explicitly enable or configure the already existing OpenGrok instances. Only an upgrade to the
+version with the implemented suggester functionality is needed.
+
+The existing solution can be improved and extended in many ways. First of all, optimizations for better suggestions
+speed should be implemented to provide better user experience. One of the optimizations that might be implemented is to use
+disk access for phrase queries with only a few documents which might increase their performance by an order of magnitude.
+
+Secondly, suggestions might be improved to take into account even more factors and not just popularity and term or document frequency.
+Personalized suggestions for users is a very strong candidate for an extension. It is already implemented by Google and
+other search engines. Furthermore, error toleration is a very intriguing possibility for improvement. To err is human and
+to provide suggestions for a query with a small mistake might be an invaluable feature not only for the users on the mobile devices.
+Moreover, it might make sense to also make the suggester time-sensitive. In other words, the suggester could provide
+different suggestions based on the actual time or day.
+
+Last but not least, suggestions could be more sophisticated if the suggester were to have a direct support for complex queries.
+For instance, it could boost different terms based on the already input data or it could recognize a pattern and suggest
+the rest of the complex query.
