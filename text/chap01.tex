@@ -11,8 +11,7 @@ However, OpenGrok is different to most of the search engines, purpose of which i
 webpages. OpenGrok provides searching across codebases. For instance, if you would like to know which files are using
 \textit{mmap} function in \textit{Linux kernel}\footnote{\url{https://en.wikipedia.org/wiki/Linux\_kernel}} then
 OpenGrok is the tool for that purpose. It understands a variety of
-programming languages, e.g. Java, C, C\#, JavaScript and many others. The code analysis is done by
-Ctags\footnote{\url{https://en.wikipedia.org/wiki/Ctags}}.
+programming languages, e.g. Java, C, C\#, JavaScript and many others.
 The other most notable features of OpenGrok are:
 \begin{itemize}
     \item Support for multiple projects.
@@ -76,10 +75,8 @@ i.e. for each term a collection of document identifiers is stored in which this 
 This form of data representation is very efficient for document lookup.
 
 \paragraph{Tokenization}
-% TODO: should be here?
-
-\paragraph{Lucene Internals}
-% TODO: rewrite this? http://lucene.apache.org/core/7_3_1/core/org/apache/lucene/codecs/lucene50/Lucene50PostingsFormat.html
+OpenGrok uses Ctags\footnote{\url{https://en.wikipedia.org/wiki/Ctags}} to detect definitions.
+OpenGrok uses custom analyzers for symbol tokenization. Each analyzer is specific to some file format, e.g. Java or JavaScript.
 
 \subsubsection{History}
 \label{indexer:history}

@@ -79,11 +79,11 @@ In the field of search engines, speed is very important. According to \citep{mar
 Marissa Mayer\footnote{\url{https://en.wikipedia.org/wiki/Marissa\_Mayer}}, former
 Yahoo!\footnote{\url{https://en.wikipedia.org/wiki/Yahoo!}}
 CEO\footnote{\url{https://en.wikipedia.org/wiki/Chief_executive_officer}}, spoke at the
-2006 Web 2.0 conference where she said that $0.5s$ drop in speed reduced the traffic by $20\%$.
+2006 Web 2.0 conference where she said that $0.5$~s drop in speed reduced the traffic by $20$~\%.
 
 Showing suggestions is considered to be a response to control activation. This is an indication that some control member
 (in our case keyboard key) has been physically activated. Based on \citep{response_time}, the response
-should take no more than $100ms$ in order for the system to be considered unobtrusive.
+should take no more than $100$~ms in order for the system to be considered unobtrusive.
 
 Simplified picture of the
 steps that need to be taken is shown in the Figure \ref{suggest_sequence}.
@@ -224,7 +224,7 @@ Every term needs to have a \textit{score} associated with it so the suggester ca
 to appear as a suggestion. Therefore, the problem is not only to find the terms with a specific prefix but to find $n$
 terms with the best scores having the specific prefix. Let's assume that the suggester does not have any information
 about the previous searches. This case is discussed in
-\ref{previous_searches}. The suggester has access to the Lucene index provided by the Indexer. % TODO: add refs?
+\ref{previous_searches}. The suggester has access to the Lucene index provided by the Indexer.
 Therefore; it has access to:
 \begin{itemize}
     \item \textbf{Total term frequency $T$} – how many times the term appears in the document set.
@@ -254,8 +254,6 @@ score = \frac{N}{D} \cdot constant
 \end{equation}
 This metric gives results which are expected of the suggester; therefore, it is the best option so far.
 
-% TODO: find some work on this?
-
 \subsubsection{Possible Implementations}
 \label{possible_implementations}
 As mentioned before, the implementation should be fast to be able to fulfill the users' expectations. Although, at the
@@ -272,7 +270,7 @@ special case of Trie. Same as Trie, it does not have any support for more effici
 
 \paragraph{FST\protect\footnote{\url{https://en.wikipedia.org/wiki/Finite-state\_transducer}}} \label{FST} –
 (finite state transducer) is a finite state
-automaton which can produce output. Special case of FST is a weighted FST (WFST) where each transition can have an
+automaton which can produce output. A special case of FST is a weighted FST (WFST) where each transition can have an
 associated weight. More formally, a weighted finite-state transducer $T$ over a semiring $\mathbb{K}$ is
 an 8-tuple $T = (\Sigma,\Delta,Q,I,F,E,\lambda,\rho)$ where:
 \begin{itemize}
@@ -305,8 +303,6 @@ An efficient construction of minimal, acyclic and deterministic WFST is explaine
 \label{wfst_example}
 \end{figure}
 
-% TODO: describe algorithm?
-
 \paragraph{Comparison}
 
 Two datasets were used:
@@ -314,8 +310,6 @@ Two datasets were used:
     \item \textbf{English words} – list of \textbf{370,099} words freely available at \url{https://github.com/dwyl/english-words}.
     \item \textbf{Linux kernel} – \textit{full} field of indexed Linux kernel with \textbf{3,459,733} terms.
 \end{itemize}
-
-% TODO: useful info average term length in Linux kernel: 22.033919380483987
 
 Measured was the average time of specific operations on the data structures.
 The description of the test cases:
@@ -700,8 +694,6 @@ A_{result} = A_{prefix} - A_{int}
 \subsection{Including Boolean Operators}
 \label{boolean_ops}
 
-% TODO: probably move this to OpenGrok chapter, this chapter should be about suggester
-
 There are multiple boolean operators which can modify the meaning of the term in the query.
 
 \subsubsection{Unary Boolean Operators}
@@ -967,7 +959,7 @@ efficiency. There are multiple options how to achieve this functionality:
     interface and stores data off-heap. The data can be persistent by the use of memory mapped
     files\footnote{\url{https://en.wikipedia.org/wiki/Memory-mapped\_file}}. On Linux machines it takes an advantage
     of lazy page allocation so the memory and disk usage can be small if it contains only a few entries.
-    It is distributed under GNU GPLv3 license \citep{gnu}.
+    It is distributed under the GNU GPLv3 license \citep{gnu}.
     Disadvantages are that some hints are needed for the data structure to perform efficiently:
     \begin{itemize}
         \item Number of entries – can be overestimated. However, the authors specify that it would be best to specify
@@ -978,7 +970,7 @@ efficiency. There are multiple options how to achieve this functionality:
     Another disadvantage is that some Java options are needed for it to work with Java 9 and later releases.
 
     \item \textbf{MapDB}\footnote{\url{http://www.mapdb.org}} – similar to Chronicle Map but no hints are necessary.
-    It is distributed under Apache license \citep{apache}.
+    It is distributed under the Apache license \citep{apache}.
 
     \item \textbf{LMDB for Java}\footnote{\url{https://github.com/lmdbjava/lmdbjava}} – Java mapping for
     LMDB\footnote{\url{https://symas.com/lmdb/}}. Major drawbacks:
@@ -991,7 +983,7 @@ efficiency. There are multiple options how to achieve this functionality:
             \end{itemize}
         \item Some Java options needed for Java 9 and later.
     \end{itemize}
-    It is distributed under Apache license \citep{apache}.
+    It is distributed under the Apache license \citep{apache}.
 \end{itemize}
 
 Benchmarks comparing MapDB, Chronicle Map, LMDB for Java and some other solutions performed by the LMDB for Java creators
@@ -1109,10 +1101,10 @@ terms.
     The graph \ref{enc_comp} also shows the case when the encoding would use \textit{long} datatype. Although Lucene's \textit{Lookup}
     interface specificies \textit{long} datatype, WFST implementation supports only \textit{int} so far.
 
-    \item Lucene's WFST implementation does not know the notion of nodes but the data are stored only in arcs. Arcs that
-    start in the root node might be stored in memory directly and therefore are not encoded in byte array since these
-    arcs are acessed very often
-    and the decoding from byte array has an impact on the data structure lookup performance. Although this is not a big issue,
+    \item Lucene's WFST implementation does not know the notion of nodes – the data are stored only in arcs. The arcs that
+    start in the root node might be stored in memory directly and therefore are not encoded in a byte array since these
+    arcs are accessed very often
+    and the decoding from a byte array has an impact on the data structure lookup performance. Although this is not a big issue,
     the modifications would need to take this into account and add checks for this case.
 
     \item In some cases (e.g. the depth of an arc is less than a constant or there is more arcs from one node than
@@ -1124,7 +1116,7 @@ terms.
     we are actually decreasing its weight in WFST. Sum of arc values on the path to a term is the weight of the term (plus the final output modifier).
     However, the arc value tries to represent the lowest weight of the term in its subtree. And by decreasing this weight
     it could be necessary to update the whole WFST data structure. For instance, let's suppose that we have WFST as in \ref{wfst_example}
-    and that the weight of the term $CAR$ will change to value $2$. The changes can be seen on the \ref{wfst_modified} in red color.
+    and that the weight of the term $CAR$ will change to value $2$. The changes can be seen in the Figure \ref{wfst_modified} in red color.
 
     \begin{figure}[htbp]
     \centering
@@ -1142,18 +1134,17 @@ suggestions for simple queries will not take the other searches into account imm
 This time period should be configurable. There are a few options from which to choose:
 \begin{itemize}
     \item \textbf{Period} – specified in some time unit. For instance, data should be rebuilt every hour. This solution
-    is easy to implement. The period could start ticking at the last rebuilt. The main drawback is that there is no way
-    how to specify the exact time.
-    \item \textbf{Exact time} – is a good option when it is known when system load will be small (e.g. during the night).
+    is easy to implement. The period could start ticking after the last rebuild. The main drawback is that there is no way to specify the exact time.
+    \item \textbf{Exact time} – is a good option when it is known when the system load will be small (e.g. during the night).
     \item \textbf{Cron format}\footnote{\url{https://en.wikipedia.org/wiki/Cron}} – \label{cron} cron is a job scheduler for Unix
-    operating system. When and which jobs should be run is specified in the special file called \textit{cron table}. The problem
+    operating systems. When and which jobs should be run is specified in the special file called \textit{cron table}. The problem
     is that the Java does not have native support for processing this format and some library must be used, the most notable are:
     \begin{itemize}
-        \item cron4j\footnote{\url{http://www.sauronsoftware.it/projects/cron4j/}} – simple library which allows to
-        create simple scheduler with specified cron format and
+        \item cron4j\footnote{\url{http://www.sauronsoftware.it/projects/cron4j/}} – a simple library which allows to
+        create a simple scheduler with a specified cron format and
         \textit{Runnable}\footnote{\url{https://docs.oracle.com/javase/10/docs/api/java/lang/Runnable.html}} that is to be performed.
         The provided interface is clean and to the point. However, at the time of writing, the library is no longer maintained and
-        was not updated in 5 years.
+        has not been updated in 5 years.
         \item cron-utils\footnote{\url{https://github.com/jmrozanec/cron-utils}} - a small library for parsing and
         converting various cron formats. It also provides a feature which allows to compute the time to the next execution
         based on the cron format.
@@ -1173,18 +1164,18 @@ to create the needed functionality.
 There are multiple possible approaches how to enhance the suggester with the use of complex queries:
 \begin{itemize}
     \item Different term boosting – boost terms based on their popularity but also take into account other
-    query parts. For example, if the search would be restricted to Java file types then the suggester could
+    query parts. For example, if the search would be restricted to Java file types, then the suggester could
     only boost terms which were searched for when this condition held true.
-    \item Suggest the whole complex query – if the starts to write a part of a complex query then it could be recognized
+    \item Suggest the whole complex query – if the user starts to write a part of a complex query then it could be recognized
     by the suggester which could suggest this already known query. However, this might not be user friendly since there
-    are multiple search fields which content would have to modified. Or the whole query would need to be written by the
+    are multiple search fields, content of which would have to be modified. Or the whole query would need to be written by the
     use of field specifiers which might make the query badly readable.
 \end{itemize}
 
 Possible implementation of both suggested approaches would require additional data structures and could slow down the
 suggester. For now, they are deemed only as a possible extension.
 
-As a result, the complex query is only dismantled into simple term queries which are used to update the popularity term counts.
+As a result, the complex query is only dismantled into simple term queries which are used to update the term popularity counts.
 
 \subsubsection{Increasing Search Counts for Specific Terms}
 \label{increasing_search_counts}
@@ -1198,7 +1189,7 @@ There are 2 possible approaches how to do this:
             \item Target endpoint:
             \begin{itemize}
                 \item Request method: POST
-                \item Endpoint: /suggest/init/queries
+                \item Endpoint: /api/v1/suggest/init/queries
                 \item Media type: application/json
             \end{itemize}
             \item Example data:
@@ -1211,12 +1202,13 @@ There are 2 possible approaches how to do this:
             \item Target endpoint:
             \begin{itemize}
                 \item Request method: POST
-                \item Endpoint: /suggest/init/raw
+                \item Endpoint: /api/v1/suggest/init/raw
                 \item Media type: application/json
             \end{itemize}
             \item Example data:
 \begin{code}
-[{"project": "opengrok", "field": "full", "token": "test", "increment": 1}]
+[{"project": "opengrok", "field": "full", "token": "test",
+"increment": 1}]
 \end{code}
         \end{itemize}
 \end{itemize}
@@ -1230,6 +1222,7 @@ something similar as is highlighted by the number $1$ in the Figure \ref{google_
     \caption{Suggestions based on the user specific previous searches by Google}
     \label{google_previous}
 \end{figure}
+
 Since authorization is optional
 in OpenGrok, it would be best to store the previous search data in browser
 cookies\footnote{\url{https://en.wikipedia.org/wiki/HTTP_cookie}}. This data could then be processed and
@@ -1258,40 +1251,39 @@ query has format $cat\ c\vert$. In this case the suggester should not suggest th
 value.
 
 \subsection{Authorization}
-As specified in \ref{opengrok_overview}, the OpenGrok allows the administrators to specify to which projects have the users
-access. Therefore, suggester must not allow unauthorized users to see suggestions because it would be considered as a security issue.
+As specified in \ref{opengrok_overview}, OpenGrok allows the administrators to specify to which projects the user has
+access. Therefore, suggester must not allow unauthorized users to see suggestions because it would be considered a security issue.
 
 \subsection{Restricting Load}
 \label{restricting_load}
-The Suggester may consume significant amount of resources for some specific queries (mainly Phrase Queries).
+The Suggester may consume a significant amount of resources for some specific queries (mainly Phrase Queries).
 Therefore, the Suggester should
 respect the paradigm "best effort"\footnote{https://en.wikipedia.org/wiki/Best-effort\_delivery}. The suggestions are not
-the integral part of the search engine. Thus, if their resource requirements are too high then they should not prevent
+an integral part of the search engine. Thus, if their resource requirements are too high, then they should not prevent
 users from using the basic OpenGrok functionality. As a result, the Suggester will try to find suggestions for some
-query up to some pre-defined time threshold and if it is not able to complete the request in this time limit then
+query up to some pre-defined time threshold and if it is not able to complete the request in this time limit, then
 it will return only partial result. This also solves the problem of an attacker who would send many requests containing
 the worst queries for some dataset.
 
 \subsection{Configuration}
 \label{suggester_config}
 As mentioned in \ref{opengrok_configuration}, OpenGrok can be configured using a configuration file.
-Suggester should be also configurable to allow the users to specify how they want the suggester to perform.
-Instead of creating its own separate way how to handle configuration, it will depend on the already existing solution in
-OpenGrok. The main advantage is that the users are already familiar with how the configuration works. Configurable
+The Suggester should be also configurable to allow the administrators to specify how they want the suggester to perform.
+Instead of creating its own separate way to handle configuration, it will depend on the already existing solution in
+OpenGrok. The main advantage is that the administrators are already familiar with how the configuration works. Configurable
 properties of the suggester:
 \begin{itemize}
     \item \textbf{Enabled} – specifies if the suggester is enabled. Some users might not want the suggester functionality.
     Default value: \textit{true}.
-    \item \textbf{Maximum results} – specifies how many results suggester should return at maximum. The lesser number may
-    increase the suggester performance. Default value: \textit{10}.
-    \item \textbf{Minimum characters} – specifies minimum number of characters that are needed for suggester to start looking
-    for suggestions. The more characters means less possible candidates. Can significantly improve performance of the
+    \item \textbf{Maximum results} – specifies how many results the suggester should return at maximum. Default value: \textit{10}.
+    \item \textbf{Minimum characters} – specifies the minimum number of characters that are needed for the suggester to start looking
+    for suggestions. More characters mean less possible candidates. It can significantly improve performance of the
     suggester. Default value: \textit{0}.
-    \item \textbf{Allowed projects} – specifies set of projects for which the suggester should be enabled. Default value: \textit{all}.
-    \item \textbf{Maximum projects} – specifies how many maximum projects can be selected at the same time and the suggestions will work.
+    \item \textbf{Allowed projects} – specifies a set of projects for which the suggester should be enabled. Default value: \textit{all}.
+    \item \textbf{Maximum projects} – specifies how many projects can be selected at the same time and the suggestions will work.
     Default value: \textit{unlimited}.
     \item \textbf{Allowed fields} – specifies the fields for which the suggester should be enabled. For instance, it might be
-    desired that the suggestions should only work for \textit{full} field. OpenGrok uses some fields to store
+    desired that the suggestions should only work for the \textit{full} field. OpenGrok uses some fields to store
     private data and it is not desired to create suggester data structures for those fields. Therefore, only the main
     search fields are specified by default.
     Default value: \textit{full, defs, refs, path, hist, type}.
@@ -1304,15 +1296,15 @@ properties of the suggester:
     Default value: \textit{false}.
     \item \textbf{Show projects} – specifies if the suggestions should show in which project the term was found.
     If there are multiple projects then showing all the names is not feasible; therefore, only the number of projects will be shown.
-    Default value: \textit{false}.
+    Default value: \textit{true}.
     \item \textbf{Show time} – specifies if the time it took the suggester to find the suggestions should be displayed.
     Default value: \textit{false}.
     \item \textbf{Rebuild cron config} – specifies how often should the suggester rebuild the WFST data structures.
-    The value must be in Unix cron format, decision is described in \ref{cron}.  Default value: \textit{0 0 * * *} (every day at midnight).
+    The value must be in the Unix cron format, decision is described in \ref{cron}.  Default value: \textit{0 0 * * *} (every day at midnight).
     \item \textbf{Build Termination Time in Seconds} – specifies after how much time the suggester should kill the
     threads that build the suggester data structures. Slow machines should specify more time. This option is mainly here
     to prevent the suggester to hang in the initialization. Default value: \textit{1800} (30 minutes).
-    \item \textbf{Time threshold} – specifies time threshold for suggestions in milliseconds.
+    \item \textbf{Time threshold} – specifies a time threshold for suggestions in milliseconds.
     If the computation exceeds this time, it will be stopped and partial results will be returned.
     Default value: \textit{2000} (2 seconds).
 \end{itemize}
@@ -1320,7 +1312,7 @@ properties of the suggester:
 \subsection{Tolerating Errors}
 Although it is possible to use fuzzy factor as specified in \ref{fuzzy}, the Suggester is not error tolerant.
 This could be a good extension to the prefix queries \ref{prefix_query}.
-For instance, if the user types prefix \textit{sh} even though
+For instance, if the user types the prefix \textit{sh} even though
 the index contains the term \textit{schwarz}, it won't be among the suggestions. This might prove very useful if the
 user made a typing error or is not sure about the spelling of the term.
 
@@ -1335,15 +1327,15 @@ another data structures and does not work for other types of queries. Therefore,
 
 In \ref{promoting_on_previous_searches} it was discussed that most popular completion will be used. Many users or
 administrators might be interested in the terms popularity. Therefore, administrators can access this information
-via REST API by accessing \textit{/api/v1/suggest/popularity/\{project\}} endpoint. The \textit{\{project\}} represents
-a project name for which to retrieve data. Additional supported query parameters:
+via the REST API by accessing \textit{/api/v1/suggest/popularity/\{project\}} endpoint. The \textit{\{project\}} represents
+a project name for which to retrieve the data. Additional supported query parameters:
 \begin{itemize}
     \item \textbf{field} – field for which to retrieve data. Default: \textit{full}.
     \item \textbf{page} – page of data to retrieve.
     \item \textbf{pageSize} – how many results will be included in the page.
 \end{itemize}
 
-Returned data are in \textit{JSON} format and are sorted by the popularity in descending order. Example of returned data:
+The returned data are in the \textit{JSON} format and are sorted by the popularity in descending order. Example of returned data:
 \begin{code}
 [{"semaphore":2},{"mmap":1},{"test":1}]
 \end{code}

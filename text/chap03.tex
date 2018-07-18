@@ -4,13 +4,13 @@
 This chapter describes how the suggester should be used. It is divided into 2 parts:
 \begin{itemize}
     \item User guide \ref{user_guide} – usage described from the end user point of view.
-    \item Administrator guide \ref{administrator_guide} – describes how to modify suggester configuration.
+    \item Administrator guide \ref{administrator_guide} – describes how to modify the suggester configuration.
 \end{itemize}
 
 \section{User Guide}
 \label{user_guide}
-When the OpenGrok main web page is opened then the user sees something similar to the figure \ref{opengrok_main}.
-When user types text into one of the search fields, suggestions are shown as can be seen on \ref{suggestions_pic}.
+When the OpenGrok main web page is opened the user sees something similar to the Figure \ref{opengrok_main}.
+When the user types text into one of the search fields, suggestions are shown as can be seen in Figure \ref{suggestions_pic}.
 
 \begin{figure}[htbp]
     \centering
@@ -19,47 +19,47 @@ When user types text into one of the search fields, suggestions are shown as can
     \label{suggestions_pic}
 \end{figure}
 
-The numbers in the picture \ref{suggestions_pic} represent:
+The numbers in the Figure \ref{suggestions_pic} represent:
 \begin{enumerate}
     \item Typed value into the search field. In this case letter \textit{t}.
     \item List of suggestions.
     \item Time it took to generate the suggestions. (Optional.)
-    \item In which projects was the term found. (Optional.)
+    \item In which projects the term was found. (Optional.)
     \item Score of the terms. (Optional.)
     \item Projects for which suggestions are shown.
 \end{enumerate}
 
 \subsection{Selecting the Suggestions}
-Suggestions can be navigated by using:
+The suggestions can be navigated by using:
 \begin {itemize}
     \item \textbf{Keyboard} – the suggestion can be focused by using up $\uparrow$ and down $\downarrow$ arrow keys.
     The suggestion can be selected by pressing the \textit{enter} (carriage return) or \textit{tab} key.
-    The suggestions can also be closed by pressing the \textit{esc} key.
+    The suggestions window can also be closed by pressing the \textit{esc} key.
     \item \textbf{Mouse} – by hovering over the suggestion it is focused. By clicking on the suggestion it
     is selected.
 \end{itemize}
 
 \subsubsection{Focused Suggestion}
-If suggestion is focused then its background color is changed to \textit{blue} and the text of the field shows the result
-value as if this suggestion would be selected. It looks like the Figure \ref{suggestion_focused}.
+If a suggestion is focused, then its background color is changed to \textit{blue} and the text of the field shows the result
+value as if this suggestion were selected. It looks like in the Figure \ref{suggestion_focused}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=145mm]{../img/suggestions_focused.png}
-    \caption{Suggestion focused}
+    \caption{Focused suggestion}
     \label{suggestion_focused}
 \end{figure}
 
 The numbers in the Figure \ref{suggestion_focused} represent:
 \begin{enumerate}
-    \item The field already contains value \textit{package} even though only the prefix \textit{p} is actually written.
+    \item The field already contains the value \textit{package} even though only the prefix \textit{p} is actually written.
     \item Focused suggestion.
 \end{enumerate}
 
 \subsubsection{Errors}
 It might be a common occurrence that users type an invalid query. For instance, \textit{)} is missing at the end of
 the query \textit{(test}. Therefore, the user is notified if the Lucene cannot parse the query or some other
-error occurs. This case is pictured in the figure \ref{suggestions_error}.
+error occurs. This case is pictured in the Figure \ref{suggestions_error}.
 
 \begin{figure}[htbp]
     \centering
@@ -68,7 +68,7 @@ error occurs. This case is pictured in the figure \ref{suggestions_error}.
     \label{suggestions_error}
 \end{figure}
 
-The numbers in the figure \ref{suggestions_error} represent:
+The numbers in the Figure \ref{suggestions_error} represent:
 \begin{enumerate}
     \item Error notification.
     \item Detail of the error. This is only shown if the user hovers over the error notification.
@@ -76,7 +76,7 @@ The numbers in the figure \ref{suggestions_error} represent:
 
 \subsubsection{Minisearch}
 While traversing a source code or history, a minisearch field is available in the navigation menu. It allows users
-to search in the current project. The suggestions are enabled for it as well. The result can look like in the figure
+to search in the current project. The suggestions are enabled for it as well. The result can look like in the Figure
 \ref{suggestions_minisearch}.
 
 \begin{figure}[htbp]
@@ -86,31 +86,33 @@ to search in the current project. The suggestions are enabled for it as well. Th
     \label{suggestions_minisearch}
 \end{figure}
 
-In the figure \ref{suggestions_minisearch} the numbers represent:
+In the Figure \ref{suggestions_minisearch} the numbers represent:
 \begin{enumerate}
-    \item The checkbox that specifies if the search (and consequently suggestions) should be restricted to the directory
+    \item Checkbox that specifies if the search (and consequently suggestions) should be restricted to the directory
     in which the displayed file is located. In this example it adds the following value to the \textit{path} field:
 \begin{code}
-"/protobuf/objectivec/ProtocolBuffers_iOS.xcodeproj/xcshareddata/xcschemes/"
+"/protobuf/objectivec/ProtocolBuffers_iOS.xcodeproj/xcshareddata/
+xcschemes/"
 \end{code}
     \item Search button that launches the search.
     \item Suggestions window as described before.
 \end{enumerate}
 
 \subsubsection{Timeout}
-As specified in \ref{restricting_load}, the system may be under load and it might return only partial result or no
-suggestions at all. In the case of partial result, the message \textit{"Partial result due to timeout"} will be
-displayed at the bottom of the suggestions window similarly as in Figure \ref{partial_result}.
+As specified in \ref{restricting_load}, the system may be under load and it might return only a partial result or no
+suggestions at all. In the case of the partial result, the message \textit{"Partial result due to timeout"} will be
+displayed at the bottom of the suggestions window similarly as in the Figure \ref{partial_result}.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=100mm]{../img/partial_result.png}
     \caption{Message if only partial result was returned}
     \label{partial_result}
 \end{figure}
+
 If no suggestions were returned, then
 it may signify two cases:
 \begin{itemize}
-    \item The query will yield no results. In that case a message \textit{"No matches found"} will be displayed as in
+    \item The query yields no results. In that case a message \textit{"No matches found"} will be displayed as in the
     Figure \ref{no_matches}.
     \begin{figure}[htbp]
         \centering
@@ -125,9 +127,9 @@ it may signify two cases:
 \section{Administrator Guide}
 \label{administrator_guide}
 
-There are multiple ways how to modify the suggester configuration described in \ref{suggester_config}:
+There are multiple ways to modify the suggester configuration described in \ref{suggester_config}:
 \begin{itemize}
-    \item By modifying the XML OpenGrok's configuration described in \ref{opengrok_configuration}. Example:
+    \item By modifying the OpenGrok's XML configuration described in \ref{opengrok_configuration}. An example:
 \begin{code}
 <java version="1.8.0_162" class="java.beans.XMLDecoder">
   <object
@@ -174,15 +176,15 @@ There are multiple ways how to modify the suggester configuration described in \
       <void property="showTime">
         <boolean>true</boolean>
       </void>
-      <void property="suggesterBuildTerminationTimeSec">
+      <void property="buildTerminationTime">
         <int>500</int>
       </void>
     </void>
   </object>
 </java>
 \end{code}
-    \item By using REST API configuration endpoint. It is possible to send a JSON representation of the suggester
-    configuration. Only the properties which differ from the default configuration needs to be specified. Example data:
+    \item By using the REST API configuration endpoint. It is possible to send a JSON representation of the suggester
+    configuration. Only the properties which differ from the default configuration need to be specified. Example data:
 \begin{code}
 {"enabled": "false"}
 \end{code}

@@ -2,9 +2,9 @@
 \label{chap:impact}
 
 \textit{Change impact analysis}\footnote{\url{https://en.wikipedia.org/wiki/Change\_impact\_analysis}} is a field of
-study which task is to determine what impact the changes may have on the system. Sometimes, it is very hard to analyze
-the impact of a change. Even more so in a large projects with a huge codebase. Analysis of the main decisions made is
-described in detail in the chapter \ref{chap:analysis}. The main aspects of the added changes that can be discussed are:
+study, the task of which is to determine what impact the changes may have on the system. Sometimes, it is very difficult to analyze
+the impact of a change. Even more so in large projects with huge codebases. Analysis of the main decisions made is
+described in detail in the Chapter \ref{chap:analysis}. The main aspects of the added changes that can be discussed are:
 \begin{itemize}
     \item Impact on the search results. Discussed in more detail in \ref{search_res_impact}.
     \item Impact on the hardware requirements. Discussed in more detail in \ref{hw_req_impact}.
@@ -12,13 +12,13 @@ described in detail in the chapter \ref{chap:analysis}. The main aspects of the 
 
 \section{Impact on the Search Results}
 \label{search_res_impact}
-It is hard to compare search results; therefore, search engines as well. Which search engine performs better, the one
+It is hard to compare search results and search engines in general. Which search engine performs better: the one
 that returns only a few relevant documents but omitted many in the process or the one that returns all relevant
 documents but includes some that are not?
-In information retrieval field there are measurements which take this into account, most notable are \textbf{precision}
+In the information retrieval field there are measurements which take this into account, the most notable are \textbf{precision}
 and \textbf{recall}\footnote{\url{https://en.wikipedia.org/wiki/Precision\_and\_recall}}.
 
-\textbf{Precision} is the fraction of retrieved documents that are relevant to the query. Equation can be seen on
+\textbf{Precision} is the fraction of retrieved documents that are relevant to the query. See Equation
 \ref{precision_eq}.
 
 \begin{equation}
@@ -26,7 +26,7 @@ and \textbf{recall}\footnote{\url{https://en.wikipedia.org/wiki/Precision\_and\_
 precision = \frac{\vert \{relevant\ documents\} \cap \{ retrieved\ documents \} \vert}{\vert \{ retrieved\ documents \} \vert}
 \end{equation}
 
-\textbf{Recall} is the fraction of the relevant documents that are successfully retrieved. Equation can be seen on
+\textbf{Recall} is the fraction of the relevant documents that are successfully retrieved. See Equation
 \ref{recall_eq}.
 
 \begin{equation}
@@ -34,36 +34,36 @@ precision = \frac{\vert \{relevant\ documents\} \cap \{ retrieved\ documents \} 
 recall = \frac{\vert \{relevant\ documents\} \cap \{ retrieved\ documents \} \vert}{\vert \{ relevant\ documents \} \vert}
 \end{equation}
 
-However, suggester does not impact these measurements directly. The same query returns the same results with or without
-the suggester. Nevertheless, suggester affects them indirectly:
+However, the suggester does not impact these measurements directly. The same query returns the same results with or without
+the suggester. Nevertheless, the suggester affects them indirectly:
 \begin{itemize}
     \item There are less queries which yield no results – if the user types a few characters and there are no suggestions then he
     can immediately see that there are no terms with that prefix. Therefore, the result will be empty.
-    \item Probably negative impact on precision because of the scoring described in \ref{prefix_scoring}. The terms which
+    \item Probably a negative impact on precision because of the scoring described in \ref{prefix_scoring}. The terms which
     are in more documents have greater scores. Thus, these terms are promoted and are more likely to be chosen by the user.
-    Therefore, the size of retrieved documents set will be greater. However, the initial scoring might be mitigated
+    Therefore, the size of the retrieved document set will be greater. However, the initial scoring might be mitigated
     by taking into account previous users' searches as described in \ref{previous_searches}.
 \end{itemize}
 
 It is not easy to achieve feasible values for both precision and recall. In many information retrieval systems when one is
-being increased the other one decreases. This is most notable in Boolean Information Retrieval Model
-\footnote{\url{https://en.wikipedia.org/wiki/Standard\_Boolean\_model}}.
+being increased the other one decreases. This is most notable in Boolean Information Retrieval
+Model\footnote{\url{https://en.wikipedia.org/wiki/Standard\_Boolean\_model}}.
 
-\section{Impact on the Hardware Requirements}
+\section{Impact on Hardware Requirements}
 \label{hw_req_impact}
 The most affected resources are:
 \begin{itemize}
-    \item \textbf{CPU} – in simple situations where only a prefix is typed the CPU load is not that high because it
-    is a lookup in WFST data structure which is optimized for this kind of scenarios. However, in other cases
+    \item \textbf{CPU} – in simple situations where only a prefix is typed, the CPU load is not that high because it
+    is a lookup in the WFST data structure which is optimized for this kind of scenarios. However, in other cases
     index searches are performed which can consume a lot of CPU time.
-    \item \textbf{Memory} – WFST data structures are held in memory. Although their memory footprint is very low,
+    \item \textbf{Memory} – the WFST data structures are held in memory. Although their memory footprint is very low,
     one data structure needs to be created per Lucene field per project which can sum up to a signifcant value.
-    Also, data for most popular completion are stored in the Chronicle Map implementation which provide additional
+    Also, data for most popular completion are stored in the Chronicle Map implementation which translates to additional
     memory consumption.
-    \item \textbf{Disk} – the WFST data structure are stored on the disk to provide a quick startup.
-    Data for most popular completion need to be stored as well. Comparison of disk consumptions for different datasets
+    \item \textbf{Disk} – the WFST data structures are stored on the disk to provide a quick startup.
+    The data for most popular completion need to be stored as well. The comparison of disk consumptions for different datasets
     can be seen on the graph \ref{comp_suggester_size}. The data show how much percentage of the index size the suggester
-    data take. The data was measured on the machine with operating system
+    data take. The data were measured on the machine with the operating system
     macOS\footnote{\url{https://en.wikipedia.org/wiki/MacOS}} and
     APFS\footnote{\url{https://en.wikipedia.org/wiki/Apple_File_System}} file system so the Chronicle Map did not take the
     advantage of lazy page allocation.
@@ -124,7 +124,7 @@ The most affected resources are:
 \end{itemize}
 
 \section{Impact on the Demo Instance}
-For monitoring the impact of the suggester, a demo instance was created which can be accessed on the url
+For monitoring the impact of the suggester, a demo instance has been created which can be accessed on the URL
 \url{http://demo.opengrok.org}. This instance contains 5 projects:
 \begin{itemize}
     \item \textbf{elasticsearch}\footnote{\url{https://github.com/elastic/elasticsearch}} – scalable search engine built
@@ -137,9 +137,9 @@ For monitoring the impact of the suggester, a demo instance was created which ca
     Lucene and Apache Solr.
     \item \textbf{OpenGrok}
 \end{itemize}
-However, real instances may and often do contain more projects.
+However, real instances may, and often do, contain more projects.
 
-The demo instance uses Apache Tomcat servlet container. Many solutions exist which provide a possibility to monitor
+The demo instance uses the Apache Tomcat servlet container. Many solutions exist which provide a possibility to monitor
 applications in a Tomcat instance. From those the most significant are:
 \begin{itemize}
     \item \textbf{JMX\footnote{\url{https://en.wikipedia.org/wiki/Java\_Management\_Extensions}} remote} –
@@ -147,13 +147,13 @@ applications in a Tomcat instance. From those the most significant are:
     to their advantage.
     \item \textbf{JavaMelody}\footnote{\url{https://github.com/javamelody/javamelody}} – can be added to the project as a
     dependency and creates a simple page with monitoring information available at \textit{application\_URI/monitoring}.
-    Provides monitoring of CPU, memory usage, HTTP requests count and many others. Also allows exporting data in
-    various formats, e.g. PDF, JSON. The main disadvantage is that it is embedded into the application and may influence
-    the gathered data. However, this overhead is small, e.g. the memory overhead did not exceed 3MiB.
+    Provides monitoring of CPU, memory usage, HTTP request count and many others. Also allows exporting data in
+    various formats, e.g. PDF or JSON. The main disadvantage is that it is embedded into the application and may influence
+    the gathered data. However, this overhead is small, e.g. the memory overhead did not exceed 3 MiB.
     \item \textbf{PSI Probe}\footnote{\url{https://psi-probe.github.io/psi-probe/}} – deployed as a separate
     application into the Apache Tomcat instance. Uses JMX exported by Tomcat. The disadvantages are:
     \begin{itemize}
-        \item Cannot export data in common exchange formats. However, raw XML data are created under the Tomcat
+        \item Cannot export the data in the common exchange formats. However, raw XML data are created under the Tomcat
         home directory.
         \item Data are not persistent.
     \end{itemize}
@@ -163,11 +163,11 @@ applications in a Tomcat instance. From those the most significant are:
 features despite the small overhead.
 
 \subsection{Disk Usage}
-The demo instance is running on a machine with Linux operating system. Therefore, Chronicle Map takes an advantage of
+The demo instance is running on a machine with the Linux operating system. Therefore, Chronicle Map takes the advantage of
 lazy page allocation and the sizes are significantly smaller in comparison with the sizes on the graph \ref{comp_suggester_size}.
 The actual disk usage can be seen on the graph \ref{comp_suggester_size_demo}.
 It should be noted that the Chronicle Maps were almost empty.
-Similar sizes might be expected as on \ref{comp_suggester_size} if the Chronicle Maps start to fill up.
+Similar sizes might be expected as in the Figure \ref{comp_suggester_size} if the Chronicle Maps start to fill up.
 
 \begin{figure}[htbp]
     \centering
@@ -206,7 +206,7 @@ Similar sizes might be expected as on \ref{comp_suggester_size} if the Chronicle
 
 \section{Load Testing}
 Apache JMeter\footnote{\url{https://jmeter.apache.org}} was used for load testing. 22 mostly well-known projects were
-used. 10 of them were the same as in \ref{hw_req_impact}. Other twelve were:
+used. 10 of them were the same as in \ref{hw_req_impact}. The other twelve were:
 \begin{itemize}
     \item \textbf{Angular} – \url{https://github.com/angular/angular}
     \item \textbf{Apache Jena} – \url{https://github.com/apache/jena}
@@ -227,8 +227,8 @@ negative way. The properties of the used machine can be found in Attachment \ref
 
 \subsection{Simple prefix query across all projects}
 \label{load_test_prefix}
-This test case consists of $2000$ requests sent during $10\ second$ period. The requests were linearly distributed.
-To simulate real-world use, following queries were sent at random:
+This test case consists of $2,000$ requests sent during a $10$ second period. The requests were linearly distributed.
+To simulate a real-world use, the following queries were sent at random:
 \begin{itemize}
     \item Prefix \textit{long} in \textit{full} field.
     \item Prefix \textit{m} in \textit{path} field.
@@ -2197,11 +2197,11 @@ can be noted; however, later requests were taking only a few miliseconds on aver
 \subsection{Worst case across all projects}
 \label{load_worst}
 Query $". \vert"$ was used where $\vert$ represents a caret positon. Term $.$ occurs in $205,943$ files. All these files
-need to be checked for the $.$ position and then all terms are traversed to check if they occur at the positions next to
-$.$ term. Time threshold was set to the default value: $2\ seconds$. The test case sends this request $1000$ times
-linearly distributed during $10\ second$ time. It can be noted that the system was not able to satisfy the requests;
+need to be checked for the $.$ position and then all terms are traversed to check if they occur at the positions next to the
+$.$ term. Time threshold was set to the default value: $2$ seconds. The test case sends this request $1,000$ times
+linearly distributed during a $10$ second time period. It can be noted that the system was not able to satisfy the requests;
 however, partial results were returned for $942$ requests. That means, only $58$ requests received no suggestions.
-The graph can be seen in Figure \ref{load_test_multiple_projects}.
+The graph can be seen in the Figure \ref{load_test_multiple_projects}.
 
 \begin{figure}[htbp]
     \centering
@@ -3218,9 +3218,9 @@ The graph can be seen in Figure \ref{load_test_multiple_projects}.
     \label{load_test_multiple_projects}
 \end{figure}
 
-\subsection{Real world simulation}
+\subsection{Real-world simulation}
 This test case tries to simulate real-world usage. It contains all the simple prefix queries specified in \ref{load_test_prefix},
-the worst case specified in \ref{load_worst}, and the following queries (lone $\vert$ signifies caret position):
+the worst case specified in \ref{load_worst}, and the following queries (lone $\vert$ signifies the caret position):
 \begin{itemize}
     \item $.\ p\vert$ in \textit{full} field.
     \item $type\colon java\ full\colon p\vert$
