@@ -6,7 +6,7 @@ that were made. The chapter is divided into the following sections:
 \begin{itemize}
     \item \ref{general_architecture} \textbf{General Architecture} – explains the chosen suggester architecture and
     how it could be combined into the overall OpenGrok architecture.
-    \item \ref{opengrok_modifications} \textbf{Opengrok Modifications} – describes the major modifications that had
+    \item \ref{opengrok_modifications} \textbf{OpenGrok Modifications} – describes the major modifications that had
     to be made in OpenGrok code to enable suggester functionality.
     \item \ref{suggester_module} \textbf{Suggester} – provides detailed explanation of how the suggester functionality
     was implemented.
@@ -72,7 +72,7 @@ This endpoint could also filter the information which is redundant to the JavaSc
 \label{showing_suggestions}
 
 The Suggester needs to detect if the user pressed a key while having a specific input selected for which it is enabled. Upon
-detecting this change, it needs to process the data, send it to the backend part of the software, processs the returned
+detecting this change, it needs to process the data, send it to the backend part of the software, process the returned
 result and show it to
 the user. All this should be as quick as possible so the user considers it to be seamless.
 
@@ -533,12 +533,12 @@ the possibility of saving the data structures on the disk; and therefore, avoid 
 The specific case of \textit{prefix*} is covered in the previous Section \ref{prefix_query}. Therefore,
 all the other cases of wildcard queries will be covered in this section.
 The implementation of WFST cannot be used because of its nature.
-There is no way to efficiently search in WFST tokens for the query of type \textit{*sufffix}. The required result is
+There is no way to efficiently search in WFST tokens for the query of type \textit{*suffix}. The required result is
 the same as for the prefix query: to find the terms which are accepted by the query with the top score. However, the data
 structure which could achieve this for generic wildcard query with the WFST performance is not known to the author.
 Nonetheless, the Lucene evaluation of wildcard queries could be leveraged. An automaton specific to the wildcard query is
 created by using the Lucene automaton implementation by replacing \texttt{?} to accept any character and \texttt{*} to accept
-any string. Then the terms are filtered using this automaton. The implemenation is slower than WFST because all the terms
+any string. Then the terms are filtered using this automaton. The implementation is slower than WFST because all the terms
 need to be filtered once if they are accepted by the automaton then they need to be filtered for the second time based on
 their score.
 
@@ -931,7 +931,7 @@ searches:
 \textbf{Chosen solution} – \textit{nearest completion} and thus \textit{hybrid completion} are very intriguing and could
 improve the suggestions by a big margin. However, they would need to be adapted to Lucene and the implementation
 might not be completely straightforward. Therefore, the basic implementation of suggester will only include the
-\textit{most popular completion}. Implementation of the \textit{nearest completion} is a very promising canditate for
+\textit{most popular completion}. Implementation of the \textit{nearest completion} is a very promising candidate for
 future extensions.
 
 \subsubsection{Most Popular Completion – Simple Queries}
@@ -949,7 +949,7 @@ so the data would not be lost after the restart of the application. Also this st
 efficiency. There are multiple options how to achieve this functionality:
 \begin{itemize}
     \item \textbf{Java Map} implementation with concurrent access, e.g. \textit{ConcurrentHashMap}. This map could be stored
-    on the disk periodically to fulfil the persistency requirement. This solution has a few drawbacks:
+    on the disk periodically to fulfill the persistency requirement. This solution has a few drawbacks:
     \begin{itemize}
         \item Loss of recent data after restart/crash.
         \item The data are held in memory. The size of the data is non-trivial, e.g.
@@ -1113,7 +1113,7 @@ terms.
     The memory usage increased by approximately $22$ \% for \textit{English words} dataset. However, it can be
     almost doubled as can be seen on \textit{Linux kernel} dataset where approximately $92$ \% size increase can be noted.
     The graph \ref{enc_comp} also shows the case when the encoding would use \textit{long} datatype. Although Lucene's \textit{Lookup}
-    interface specificies \textit{long} datatype, WFST implementation supports only \textit{int} so far.
+    interface specifies \textit{long} datatype, WFST implementation supports only \textit{int} so far.
 
     \item Lucene's WFST implementation does not know the notion of nodes – the data are stored only in arcs. The arcs that
     start in the root node might be stored in memory directly and therefore are not encoded in a byte array since these

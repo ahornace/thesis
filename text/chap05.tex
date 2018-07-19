@@ -57,11 +57,11 @@ The most affected resources are:
     is a lookup in the WFST data structure which is optimized for this kind of scenarios. However, in other cases
     index searches are performed which can consume a lot of CPU time.
     \item \textbf{Memory} – the WFST data structures are held in memory. Although their memory footprint is very low,
-    one data structure needs to be created per Lucene field per project which can sum up to a signifcant value.
+    one data structure needs to be created per Lucene field per project which can sum up to a significant value.
     Also, data for most popular completion are stored in the Chronicle Map implementation which translates to additional
     memory consumption.
     \item \textbf{Disk} – the WFST data structures are stored on the disk to provide a quick startup.
-    The data for most popular completion need to be stored as well. The comparison of disk consumptions for different datasets
+    The data for most popular completion need to be stored as well. The comparison of disk consumption for different datasets
     can be seen in the Figure \ref{comp_suggester_size}. The data show how much percentage of the index size the suggester
     data take. The data were measured on the machine with the operating system
     macOS\footnote{\url{https://en.wikipedia.org/wiki/MacOS}} and
@@ -143,7 +143,7 @@ The demo instance uses the Apache Tomcat servlet container. Many solutions exist
 applications in a Tomcat instance. From those the most significant are:
 \begin{itemize}
     \item \textbf{JMX\footnote{\url{https://en.wikipedia.org/wiki/Java\_Management\_Extensions}} remote} –
-    Tomcat provides possiblity to manage and monitor the applications via JMX. Many applications use this functionality
+    Tomcat provides possibility to manage and monitor the applications via JMX. Many applications use this functionality
     to their advantage.
     \item \textbf{JavaMelody}\footnote{\url{https://github.com/javamelody/javamelody}} – can be added to the project as a
     dependency and creates a simple page with monitoring information available at \textit{application\_URI/monitoring}.
@@ -240,7 +240,7 @@ To simulate a real-world use, the following queries were sent at random:
     \item Prefix \texttt{c} in \textit{full} field.
 \end{enumerate}
 The requests specified all 22 projects. The results can be seen in the Figure \ref{load_test_prefix_fig}. The slow startup
-can be noted; however, later requests were taking only a few miliseconds on average.
+can be noted; however, later requests were taking only a few milliseconds on average.
 
 \begin{figure}[htbp]
     \centering
@@ -2199,7 +2199,7 @@ can be noted; however, later requests were taking only a few miliseconds on aver
 
 \subsection{Worst case across all projects}
 \label{load_worst}
-Query \texttt{". $\vert$"} was used where $\vert$ represents a caret positon. Term $.$ occurs in $205,943$ files. All these files
+Query \texttt{". $\vert$"} was used where $\vert$ represents a caret position. Term $.$ occurs in $205,943$ files. All these files
 need to be checked for the $.$ position and then all terms are traversed to check if they occur at the positions next to the
 $.$ term. Time threshold was set to the default value: $2$ seconds. The test case sends this request $1,000$ times
 linearly distributed during a $10$ second time period. It can be noted that the system was not able to satisfy the requests;

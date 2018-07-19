@@ -156,7 +156,7 @@ namely:
     \item Remove the \textit{projectsEnabled} parameter from the constructor. It is OpenGrok specific.
     \item Overload method \textit{search(List\textless NamedIndexReader\textgreater, SuggesterQuery, Query)} to provide
     possibility to search without the need for the list of \textit{IndexReader} variables. They are provided now to better
-    faciliate the resource reuse. However, they are not needed and could be created from the index paths specified in
+    facilitate the resource reuse. However, they are not needed and could be created from the index paths specified in
     the \textit{init(Collection\textless NamedIndexDir\textgreater)} method. The overloaded method could have the following signature:
     \textit{search(List\textless String\textgreater, SuggesterQuery, Query)} which would only specify index names.
     \item Provide a default parser which would be able to create \textit{SuggesterQuery} instances. This could be a

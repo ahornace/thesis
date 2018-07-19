@@ -16,7 +16,7 @@ The other most notable features of OpenGrok are:
 \begin{itemize}
     \item Support for multiple projects. \textbf{Project} is a directory containing source files. Most commonly, it is a directory
     containing the source files for one software project; thus, the name.
-    \item Support for authentization and authorization (\cite{OpengrokAuthLayer}). For instance, by using LDAP
+    \item Support for authentication and authorization (\cite{OpengrokAuthLayer}). For instance, by using LDAP
         \footnote{\url{https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol}}.
     \item Support for multiple version control systems\footnote{\url{https://en.wikipedia.org/wiki/Version\_control}},
         e.g. git, mercurial, etc.
@@ -125,7 +125,7 @@ described in the Section \ref{opengrok_rest}.
 \subsubsection{REST API}
 \label{opengrok_rest}
 
-Opengrok provides REST API support. This is a relatively new feature. Before that, OpenGrok had known a concept of
+OpenGrok provides REST API support. This is a relatively new feature. Before that, OpenGrok had known a concept of
 \textit{Messages} – custom serialization of Java objects passed to the Web application via a custom port.
 So far, most of the REST API calls can be only made from the machine on which the OpenGrok runs.
 This is mainly because these REST API calls are meant as a means of communication between the Indexer and Web application
