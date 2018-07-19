@@ -6,8 +6,8 @@ study, the task of which is to determine what impact the changes may have on the
 the impact of a change. Even more so in large projects with huge codebases. Analysis of the main decisions made is
 described in detail in the Chapter \ref{chap:analysis}. The main aspects of the added changes that can be discussed are:
 \begin{itemize}
-    \item Impact on the search results. Discussed in more detail in \ref{search_res_impact}.
-    \item Impact on the hardware requirements. Discussed in more detail in \ref{hw_req_impact}.
+    \item Impact on the search results. Discussed in more detail in the Section \ref{search_res_impact}.
+    \item Impact on the hardware requirements. Discussed in more detail in the Section \ref{hw_req_impact}.
 \end{itemize}
 
 \section{Impact on the Search Results}
@@ -39,10 +39,10 @@ the suggester. Nevertheless, the suggester affects them indirectly:
 \begin{itemize}
     \item There are less queries which yield no results – if the user types a few characters and there are no suggestions then he
     can immediately see that there are no terms with that prefix. Therefore, the result will be empty.
-    \item Probably a negative impact on precision because of the scoring described in \ref{prefix_scoring}. The terms which
+    \item Probably a negative impact on precision because of the scoring described in the Section \ref{prefix_scoring}. The terms which
     are in more documents have greater scores. Thus, these terms are promoted and are more likely to be chosen by the user.
     Therefore, the size of the retrieved document set will be greater. However, the initial scoring might be mitigated
-    by taking into account previous users' searches as described in \ref{previous_searches}.
+    by taking into account previous users' searches as described in the Section \ref{previous_searches}.
 \end{itemize}
 
 It is not easy to achieve feasible values for both precision and recall. In many information retrieval systems when one is
@@ -62,7 +62,7 @@ The most affected resources are:
     memory consumption.
     \item \textbf{Disk} – the WFST data structures are stored on the disk to provide a quick startup.
     The data for most popular completion need to be stored as well. The comparison of disk consumptions for different datasets
-    can be seen on the graph \ref{comp_suggester_size}. The data show how much percentage of the index size the suggester
+    can be seen in the Figure \ref{comp_suggester_size}. The data show how much percentage of the index size the suggester
     data take. The data were measured on the machine with the operating system
     macOS\footnote{\url{https://en.wikipedia.org/wiki/MacOS}} and
     APFS\footnote{\url{https://en.wikipedia.org/wiki/Apple_File_System}} file system so the Chronicle Map did not take the
@@ -108,7 +108,7 @@ The most affected resources are:
         \label{comp_suggester_size}
     \end{figure}
 
-    Projects mentioned on the graph \ref{comp_suggester_size} were:
+    Projects mentioned in the Figure \ref{comp_suggester_size} were:
     \begin{itemize}
         \item \textbf{Apache Lucene and Solr} – \url{https://github.com/apache/lucene-solr}
         \item \textbf{Apache Kafka} – \url{https://github.com/apache/kafka}
@@ -164,8 +164,8 @@ features despite the small overhead.
 
 \subsection{Disk Usage}
 The demo instance is running on a machine with the Linux operating system. Therefore, Chronicle Map takes the advantage of
-lazy page allocation and the sizes are significantly smaller in comparison with the sizes on the graph \ref{comp_suggester_size}.
-The actual disk usage can be seen on the graph \ref{comp_suggester_size_demo}.
+lazy page allocation and the sizes are significantly smaller in comparison with the sizes in the Figure \ref{comp_suggester_size}.
+The actual disk usage can be seen in the Figure \ref{comp_suggester_size_demo}.
 It should be noted that the Chronicle Maps were almost empty.
 Similar sizes might be expected as in the Figure \ref{comp_suggester_size} if the Chronicle Maps start to fill up.
 
@@ -208,7 +208,7 @@ Similar sizes might be expected as in the Figure \ref{comp_suggester_size} if th
 Apache JMeter\footnote{\url{https://jmeter.apache.org}} was used for load testing.
 The testing was performed on the same machine as described in Attachment \ref{benchmark_attachment}.
 22 mostly well-known projects were
-used. 10 of them were the same as in \ref{hw_req_impact}. The other twelve were:
+used. 10 of them were the same as in the Section \ref{hw_req_impact}. The other twelve were:
 \begin{itemize}
     \item \textbf{Angular} – \url{https://github.com/angular/angular}
     \item \textbf{Apache Jena} – \url{https://github.com/apache/jena}
@@ -239,7 +239,7 @@ To simulate a real-world use, the following queries were sent at random:
     \item Empty prefix in \textit{full} field.
     \item Prefix \texttt{c} in \textit{full} field.
 \end{enumerate}
-The requests specified all 22 projects. The results can be seen on the graph \ref{load_test_prefix_fig}. The slow startup
+The requests specified all 22 projects. The results can be seen in the Figure \ref{load_test_prefix_fig}. The slow startup
 can be noted; however, later requests were taking only a few miliseconds on average.
 
 \begin{figure}[htbp]
@@ -3223,8 +3223,8 @@ The graph can be seen in the Figure \ref{load_test_multiple_projects}.
 \end{figure}
 
 \subsection{Real-world simulation}
-This test case tries to simulate the real-world usage. It contains all the simple prefix queries specified in \ref{load_test_prefix} (labeled 1-6),
-the worst case specified in \ref{load_worst} (labeled 7), and the following queries (lone $\vert$ signifies the caret position):
+This test case tries to simulate the real-world usage. It contains all the simple prefix queries specified in the Section \ref{load_test_prefix} (labeled 1-6),
+the worst case specified in the Section \ref{load_worst} (labeled 7), and the following queries (lone $\vert$ signifies the caret position):
 \begin{enumerate}
     \setcounter{enumi}{7}
     \item \texttt{".\ p$\vert$"} in \textit{full} field.

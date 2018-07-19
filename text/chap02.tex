@@ -25,7 +25,7 @@ there were multiple solutions from which to choose:
     \footnote{\url{https://en.wikipedia.org/wiki/Monolithic\_application}} which has proven to be harder to maintain in the
     long run.
     \item \textbf{Implement suggester as a separate module} – suggester could be implemented as an additional module to
-    the already modular architecture described in \ref{opengrok_modules}. This new module could be a dependency of the Web
+    the already modular architecture described in the Section \ref{opengrok_modules}. This new module could be a dependency of the Web
     module which would need to be modified to parse and process the data that are passed in. These data then could be
     passed to the new module via its public API. The result would look like shown in the Figure \ref{opengrok_modules_changed_img}.
     \begin{figure}[htbp]
@@ -51,13 +51,13 @@ will not require a lot of changes to bundle it as a separate service if the need
 \section{OpenGrok Modifications}
 \label{opengrok_modifications}
 
-As discussed in \ref{general_architecture}, the Suggester is added as a separate module which is a dependency of the
+As discussed in the Section \ref{general_architecture}, the Suggester is added as a separate module which is a dependency of the
 OpenGrok Web module. Therefore, changes to the Web module are required. OpenGrok uses the Maven module structure.
 Thus, the Suggester module has to respect it as well.
 
 \subsection{Frontend}
 
-As described in \ref{opengrok-web} section, OpenGrok provides a web interface. Some parts of the web need to be modified
+As described in the Section \ref{opengrok-web}, OpenGrok provides a web interface. Some parts of the web need to be modified
 for the Suggester support. Client-side scripting is done by the use of
 JavaScript\footnote{\url{https://en.wikipedia.org/wiki/JavaScript}} programming language.
 
@@ -118,7 +118,7 @@ automatic conversion to JSON objects via the Jackson\footnote{\url{https://githu
 Therefore, it is a solid choice.
 
 \subsubsection{Detecting the Token for Suggestions}
-As referenced in \ref{opengrok_usage}, it is possible to write multiple tokens into one \textit{input} HTML tag.
+As referenced in the Section \ref{opengrok_usage}, it is possible to write multiple tokens into one \textit{input} HTML tag.
 Imagine the text: "car engine". With only this information the Suggester is not able to tell if it should show
 suggestions for the "car" prefix or "engine" prefix or something totally different. Therefore, the Suggester also requires the position of the last typed
 key.
@@ -128,8 +128,8 @@ pure JavaScript; however, simple, small, and easy-to-use library \textit{jQuery 
 was used instead.
 
 \subsection{Backend}
-As stated in \ref{showing_suggestions}, the server part needs to have a service which returns results based on the
-input typed by the user. And as mentioned in \ref{opengrok-web}, the Web module is a web application compliant with
+As stated in the Section \ref{showing_suggestions}, the server part needs to have a service which returns results based on the
+input typed by the user. And as mentioned in the Section \ref{opengrok-web}, the Web module is a web application compliant with
 the servlet API; therefore, a new servlet which listens to the user's input and returns suggestions needs to be added.
 
 \subsubsection{How to Implement the Suggester Servlet}
@@ -156,12 +156,12 @@ there is no dependency overhead. As a result, the second option was chosen.
 
 \subsubsection{Processing User Input}
 \label{processing_user_input}
-As referenced in \ref{opengrok_usage}, OpenGrok web interface provides multiple HTML \textit{input} fields which
+As referenced in the Section \ref{opengrok_usage}, OpenGrok web interface provides multiple HTML \textit{input} fields which
 represent different Lucene \textit{fields} which should be searched. Each of these input fields can contain some value.
 Therefore, all these values are passed to the server along with the information of the currently selected input field and
 the caret position in it.
 
-Each of these fields can include any form of Lucene query, as stated in \ref{opengrok_usage}. Since these queries might
+Each of these fields can include any form of Lucene query, as stated in the Section \ref{opengrok_usage}. Since these queries might
 get very complicated, a proper parser is needed. Exactly for this purpose, OpenGrok provides modified parsers from Lucene library.
 
 
@@ -176,7 +176,7 @@ this identifier; therefore, it might be a little harder to decode the original q
 \subsubsection{Reacting to the Events}
 
 Running OpenGrok Web instance has REST API which allows the Indexer or administrators to indicate that some event occurred.
-More information can be found in \ref{opengrok_rest}. Events that the Suggester should be able to react to:
+More information can be found in the Section \ref{opengrok_rest}. Events that the Suggester should be able to react to:
 \begin{itemize}
     \item \textbf{Configuration change} – \textit{PUT /api/v1/configuration}
 
@@ -206,7 +206,7 @@ additional properties that might be important to this module are considered.
 \subsection{Prefix Query}
 \label{prefix_query}
 To start with, let's look at the simplest and at the same time probably the most used case. \textbf{Prefix query} is a special case of
-\textit{Wildcard query} \ref{wildcard_query}.
+\textit{Wildcard query} (described in the Section \ref{wildcard_query}).
 It can be divided into 2 parts:
 \begin{itemize}
     \item \textbf{prefix} – text which represents the prefix of all the terms this query accepts.
@@ -225,7 +225,7 @@ Every term needs to have a \textit{score} associated with it so the suggester ca
 to appear as a suggestion. Therefore, the problem is not only to find the terms with a specific prefix but to find $n$
 terms with the best scores having the specific prefix. Let's assume that the suggester does not have any information
 about the previous searches. This case is discussed in
-\ref{previous_searches}. The suggester has access to the Lucene index provided by the Indexer.
+the Section \ref{previous_searches}. The suggester has access to the Lucene index provided by the Indexer.
 Therefore; it has access to:
 \begin{itemize}
     \item \textbf{Total term frequency $T$} – how many times the term appears in the document set.
@@ -234,7 +234,7 @@ Therefore; it has access to:
 \end{itemize}
 
 \paragraph{IDF\protect\footnote{\url{https://en.wikipedia.org/wiki/Tf\%E2\%80\%93idf\%23Inverse\_document\_frequency\_2}}}
-At a first glance, it might seem as a good idea to use \textit{inverse document frequency} (IDF) as a metric. The formula for computing this metric can be seen at \ref{IDF_eq}.
+At a first glance, it might seem as a good idea to use \textit{inverse document frequency} (IDF) as a metric. The formula for computing this metric can be seen in Equation \ref{IDF_eq}.
 \begin{equation}
 \label{IDF_eq}
 IDF(t) = \log{\frac{D}{N}}
@@ -250,7 +250,7 @@ Therefore; this is not a good scoring option.
 Document frequency is a good indicator of how the term is used throughout the document set. However,
 this metric is specific to the project. Thus, it would be hard to compare values across multiple projects. The solution
 to the problem is normalization. The normalization is performed by dividing the document frequency of the term by the total number of documents in the document set.
-Resultant equation can be seen at \ref{norm_doc_freq}.
+The result is the Equation \ref{norm_doc_freq}.
 \begin{equation}
 \label{norm_doc_freq}
 score = \frac{N}{D} \cdot constant
@@ -297,7 +297,7 @@ newScore = maxPossibleScoreValue - score
 \end{equation}
 An efficient construction of minimal, acyclic and deterministic WFST is explained in \citep{Mihov01directconstruction}.
 
-\textbf{Example} – WFST with terms and weights: $CAR = 10, CARS = 15, CART = 5$ can be seen in \ref{wfst_example}.
+\textbf{Example} – WFST with terms and weights: $CAR = 10, CARS = 15, CART = 5$ can be seen in the Figure \ref{wfst_example}.
 
 \begin{figure}[htbp]
 \centering
@@ -319,7 +319,7 @@ The description of the test cases:
 \begin{itemize}
     \item \textbf{"non" Prefix Lookup} – is a lookup of 10 words with the prefix "non" which is the most occurring prefix
     of length 3 in the English words dataset with 7479 occurrences. Linux kernel has only 644 occurrences. Results can be seen
-    on the graph \ref{comp_non}.
+    in the Figure \ref{comp_non}.
 
     \begin{figure}[htbp]
         \centering
@@ -355,7 +355,7 @@ The description of the test cases:
         \label{comp_non}
     \end{figure}
     \item \textbf{One Letter Prefix Lookup} – is a lookup of 10 words with the prefix of each letter from the basic alphabet.
-    Results can be seen on the graph \ref{comp_one}.
+    Results can be seen in the Figure \ref{comp_one}.
 
     \begin{figure}[htbp]
         \centering
@@ -391,7 +391,7 @@ The description of the test cases:
     \end{figure}
 
     \item \textbf{Two Letter Prefix Lookup} – is a lookup of 10 words with the prefix which is a combination of 2 letters
-    from the basic alphabet. Results can be seen on the graph \ref{comp_two}.
+    from the basic alphabet. Results can be seen in the Figure \ref{comp_two}.
 
     \begin{figure}[htbp]
         \centering
@@ -426,7 +426,7 @@ The description of the test cases:
         \label{comp_two}
     \end{figure}
 
-    \item \textbf{Build time} – performs build of the data structure from the scratch. Results can be seen on the graph
+    \item \textbf{Build time} – performs build of the data structure from the scratch. Results can be seen in the Figure
     \ref{comp_build}.
 
     \begin{figure}[htbp]
@@ -464,7 +464,7 @@ The description of the test cases:
 
 
     \item \textbf{Memory usage} – approximate sizes the data structures use in the computer's main memory.
-     The result can be seen on the graph \ref{comp_mem}. The data was measured by calling method
+     The result can be seen in the Figure \ref{comp_mem}. The data was measured by calling method
      \textit{ramBytesUsed()} which is a custom method commonly implemented in Lucene's data structures.
      The drastic
     difference is mainly due to WFST's implementation which was optimized to use as little memory as possible while
@@ -530,7 +530,7 @@ the possibility of saving the data structures on the disk; and therefore, avoid 
 
 \subsection{Wildcard Query}
 \label{wildcard_query}
-The specific case of \textit{prefix*} is covered in the previous section \ref{prefix_query}. Therefore,
+The specific case of \textit{prefix*} is covered in the previous Section \ref{prefix_query}. Therefore,
 all the other cases of wildcard queries will be covered in this section.
 The implementation of WFST cannot be used because of its nature.
 There is no way to efficiently search in WFST tokens for the query of type \textit{*sufffix}. The required result is
@@ -543,10 +543,10 @@ need to be filtered once if they are accepted by the automaton then they need to
 their score.
 
 \subsubsection{Scoring}
-Scoring used is the same as mentioned in \ref{prefix_scoring}.
+Scoring used is the same as mentioned in the Section \ref{prefix_scoring}.
 
 \subsection{Regular Expression Query}
-The regular expression queries can be implemented in the same way as wildcard queries \ref{wildcard_query}. The only difference
+The regular expression queries can be implemented in the same way as wildcard queries (Section \ref{wildcard_query}). The only difference
 is that the automaton is created based on the regular expression rules.
 
 \subsection{Phrase Query}
@@ -557,7 +557,7 @@ The tokens must be surrounded by double quotes, e.g. \textit{"token1 token2"}. I
 
 \subsubsection{Evaluation}
 \label{prefix_evaluation}
-As mentioned in \ref{indexer:index},
+As mentioned in the Section \ref{indexer:index},
 Lucene stores data in the reverse document index. However, to be able to determine if one token is immediately followed by another
 token, their position needs to be stored and accessed. Lucene can be configured to store this information as well.
 It can easily be determined if Lucene stored this data by checking if Lucene index contains a file with a \textit{.pos}
@@ -571,7 +571,7 @@ next to each other and on correct positions.
 \paragraph{Using shingles}
 Shingle\footnote{\url{https://en.wikipedia.org/wiki/W-shingling}} is an n-gram of words. It would be possible to create
 shingles of specific count (e.g. 2 to 5 words) during the indexing phase. Each shingle would be treated as a single term.
-Then, it would be possible to do quick prefix lookup as described in \ref{prefix_query}. However, this solution has many drawbacks:
+Then, it would be possible to do quick prefix lookup as described in the Section \ref{prefix_query}. However, this solution has many drawbacks:
 \begin{itemize}
     \item Another, not quite small index would have to be created.
     \item The suggestions would work for only the last token of the phrase query.
@@ -582,9 +582,9 @@ Then, it would be possible to do quick prefix lookup as described in \ref{prefix
 \end{itemize}
 
 \paragraph{Using the default evaluation}
-As explained in \ref{processing_user_input}, it is known which token should be considered as prefix. Therefore, this token
+As explained in the Section \ref{processing_user_input}, it is known which token should be considered as prefix. Therefore, this token
 can be omitted but the requested position of other tokens must stay unchanged. Then the same evaluation as mentioned in
-\ref{prefix_evaluation} can be used. The result of the evaluation is a pair:
+the Section \ref{prefix_evaluation} can be used. The result of the evaluation is a pair:
 \begin{itemize}
     \item Document identifier.
     \item Token position.
@@ -614,7 +614,7 @@ opposite to the data structure which would provide efficient implementation of t
 \end{itemize}
 
 The first option is not feasible because of the added size to the already existing index. Comparison between the
-second and the third option can be seen on the graph \ref{comp_phrase}.
+second and the third option can be seen in the Figure \ref{comp_phrase}.
 
 \begin{figure}[htbp]
     \centering
@@ -668,7 +668,7 @@ implemented despite the increased performance for a small number of documents. I
 extension.
 
 \subsubsection{Scoring}
-It would be possible to use the same scoring as in \ref{prefix_scoring}. However, the scoring is not specific enough.
+It would be possible to use the same scoring as in the Section \ref{prefix_scoring}. However, the scoring is not specific enough.
 For instance, the term could have a big document frequency but in the context of phrase query would occur only once,
 whereas, the term with lower document frequency could occur more times, which would make it more specific. Therefore,
 the scoring based on the term frequency in the context of phrase query provides better results.
@@ -677,14 +677,14 @@ the scoring based on the term frequency in the context of phrase query provides 
 Range query allows to match documents that contain terms within a certain range.
 It contains a lower and upper term which determine the accepted range. For instance, the query \textit{[alfa TO beta]}
 accepts all terms that are lexicographically between the terms \textit{alfa} and \textit{beta}.
-Range queries have many similarities with wildcard queries \ref{wildcard_query} in terms of implementation for the
+Range queries have many similarities with wildcard queries (Section \ref{wildcard_query}) in terms of implementation for the
 suggester. The main difference is in creation of the automaton.
 The suggestions depend on which of the terms (lower or upper) is used as a prefix.
 
 \subsubsection{Lower Term as a Prefix}
 First of all, the automaton $A_{int}$ which represents a binary interval is created between the lower and upper term. Then,
 the automaton $A_{prefix}$ which accepts all terms with prefix specified in the lower bound is needed. The result automaton is the
-intersection of these two, as in \ref{lt_automaton}.
+intersection of these two, as in the Equation \ref{lt_automaton}.
 
 \begin{equation}
 \label{lt_automaton}
@@ -695,7 +695,7 @@ A_{result} = A_{int} \cap A_{prefix}
 Similarly, the automaton $A_{prefix}$ which accepts all terms with prefix specified in the upper bound is created. Then,
 another binary interval automaton $A_{int}$ is needed; however, this one has no lower bound specified and for the upper bound the
 lower term of the query is used. The result automaton needs to be created as a difference between the prefix automaton
-and the binary interval automaton, as in \ref{ut_automaton}.
+and the binary interval automaton, as in the Equation \ref{ut_automaton}.
 
 \begin{equation}
 \label{ut_automaton}
@@ -721,7 +721,7 @@ Following unary operators are supported:
 
 \subsubsection{Binary Boolean Operators}
 
-At first, let's look at the simple case with only one binary boolean operator and two terms, as in \ref{simple_boolean_op}.
+At first, let's look at the simple case with only one binary boolean operator and two terms, as in the Equation \ref{simple_boolean_op}.
 
 \begin{equation}
 \label{simple_boolean_op}
@@ -730,12 +730,12 @@ term1\ \diamondsuit \ term2
 
 If the $\diamondsuit$ is:
 \begin{itemize}
-    \item \textbf{AND} – or $\&\&$, is rewritten as in \ref{simple_and_op}.
+    \item \textbf{AND} – or $\&\&$, it is rewritten as in Equation \ref{simple_and_op}.
     \begin{equation}
     \label{simple_and_op}
     +term1\ +term2
     \end{equation}
-    \item \textbf{OR} – or $\vert\vert$, is rewritten as in \ref{simple_or_op}. (Default unary operators are used.)
+    \item \textbf{OR} – or $\vert\vert$, it is rewritten as in Equation \ref{simple_or_op}. (Default unary operators are used.)
     \begin{equation}
     \label{simple_or_op}
     term1\ term2
@@ -743,7 +743,7 @@ If the $\diamondsuit$ is:
 \end{itemize}
 
 \paragraph{Multiple binary operators}
-It is possible to use multiple binary operators as in \ref{multiple_boolean_op}.
+It is possible to use multiple binary operators as in Equation \ref{multiple_boolean_op}.
 
 \begin{equation}
 \label{multiple_boolean_op}
@@ -751,10 +751,10 @@ term1\ \diamondsuit \ term2\ \diamondsuit \ … \ \diamondsuit \ termN
 \end{equation}
 
 However, there is no operator precedence (\textit{AND} and \textit{OR} have the same precedence). Therefore, without grouping
-(described in \ref{grouping_queries}) it might
+(Section \ref{grouping_queries}) it might
 not be clear what unary operator (default or +) will be assigned to the middle terms.
 Lucene parses the query sequentially from left to right and upon encountering the binary operator changes the surrounding terms. For instance,
-query as in \ref{boolean_query_example} will be transformed to \ref{boolean_query_res}.
+query as in Equation \ref{boolean_query_example} will be transformed to Equation \ref{boolean_query_res}.
 
 \begin{equation}
 \label{boolean_query_example}
@@ -798,14 +798,14 @@ the \textit{AUTOTREE} data structure would have to be created for every field an
 Therefore, for now, it is considered as a possible improvement of the suggester performance.
 
 \paragraph{Scoring}
-The scoring should follow the same principle as in \ref{prefix_scoring} because of the consistency. However,
+The scoring should follow the same principle as in the Section \ref{prefix_scoring} because of the consistency. However,
 the document frequency has to be taken from the result set of the bare query and not the whole index.
 
 \subsection{Grouping Queries}
 \label{grouping_queries}
-With boolean operators (\ref{boolean_ops}) it is possible to create complex queries. However, it is not possible to
+With boolean operators (Section \ref{boolean_ops}) it is possible to create complex queries. However, it is not possible to
 combine queries in an easy manner. That's where grouping operators \textbf{(} and \textbf{)} have their use. For instance,
-it is possible to combine results of two queries as can be seen in \ref{grouping_query}.
+it is possible to combine results of two queries as can be seen in Equation \ref{grouping_query}.
 
 \begin{equation}
 \label{grouping_query}
@@ -813,7 +813,7 @@ it is possible to combine results of two queries as can be seen in \ref{grouping
 \end{equation}
 
 It is also possible to use grouping operators to remove the confusion caused by the omission of precedence for the binary
-boolean operators. Therefore, it is possible to write queries as shown in \ref{grouping_query2}.
+boolean operators. Therefore, it is possible to write queries as shown in Equation \ref{grouping_query2}.
 
 \begin{equation}
 \label{grouping_query2}
@@ -844,7 +844,7 @@ And that the suggestions are wanted for the prefix $t3$.
 
 The result documents with prefix $t3$ must contain the terms $t1, t4$. The result query which represents the documents that
 contain $t1, t4$ terms
-is written in \ref{grouping_query_dependency} (${*}\colon{*}$ represents \textit{MatchAllDocsQuery}).
+is written in Equation \ref{grouping_query_dependency} (${*}\colon{*}$ represents \textit{MatchAllDocsQuery}).
 
 \begin{equation}
 \label{grouping_query_dependency}
@@ -878,13 +878,13 @@ suggester will suggest the terms which satisfy this condition.
 
 \subsubsection{Proximity Search}
 Proximity search is a phrase query with a specified fuzzy value. The fuzzy value represents the allowed edit distance of the
-tokens of the phrase query. The implementation is very similar to \ref{suggest_phrase_query}. However, the suggestions
+tokens of the phrase query. The implementation is very similar to the one described in Section \ref{suggest_phrase_query}. However, the suggestions
 take the fuzzy factor into account and will contain terms that satisfy this condition.
 
 \subsection{Dealing with Boost Factor}
 Lucene supports term boosting by writing \textbf{\^} after the searched term and followed by the value of the boost factor.
 The default boost factor is 1. It must be positive but can be less than 1. The boost factor specifies how the term is relevant
-in regard to other terms. In the query \ref{boost} the term \textit{term1} is more relevant than the term \textit{term2}.
+in regard to other terms. In the query specified in Equation \ref{boost} the term \textit{term1} is more relevant than the term \textit{term2}.
 
 \begin{equation}
 \label{boost}
@@ -900,7 +900,7 @@ The \textbf{reciprocal rank} of a query response is the multiplicative inverse o
 That means, if the first correct answer was on the third place then reciprocal rank would be $\frac{1}{3}$.
 
 \textbf{Mean reciprocal rank}\footnote{\url{https://en.wikipedia.org/wiki/Mean\_reciprocal\_rank}}(MRR) is defined as
-average of reciprocal ranks for a set of queries $Q$. Mathematically, it is defined as in \ref{mrr}.
+average of reciprocal ranks for a set of queries $Q$. Mathematically, it is defined as in Equation \ref{mrr}.
 
 \begin{equation}
 \label{mrr}
@@ -1003,7 +1003,7 @@ efficiency. There are multiple options how to achieve this functionality:
 Benchmarks comparing MapDB, Chronicle Map, LMDB for Java and some other solutions performed by the LMDB for Java creators
 can be found in \citep{lmdb}.
 
-A benchmark for similar usage as in our case comparing MapDB, Chronicle Map and LMDB for Java can be seen on the graph \ref{comp_maps}.
+A benchmark for similar usage as in our case comparing MapDB, Chronicle Map and LMDB for Java can be seen in the Figure \ref{comp_maps}.
 The performed test consists of getting the integer value for every 20th term of \textit{English words} dataset.
 The details on how the benchmark was performed and how it can be replicated can be found in Attachment \ref{benchmark_attachment}.
 
@@ -1048,9 +1048,9 @@ Although MapDB provides the nicest high-level interface and there is no need to 
 its lookup speeds were lacking behind the other options.
 In the end, Chronicle Map was chosen to serve as a key-value store because it had proven to have a very solid performance.
 
-As mentioned in \ref{possible_implementations}, the best option for simple prefix queries is a WFST data structure.
+As mentioned in the Section \ref{possible_implementations}, the best option for simple prefix queries is a WFST data structure.
 Mainly because of its low memory footprint and fast lookups.
-Every term has a score assigned based on its occurrence frequency as mentioned in \ref{prefix_scoring}. This score
+Every term has a score assigned based on its occurrence frequency as mentioned in the Section \ref{prefix_scoring}. This score
 can be computed at the start and does not change very often – only after performing reindex. However, this changes with
 the use of the most popular completion. The data needs to be updated after every search.
 The best and easiest solution would be to change the term score in WFST directly. However, this is not possible because
@@ -1068,7 +1068,7 @@ terms.
     One solution might be that there would be another array where the content would be copied and then the references
     would be swapped. However, this does not allow parallel modifications.
     Another solution is to discard the variable length of the values and allocate a constant size for them,
-    e.g. 4 bytes for \textit{int}. This however increases the memory footprint as can be seen on \ref{enc_comp}.
+    e.g. 4 bytes for \textit{int}. This however increases the memory footprint as can be seen in the Figure \ref{enc_comp}.
 
     \begin{figure}[htbp]
         \centering
@@ -1126,10 +1126,10 @@ terms.
     might not be encoded as efficiently as possible but rather take a constant size. This then allows to do a binary
     search of arcs rather than going over them sequentially. Thus, increasing the speed of the lookup.
 
-    \item As explained in \ref{FST}, scores of the terms are inverted (\ref{invert_score}) so by increasing score of some term
+    \item As explained in the Section \ref{FST}, scores of the terms are inverted (Equation \ref{invert_score}) so by increasing score of some term
     we are actually decreasing its weight in WFST. Sum of arc values on the path to a term is the weight of the term (plus the final output modifier).
     However, the arc value tries to represent the lowest weight of the term in its subtree. And by decreasing this weight
-    it could be necessary to update the whole WFST data structure. For instance, let's suppose that we have WFST as in \ref{wfst_example}
+    it could be necessary to update the whole WFST data structure. For instance, let's suppose that we have WFST as in the Figure \ref{wfst_example}
     and that the weight of the term $CAR$ will change to value $2$. The changes can be seen in the Figure \ref{wfst_modified} in red color.
 
     \begin{figure}[htbp]
@@ -1265,7 +1265,7 @@ query has format $cat\ c\vert$. In this case the suggester should not suggest th
 value.
 
 \subsection{Authorization}
-As specified in \ref{opengrok_overview}, OpenGrok allows the administrators to specify to which projects the user has
+As specified in the Section \ref{opengrok_overview}, OpenGrok allows the administrators to specify to which projects the user has
 access. Therefore, suggester must not allow unauthorized users to see suggestions because it would be considered a security issue.
 
 \subsection{Restricting Load}
@@ -1281,7 +1281,7 @@ the worst queries for some dataset.
 
 \subsection{Configuration}
 \label{suggester_config}
-As mentioned in \ref{opengrok_configuration}, OpenGrok can be configured using a configuration file.
+As mentioned in the Section \ref{opengrok_configuration}, OpenGrok can be configured using a configuration file.
 The Suggester should be also configurable to allow the administrators to specify how they want the suggester to perform.
 Instead of creating its own separate way to handle configuration, it will depend on the already existing solution in
 OpenGrok. The main advantage is that the administrators are already familiar with how the configuration works. Configurable
@@ -1314,7 +1314,7 @@ properties of the suggester:
     \item \textbf{Show time} – specifies if the time it took the suggester to find the suggestions should be displayed.
     Default value: \textit{false}.
     \item \textbf{Rebuild cron config} – specifies how often should the suggester rebuild the WFST data structures.
-    The value must be in the Unix cron format, decision is described in \ref{cron}.  Default value: \textit{0 0 * * *} (every day at midnight).
+    The value must be in the Unix cron format, decision is described in the Section \ref{cron}.  Default value: \textit{0 0 * * *} (every day at midnight).
     \item \textbf{Build Termination Time in Seconds} – specifies after how much time the suggester should kill the
     threads that build the suggester data structures. Slow machines should specify more time. This option is mainly here
     to prevent the suggester to hang in the initialization. Default value: \textit{1800} (30 minutes).
@@ -1324,8 +1324,8 @@ properties of the suggester:
 \end{itemize}
 
 \subsection{Tolerating Errors}
-Although it is possible to use fuzzy factor as specified in \ref{fuzzy}, the Suggester is not error tolerant.
-This could be a good extension to the prefix queries \ref{prefix_query}.
+Although it is possible to use fuzzy factor as specified in the Section \ref{fuzzy}, the Suggester is not error tolerant.
+This could be a good extension to the prefix queries (Section \ref{prefix_query}).
 For instance, if the user types the prefix \textit{sh} even though
 the index contains the term \textit{schwarz}, it won't be among the suggestions. This might prove very useful if the
 user made a typing error or is not sure about the spelling of the term.
@@ -1339,7 +1339,7 @@ another data structures and does not work for other types of queries. Therefore,
 \subsection{Retrieving Popularity Data}
 \label{retrieving_popularity_data}
 
-In \ref{promoting_on_previous_searches} it was discussed that most popular completion will be used. Many users or
+In the Section \ref{promoting_on_previous_searches} it was discussed that most popular completion will be used. Many users or
 administrators might be interested in the terms popularity. Therefore, administrators can access this information
 via the REST API by accessing \textit{/api/v1/suggest/popularity/\{project\}} endpoint. The \textit{\{project\}} represents
 a project name for which to retrieve the data. Additional supported query parameters:

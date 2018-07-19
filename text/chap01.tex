@@ -37,8 +37,8 @@ OpenGrok is split into multiple modules:
 \begin{itemize}
     \item jrcs – Java library which provides support for RCS\footnote{\url{https://en.wikipedia.org/wiki/Revision\_Control\_System}}
     version control system.
-    \item Indexer – described in \ref{indexer}.
-    \item Web – described in \ref{opengrok-web}.
+    \item Indexer – described in the Section \ref{indexer}.
+    \item Web – described in the Section \ref{opengrok-web}.
     \item plugins – contains authorization plugins.
     \item distribution – does not contain any code and serves for combining all of the above into one distribution unit.
 \end{itemize}
@@ -59,9 +59,9 @@ There is one main \textit{pom.xml} in the root of the project which aggregates a
 
 Indexer is a submodule, main purpose of which is for each project to:
 \begin{itemize}
-    \item Generate the main lookup index. Detailed description in \ref{indexer:index}.
-    \item Generate the history index for repositories. Detailed description in \ref{indexer:history}.
-    \item Generate xref. Detailed description in \ref{indexer:xref}.
+    \item Generate the main lookup index. Detailed description in the Section \ref{indexer:index}.
+    \item Generate the history index for repositories. Detailed description in the Section \ref{indexer:history}.
+    \item Generate xref. Detailed description in the Section \ref{indexer:xref}.
 \end{itemize}
 
 \subsubsection{Index}
@@ -102,7 +102,7 @@ aforementioned information.
 \subsection{Web}
 \label{opengrok-web}
 
-The previous section \ref{indexer:index} describes how the data are processed to create the index. However, these data need
+The Section \ref{indexer:index} describes how the data are processed to create the index. However, these data need
 to be presented to the end user. The Web submodule serves exactly this purpose. It is distributed as a
 WAR\footnote{\url{https://en.wikipedia.org/wiki/WAR\_(file\_format)}} which can be used by many
 servlet containers\footnote{\url{https://en.wikipedia.org/wiki/Web\_container}}. OpenGrok correctly runs in
@@ -120,7 +120,7 @@ XML\footnote{\url{https://en.wikipedia.org/wiki/XML}} encoded class which needs 
 If the Web module does not find the configuration at the expected place (can be configured in \textit{web.xml}) then an
 error is shown on the main page and the usage is not possible. Of course, there are ways to change the configuration
 of the running OpenGrok application via the REST API \footnote{\url{https://en.wikipedia.org/wiki/Representational\_state\_transfer}}
-described in the \ref{opengrok_rest}.
+described in the Section \ref{opengrok_rest}.
 
 \subsubsection{REST API}
 \label{opengrok_rest}
@@ -182,7 +182,7 @@ OpenGrok presents search results similarly to what can be seen in Figure \ref{op
     \label{opengrok_results}
 \end{figure}
 
-In the picture \ref{opengrok_results} numbers represent:
+In the Figure \ref{opengrok_results} numbers represent:
 \begin{enumerate}
     \item Results are paged as is a custom in many applications.
     \item Directory where the result documents are located.

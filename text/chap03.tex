@@ -1,10 +1,10 @@
 \chapter{User Documentation}
 \label{chap:user}
 
-This chapter describes how the suggester should be used. It is divided into 2 parts:
+This chapter describes how the suggester should be used. It is divided into 2 sections:
 \begin{itemize}
-    \item User guide \ref{user_guide} – usage described from the end user point of view.
-    \item Administrator guide \ref{administrator_guide} – describes how to modify the suggester configuration.
+    \item \ref{user_guide} User guide – usage described from the end user point of view.
+    \item \ref{administrator_guide} Administrator guide – describes how to modify the suggester configuration.
 \end{itemize}
 
 \section{User Guide}
@@ -100,7 +100,7 @@ xcschemes/"
 \end{enumerate}
 
 \subsubsection{Timeout}
-As specified in \ref{restricting_load}, the system may be under load and it might return only a partial result or no
+As specified in the Section \ref{restricting_load}, the system may be under load and it might return only a partial result or no
 suggestions at all. In the case of the partial result, the message \textit{"Partial result due to timeout"} will be
 displayed at the bottom of the suggestions window similarly as in the Figure \ref{partial_result}.
 \begin{figure}[htbp]
@@ -135,9 +135,9 @@ to use these modifiers in the \textit{Full Search} input field. For example, it 
 \section{Administrator Guide}
 \label{administrator_guide}
 
-There are multiple ways to modify the suggester configuration described in \ref{suggester_config}:
+There are multiple ways to modify the suggester configuration described in the Section \ref{suggester_config}:
 \begin{itemize}
-    \item By modifying the OpenGrok's XML configuration described in \ref{opengrok_configuration}. An example:
+    \item By modifying the OpenGrok's XML configuration described in the Section \ref{opengrok_configuration}. An example:
 \begin{code}
 <java version="1.8.0_162" class="java.beans.XMLDecoder">
   <object

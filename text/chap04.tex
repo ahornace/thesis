@@ -98,14 +98,14 @@ The \textit{\{field\}} represents the Lucene field for which the files contain t
 If some data are corrupted and
 the suggester is not able to read them, the best solution might be:
 \begin{enumerate}
-    \item If possible, then backup the popularity data as specified in \ref{retrieving_popularity_data}. (Not needed
+    \item If possible, then backup the popularity data as specified in the Section \ref{retrieving_popularity_data}. (Not needed
     if popularity data is not important or turned off.)
     \item Stop the web application.
     \item Remove either the corrupted data or the whole suggester directory.
     \item Start the web application again.
-    \item Initialize the popularity data as specified in \ref{increasing_search_counts}. Some data modifications would
+    \item Initialize the popularity data as specified in the Section \ref{increasing_search_counts}. Some data modifications would
     be needed; however, if the need arises, an automatic tool might be created for this purpose. (Not needed
-    if popularity data is not important or turned off.)
+    if popularity data are not important or turned off.)
 \end{enumerate}
 
 \subsubsection{Chronicle Map Configuration}
