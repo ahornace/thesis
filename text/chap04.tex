@@ -17,8 +17,8 @@ objects and modules can be seen in the Figure \ref{programmer_sequence}.
 \section{Web module}
 The suggester support was added as a part to the already existing OpenGrok's REST API. The \textit{SuggesterController}
 class serves as a REST API endpoint for suggester related queries. Other needed classes are located in the
-\textit{org.opensolaris.opengrok.web.api.v1.suggester} package. Classes which are auto-detected by the Jersey
-implementation are located in the \textit{org.opensolaris.opengrok.web.api.v1.suggester.provider} package and are annotated
+\textit{org.opensolaris.\newline opengrok.web.api.v1.suggester} package. Classes which are auto-detected by the Jersey
+implementation are located in the \textit{org.opensolaris.opengrok.web.api.v1.\newline suggester.provider} package and are annotated
 by the \textit{@Provider}\footnote{\url{https://docs.oracle.com/javaee/7/api/javax/ws/rs/ext/Provider.html}} annotation.
 The communication with the Suggester module is abstracted in the \textit{SuggesterService} interface and implemented in the
 \textit{SuggesterServiceImpl} class. The implementation is injected into the classes which require the
@@ -154,11 +154,11 @@ However, a few modification might be needed to make it more user-friendly,
 namely:
 \begin{itemize}
     \item Remove the \textit{projectsEnabled} parameter from the constructor. It is OpenGrok specific.
-    \item Overload method \textit{search(List\textless NamedIndexReader\textgreater, SuggesterQuery, Query)} to provide
-    possibility to search without the need for the list of \textit{IndexReader} variables. They are provided now to better
+    \item Overload the method \textit{search(List\textless NamedIndexReader\textgreater, SuggesterQuery, Query)} to provide
+    the possibility to search without the need for the list of the \textit{IndexReader} variables. They are provided now to better
     facilitate the resource reuse. However, they are not needed and could be created from the index paths specified in
-    the \textit{init(Collection\textless NamedIndexDir\textgreater)} method. The overloaded method could have the following signature:
-    \textit{search(List\textless String\textgreater, SuggesterQuery, Query)} which would only specify index names.
+    the \textit{init(Collection\textless NamedIndexDir\textgreater)} method. The new method could have the following signature:
+    \textit{search(List\textless String\textgreater, SuggesterQuery, Query)} which would require only index names.
     \item Provide a default parser which would be able to create \textit{SuggesterQuery} instances. This could be a
     modified version of \textit{SuggesterQueryParser} already present in the Web module.
 \end{itemize}

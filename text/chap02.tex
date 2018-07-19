@@ -137,7 +137,7 @@ The servlet represents a simple REST API endpoint
 because it needs to respond to HTTP GET requests and return the response in JSON.
 There is a lot of options how this could be achieved; however, the most notable are:
 \begin{itemize}
-    \item Use default implementation by extending \textit{HttpServletRequest} and its method \textit{doGet()}. The main
+    \item Use default implementation by extending the \textit{HttpServletRequest}\footnote{\url{https://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletRequest.html}} and its method \textit{doGet()}. The main
     advantage of this approach is that there are no other dependencies because they are provided by the underlying servlet container.
      However, some boilerplate code would need
     to be written which could be avoided.
@@ -157,7 +157,7 @@ there is no dependency overhead. As a result, the second option was chosen.
 \subsubsection{Processing User Input}
 \label{processing_user_input}
 As referenced in the Section \ref{opengrok_usage}, OpenGrok web interface provides multiple HTML \textit{input} fields which
-represent different Lucene \textit{fields} which should be searched. Each of these input fields can contain some value.
+represent different Lucene \textit{fields} that should be searched. Each of these input fields can contain some value.
 Therefore, all these values are passed to the server along with the information of the currently selected input field and
 the caret position in it.
 
@@ -297,7 +297,8 @@ newScore = maxPossibleScoreValue - score
 \end{equation}
 An efficient construction of minimal, acyclic and deterministic WFST is explained in \citep{Mihov01directconstruction}.
 
-\textbf{Example} – WFST with terms and weights: $CAR = 10, CARS = 15, CART = 5$ can be seen in the Figure \ref{wfst_example}.
+\textbf{Example} – WFST with terms and weights: \newline
+$CAR = 10, CARS = 15, CART = 5$ can be seen in the Figure \ref{wfst_example}.
 
 \begin{figure}[htbp]
 \centering
@@ -310,7 +311,8 @@ An efficient construction of minimal, acyclic and deterministic WFST is explaine
 
 Two datasets were used:
 \begin{itemize}
-    \item \textbf{English words} – list of \textbf{370,099} words freely available at \url{https://github.com/dwyl/english-words}.
+    \item \textbf{English words} – list of \textbf{370,099} words available at \url{https://github.com/dwyl/english-words}.
+    It is distributed under the Unlicense license \citep{unlicense}.
     \item \textbf{Linux kernel} – \textit{full} field of indexed Linux kernel with \textbf{3,459,733} terms.
 \end{itemize}
 
@@ -894,7 +896,7 @@ term1\ \hat{}\ 3\ \&\&\ term2
 It might be possible for complex queries to take this information and boost those suggested terms that are in the same
 document as boosted term. However, for now, the boost factor is ignored by the suggester.
 
-\subsection{Promoting Suggestions Based on the Previous Searches}
+\subsection{Promoting Suggestions by the Previous Searches}
 \label{promoting_on_previous_searches}
 The \textbf{reciprocal rank} of a query response is the multiplicative inverse of the rank of the first correct answer.
 That means, if the first correct answer was on the third place then reciprocal rank would be $\frac{1}{3}$.
@@ -948,12 +950,12 @@ It is needed to have a key-value store for storing the number of searches for th
 so the data would not be lost after the restart of the application. Also this store should allow parallel access for
 efficiency. There are multiple options how to achieve this functionality:
 \begin{itemize}
-    \item \textbf{Java Map} implementation with concurrent access, e.g. \textit{ConcurrentHashMap}. This map could be stored
+    \item \textbf{Java Map} implementation which supports concurrent access, e.g. \textit{ConcurrentHashMap}\footnote{\url{https://docs.oracle.com/javase/10/docs/api/java/util/concurrent/ConcurrentHashMap.html}}. This map could be stored
     on the disk periodically to fulfill the persistency requirement. This solution has a few drawbacks:
     \begin{itemize}
         \item Loss of recent data after restart/crash.
         \item The data are held in memory. The size of the data is non-trivial, e.g.
-        \textit{Linux kernel} dataset contained approximately $3.5 million$ terms for \textit{full} field.
+        \textit{Linux kernel} dataset contains approximately 3.5 million terms for \textit{full} field.
     \end{itemize}
 
     \item \textbf{Redis}\footnote{\url{https://redis.io}} – in-memory data structure store, used as a database, cache

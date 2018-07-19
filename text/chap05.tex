@@ -110,7 +110,7 @@ The most affected resources are:
 
     Projects mentioned in the Figure \ref{comp_suggester_size} were:
     \begin{itemize}
-        \item \textbf{Apache Lucene and Solr} – \url{https://github.com/apache/lucene-solr}
+        \item \textbf{Apache Lucene and Solr} – \newline\url{https://github.com/apache/lucene-solr}
         \item \textbf{Apache Kafka} – \url{https://github.com/apache/kafka}
         \item \textbf{GraalVM} – \url{https://github.com/oracle/graal}
         \item \textbf{Jenkins} – \url{https://github.com/jenkinsci/jenkins}
@@ -146,7 +146,7 @@ applications in a Tomcat instance. From those the most significant are:
     Tomcat provides possibility to manage and monitor the applications via JMX. Many applications use this functionality
     to their advantage.
     \item \textbf{JavaMelody}\footnote{\url{https://github.com/javamelody/javamelody}} – can be added to the project as a
-    dependency and creates a simple page with monitoring information available at \textit{application\_URI/monitoring}.
+    dependency and creates a simple page with the monitoring information available at \textit{/monitoring} URL.
     Provides monitoring of CPU, memory usage, HTTP request count and many others. Also allows exporting data in
     various formats, e.g. PDF or JSON. The main disadvantage is that it is embedded into the application and may influence
     the gathered data. However, this overhead is small, e.g. the memory overhead did not exceed 3 MiB.
@@ -228,6 +228,7 @@ However, it can be seen that the CPU usage maximum values increased.
 \section{Load Testing}
 Apache JMeter\footnote{\url{https://jmeter.apache.org}} was used for load testing.
 The testing was performed on the same machine as described in Attachment \ref{benchmark_attachment}.
+The JMeter's \textit{.jmx} file used can be found in the project specified in Attachment \ref{benchmark_attachment}.
 22 mostly well-known projects were
 used. 10 of them were the same as in the Section \ref{hw_req_impact}. The other twelve were:
 \begin{itemize}
