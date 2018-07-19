@@ -14,7 +14,8 @@ OpenGrok is the tool for that purpose. It understands a variety of
 programming languages, e.g. Java, C, C\#, JavaScript and many others.
 The other most notable features of OpenGrok are:
 \begin{itemize}
-    \item Support for multiple projects.
+    \item Support for multiple projects. \textbf{Project} is a directory containing source files. Most commonly, it is a directory
+    containing the source files for one software project; thus, the name.
     \item Support for authentization and authorization (\cite{OpengrokAuthLayer}). For instance, by using LDAP
         \footnote{\url{https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol}}.
     \item Support for multiple version control systems\footnote{\url{https://en.wikipedia.org/wiki/Version\_control}},
@@ -24,7 +25,7 @@ The other most notable features of OpenGrok are:
             \item Possibility to annotate a file.
             \item Possibility to see the history for a specific file.
         \end{itemize}
-    \item Support for cross-referencing.
+    \item Support for cross-referencing. In the context of OpenGrok, abbreviation \textbf{xref} is used.
     \item Support for navigation in source files. For instance, by providing list of methods.
     \item Syntax highlighting of source files.
 \end{itemize}
@@ -71,7 +72,7 @@ written in Java. Every source file is considered to be a \textit{document}. Ever
 \textit{field}s which contain text data. This text data is then tokenized by specific rules (e.g. remove stop words,
 stemming, etc.) into tokens. In the Lucene context \textit{term} is a pair of \textit{field} and \textit{token}.
 Lucene uses \textit{reverse document index}\footnote{\url{https://en.wikipedia.org/wiki/Inverted_index}},
-i.e. for each term a collection of document identifiers is stored in which this term occurrs.
+i.e. for each term a collection of document identifiers is stored in which this term occurs.
 This form of data representation is very efficient for document lookup.
 
 \paragraph{Tokenization}
@@ -85,13 +86,15 @@ OpenGrok uses the history index for quick access to history information of every
 what kind of version control system the project is using and then executes appropriate commands to retrieve the project's
 history (e.g. some form of \textit{git log}). Since executing these commands is not very efficient (new process has to
 be created), OpenGrok does this at the indexing phase to provide better performance later. Serialized form of Java object
-is stored for each source file of the project to represent its history.
+is stored for each source file of the project to represent its history. To be precise, OpenGrok supports multiple repositories
+in one project and history files are generated for the specific repository to which the file belongs.
 
 \subsubsection{Xref}
 \label{indexer:xref}
 
 Main purpose of the OpenGrok is to find relevant documents based on the search query. After the successful search, the most
-obvious route of action is to look at the found documents. However, analyzing the document once again, performing syntax
+obvious route of action is to look at the found documents. However, analyzing the document once again,
+adding cross-reference links, performing syntax
 highlighting and other operations can be very time consuming. Therefore, \textit{xref} directory contains pre-generated
 HTML\footnote{\url{https://en.wikipedia.org/wiki/HTML}} versions of every source file which already contain the
 aforementioned information.
@@ -209,7 +212,7 @@ IDEs\footnote{\url{https://en.wikipedia.org/wiki/Integrated_development_environm
 
 \section{Similar Tools}
 It is hard to compare OpenGrok to other similar tools because all of these are complex and each of them provides a unique
-feel and solution to the problems.
+feel and distinct set of problems. Very often, these problems are solved in a different manner.
 Therefore, the list only mentions if these tools contain suggester functionality. Still, this might not be the best
 indicator because they might provide different solutions, e.g. instant search which might render the suggester a redundant asset.
 The list of similar tools:

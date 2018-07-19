@@ -125,6 +125,13 @@ it may signify two cases:
     \item The system timed out and did not find any possible suggestions. In that case no suggestions window will be displayed.
 \end{itemize}
 
+\subsubsection{Support for Lucene's Field Modifier}
+Lucene queries can contain a field modifier which specifies the field for which the query should be matched (syntax \textit{\{field\}:\{query\}}). OpenGrok
+actually performs this modification when the user types queries into different search inputs. However, it is also possible
+to use these modifiers in the \textit{Full Search} input field. For example, it is possible to write a query
+\texttt{defs:a$\vert$} (\texttt{$\vert$} represents a caret position) and the suggester will suggest terms with prefix
+\texttt{a} exactly as it would if the text \texttt{a|} were written into \textit{Definition} input.
+
 \section{Administrator Guide}
 \label{administrator_guide}
 

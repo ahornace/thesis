@@ -58,7 +58,8 @@ Thus, the Suggester module has to respect it as well.
 \subsection{Frontend}
 
 As described in \ref{opengrok-web} section, OpenGrok provides a web interface. Some parts of the web need to be modified
-for the Suggester support.
+for the Suggester support. Client-side scripting is done by the use of
+JavaScript\footnote{\url{https://en.wikipedia.org/wiki/JavaScript}} programming language.
 
 \subsubsection{Configuring Suggester}
 OpenGrok provides REST API endpoint for querying or manipulating the configuration of the Web application.
@@ -199,8 +200,8 @@ More information can be found in \ref{opengrok_rest}. Events that the Suggester 
 \section{Suggester}
 \label{suggester_module}
 This section looks at the Suggester module in more detail. First of all, it describes all the queries the suggester supports.
-Then, it looks at the fuzzy and boost factors. After that, it discusses how to leverage the previous searches. At last, it mentions some
-additional properties that were needed by this module.
+Then, the fuzzy and boost factors are discussed. After that, it discusses how to leverage the previous searches. At last, some
+additional properties that might be important to this module are considered.
 
 \subsection{Prefix Query}
 \label{prefix_query}
@@ -213,7 +214,7 @@ It can be divided into 2 parts:
 \end{itemize}
 
 These parts are then combined together as: \textit{\{prefix\}*}.
-It is probably the most used case because of the suggester's nature. If the user types any simple text (even without \textit{*}) then
+It is probably the most frequently used case because of the suggester's nature. If the user types any simple text (even without \textit{*}) then
 the suggester automatically appends \textit{*} to the end and considers this as a prefix query to provide adequate suggestions.
 
 Since the prefix queries will be used that often then the suggester needs to be optimized for this type of queries.
@@ -233,21 +234,23 @@ Therefore; it has access to:
 \end{itemize}
 
 \paragraph{IDF\protect\footnote{\url{https://en.wikipedia.org/wiki/Tf\%E2\%80\%93idf\%23Inverse\_document\_frequency\_2}}}
-At a first glance, it might seem as a good idea to use inverse document frequency as a metric. The formula for computing this metric can be seen at \ref{IDF_eq}.
+At a first glance, it might seem as a good idea to use \textit{inverse document frequency} (IDF) as a metric. The formula for computing this metric can be seen at \ref{IDF_eq}.
 \begin{equation}
 \label{IDF_eq}
 IDF(t) = \log{\frac{D}{N}}
 \end{equation}
-Basically, it says how important the term is in the document set. If the term occurrs in every document, then it is probably
+Basically, it says how important the term is in the document set. If the term occurs in every document, then it is probably
 a very common word. If provided in the query, it does not reduce the size of the result set significantly.
-However, this importance is correct if the term is
-provided by the user in the query. If the suggester were to use it, then it would suggest terms that are used the least, e.g. only once.
+However, this measure provides good results if the term is
+already supplied by the user in the query because the system can focus on the terms with the highest IDF.
+If the suggester were to use it, then it would suggest terms that are used the least, e.g. in the worst case only once.
 Therefore; this is not a good scoring option.
 
 \paragraph{Document frequency}
 Document frequency is a good indicator of how the term is used throughout the document set. However,
 this metric is specific to the project. Thus, it would be hard to compare values across multiple projects. The solution
-to the problem is normalization. Resultant equation can be seen at \ref{norm_doc_freq}.
+to the problem is normalization. The normalization is performed by dividing the document frequency of the term by the total number of documents in the document set.
+Resultant equation can be seen at \ref{norm_doc_freq}.
 \begin{equation}
 \label{norm_doc_freq}
 score = \frac{N}{D} \cdot constant
@@ -352,7 +355,7 @@ The description of the test cases:
         \label{comp_non}
     \end{figure}
     \item \textbf{One Letter Prefix Lookup} – is a lookup of 10 words with the prefix of each letter from the basic alphabet.
-    Results can be seen the on the graph \ref{comp_one}.
+    Results can be seen on the graph \ref{comp_one}.
 
     \begin{figure}[htbp]
         \centering
@@ -513,7 +516,7 @@ The description of the test cases:
 
 \end{itemize}
 
-How to reproduce these benchmarks and description of the machine on which they were run can be found in \ref{benchmark_attachment}.
+How to reproduce these benchmarks and description of the machine on which they were run can be found in Attachment \ref{benchmark_attachment}.
 
 Based on the provided results, it can be noted that WFST performs much better at lookups. Mainly at lookups with a short prefix.
 Also, the memory usage is inarguably better in the WFST data structures. However, its build time is worse by a small margin than TST's.
@@ -534,7 +537,8 @@ There is no way to efficiently search in WFST tokens for the query of type \text
 the same as for the prefix query: to find the terms which are accepted by the query with the top score. However, the data
 structure which could achieve this for generic wildcard query with the WFST performance is not known to the author.
 Nonetheless, the Lucene evaluation of wildcard queries could be leveraged. An automaton specific to the wildcard query is
-created and then the terms are filtered using this automaton. The implemenation is slower than WFST because all the terms
+created by using the Lucene automaton implementation by replacing \texttt{?} to accept any character and \texttt{*} to accept
+any string. Then the terms are filtered using this automaton. The implemenation is slower than WFST because all the terms
 need to be filtered once if they are accepted by the automaton then they need to be filtered for the second time based on
 their score.
 
@@ -587,6 +591,10 @@ can be omitted but the requested position of other tokens must stay unchanged. T
 \end{itemize}
 Based on this information it should be possible the gather all the possible terms and accept only those with the
 provided prefix.
+
+\paragraph{Chosen solution} The use of shingles was ruled out because of the lack of support for arbitrary number of words
+in the phrase query. However, it might be considered as a possible optimization if the need arises despite the added
+data size and memory overhead. As a result, the default evaluation was chosen.
 
 \paragraph{Getting the token at specific position}
 Based on the document identifier and token position it should be easy to get the needed term. However, Lucene does not
@@ -666,9 +674,12 @@ whereas, the term with lower document frequency could occur more times, which wo
 the scoring based on the term frequency in the context of phrase query provides better results.
 
 \subsection{Range Queries}
+Range query allows to match documents that contain terms within a certain range.
+It contains a lower and upper term which determine the accepted range. For instance, the query \textit{[alfa TO beta]}
+accepts all terms that are lexicographically between the terms \textit{alfa} and \textit{beta}.
 Range queries have many similarities with wildcard queries \ref{wildcard_query} in terms of implementation for the
-suggester. The main difference is in creation of the automaton. Range query contains a lower and upper term. The
-suggestions depends on which of the terms is used as a prefix.
+suggester. The main difference is in creation of the automaton.
+The suggestions depend on which of the terms (lower or upper) is used as a prefix.
 
 \subsubsection{Lower Term as a Prefix}
 First of all, the automaton $A_{int}$ which represents a binary interval is created between the lower and upper term. Then,
@@ -694,17 +705,18 @@ A_{result} = A_{prefix} - A_{int}
 \subsection{Including Boolean Operators}
 \label{boolean_ops}
 
-There are multiple boolean operators which can modify the meaning of the term in the query.
+There are multiple boolean operators which can modify the meaning of the queries.
 
 \subsubsection{Unary Boolean Operators}
 Following unary operators are supported:
 \begin{itemize}
-    \item \textbf{+} unary operator in front of the term means that the term must occur in the result document set.
-    \item \textbf{-} unary operator in front of the term means that the term cannot occur in the result document set.
+    \item \textbf{+} unary operator in front of the query means that the term represented by this query must occur in
+    the result document set.
+    \item \textbf{-} unary operator in front of the query means that the term represented by this query cannot occur in the result document set.
     It is also possible to use synonyms \textbf{NOT} or \textbf{!}. However, it is not possible to use it in a query
-    with a single term.
-    \item \textbf{Default} unary operator – no unary operator in front of the term means that the term should occur
-    in the result document set.
+    with only a single term.
+    \item \textbf{Default} unary operator – no unary operator in front of the query means that the term represented by this query should occur
+    in the result document set. However, the occurrence is not mandatory.
 \end{itemize}
 
 \subsubsection{Binary Boolean Operators}
@@ -756,19 +768,21 @@ a\ \&\&\ b\ \vert\vert\ c\ \&\&\ d\ \vert\vert\ !e
 
 \subsubsection{Suggester}
 The suggester can be interested only in unary boolean operators because binary boolean operators are transformed into unary.
-Let's assume query with multiple terms. One of those terms is a prefix for which the suggester needs to provide suggestions.
-Based on the unary operator the prefix has assigned, the suggester needs to:
+For simplicity, let's assume query with multiple terms (other types of queries are treated analogically).
+One of those terms represents a query for which the suggester needs to provide suggestions.
+Based on the unary operator this query has assigned, the suggester needs to:
 \begin{itemize}
     \item \textbf{+} – the suggested term must occur in the result set. Therefore, it is dependent on the other terms.
     For instance, if the query contains another term which must occur in the result set, then the suggester should only
     suggest the terms which are occurring in the same documents as the term. If it did not, then user could be easily
     confused and the result set might be empty. The solution to this problem is to:
     \begin{enumerate}
-        \item Extract the prefix term from the query.
+        \item Remove the term for which the suggester needs to provide suggestions from the query.
         \item Get all the documents that satisfy the bare query.
-        \item Suggest only terms which occur in at least one of the retrieved documents in step 2.
+        \item Suggest only terms which occur in at least one of the retrieved documents in step 2 and which satisfy the
+        query removed in step 1.
     \end{enumerate}
-    \item \textbf{default} – the suggested term should occur in the result set. However, if it does not then nothing is broken.
+    \item \textbf{default} – the suggested term should occur in the result set. However, if it does not, then nothing is broken.
     Nevertheless, suggesting terms that cannot appear in the result document set does not make much sense. Thus, it is performed
     as in \textit{+} unary operator.
     \item \textbf{-} – the suggested term must not appear in the result set and as mentioned, it cannot be used in a
@@ -837,7 +851,7 @@ is written in \ref{grouping_query_dependency} (${*}\colon{*}$ represents \textit
 ({+}t1\ {+}({+}({+}{*}\colon{*})\ {+}t4))
 \end{equation}
 
-The tree like structure is shown in the picture \ref{group_tree} where colors represent:
+The tree like structure is shown in the Figure \ref{group_tree} where colors represent:
 \begin{itemize}
     \item Blue – suggestions prefix.
     \item Red – ignored.
@@ -909,7 +923,7 @@ searches:
 
     \item \textbf{Hybrid completion} – if there is no or almost no context then \textit{nearest completion} cannot predict the
     suggestions. Therefore, \textit{hybrid completion} is a combination of \textit{most popular completion} and \textit{nearest completion}.
-    The authors have shown in empirical study that \textit{hybrid completion} has better \textit{MRR} than
+    The authors of the paper have shown in an empirical study that \textit{hybrid completion} has better \textit{MRR} than
     \textit{most popular completion} on average.
 \end{itemize}
 
@@ -1037,8 +1051,8 @@ In the end, Chronicle Map was chosen to serve as a key-value store because it ha
 As mentioned in \ref{possible_implementations}, the best option for simple prefix queries is a WFST data structure.
 Mainly because of its low memory footprint and fast lookups.
 Every term has a score assigned based on its occurrence frequency as mentioned in \ref{prefix_scoring}. This score
-can be computed at the start and does not change very often – only after performing reindex.
-
+can be computed at the start and does not change very often – only after performing reindex. However, this changes with
+the use of the most popular completion. The data needs to be updated after every search.
 The best and easiest solution would be to change the term score in WFST directly. However, this is not possible because
 Lucene's implementation of WFST is read-only. Let's examine possible modifications to WFST to allow changing the score of the
 terms.
@@ -1096,8 +1110,8 @@ terms.
         \label{enc_comp}
     \end{figure}
 
-    The memory usage increased by approximately $22\%$ for \textit{English words} dataset. However, it can be
-    almost doubled as can be seen on \textit{Linux kernel} dataset where approximately $92\%$ size increase can be noted.
+    The memory usage increased by approximately $22$ \% for \textit{English words} dataset. However, it can be
+    almost doubled as can be seen on \textit{Linux kernel} dataset where approximately $92$ \% size increase can be noted.
     The graph \ref{enc_comp} also shows the case when the encoding would use \textit{long} datatype. Although Lucene's \textit{Lookup}
     interface specificies \textit{long} datatype, WFST implementation supports only \textit{int} so far.
 
