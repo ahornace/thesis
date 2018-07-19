@@ -146,3 +146,19 @@ However, the tests are not exhaustive and for better test coverage more tests sh
 
 Regarding UI testing, OpenGrok does not have any UI tests in place. Therefore, it was not deemed to be a high priority.
 In the future, it would make sense to incorporate at least some UI testing.
+
+\section{Use as a Separate Library}
+Because of the decision that the Suggester module does not depend on any of the OpenGrok modules, the Suggester module
+could be used in different projects that use Lucene as a simple library.
+However, a few modification might be needed to make it more user-friendly,
+namely:
+\begin{itemize}
+    \item Remove the \textit{projectsEnabled} parameter from the constructor. It is OpenGrok specific.
+    \item Overload method \textit{search(List\textless NamedIndexReader\textgreater, SuggesterQuery, Query)} to provide
+    possibility to search without the need for the list of \textit{IndexReader} variables. They are provided now to better
+    faciliate the resource reuse. However, they are not needed and could be created from the index paths specified in
+    the \textit{init(Collection\textless NamedIndexDir\textgreater)} method. The overloaded method could have the following signature:
+    \textit{search(List\textless String\textgreater, SuggesterQuery, Query)} which would only specify index names.
+    \item Provide a default parser which would be able to create \textit{SuggesterQuery} instances. This could be a
+    modified version of \textit{SuggesterQueryParser} already present in the Web module.
+\end{itemize}
