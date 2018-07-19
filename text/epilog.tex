@@ -5,7 +5,9 @@
 
 The target of the thesis was to implement an autocomplete functionality for the OpenGrok search engine. The implemented
 solution enabled this functionality for all the basic query types supported by OpenGrok. These query types were prefix queries,
-wildcard queries, regexp queries, range queries, fuzzy queries, and phrase queries. Based on the data size and number of projects
+wildcard queries, regexp queries, range queries, fuzzy queries, and phrase queries. The implemented solution
+provides different suggestions according to the currently selected projects.
+Based on the data size and number of projects
 that are searched, the suggestions might take a long time to compute. Therefore, if the suggester is not able to return
 the results in a specified time, only partial results are returned.
 

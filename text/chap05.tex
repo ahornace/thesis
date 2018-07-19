@@ -206,13 +206,13 @@ Similar sizes might be expected as in the Figure \ref{comp_suggester_size} if th
 
 \subsection{Impact on CPU and Memory Usage}
 Impact on the CPU and memory usage along with the number of HTTP hits can be seen in the Figure \ref{demo}.
-In the figure there are multiple colored areas which signify:
+In the figure there are multiple colored parts which signify:
 \begin{itemize}
     \item The \textbf{red} area signifies the period during which the suggester functionality was enabled.
-    \item The \textbf{purple} area signifies a peak that occurred because the timeout functionality has not been
+    \item The \textbf{purple} area signifies a peak that occurred because the timeout functionality had not been
     implemented yet and multiple users were writing the worst possible queries.
-    \item The \textbf{green} areas signify the minimum values.
-    \item The \textbf{blue} areas signify the maximum values.
+    \item The \textbf{green} histogram signifies the minimum values.
+    \item The \textbf{blue} histogram signifies the maximum values.
 \end{itemize}
 It can be noted that the number of HTTP hits stayed roughly the same. There was not much traffic
 on the demo instance so the results might not be as accurate as would be desired. The memory usage did not change very much.
@@ -268,7 +268,7 @@ can be noted; however, later requests were taking only a few milliseconds on ave
     \centering
     \begin{tikzpicture}
         \begin{axis}[
-            xlabel=Time,
+            xlabel=Time (seconds),
             ylabel=Response time (ms),
             width=120mm,
             ymin=0,
@@ -2232,7 +2232,7 @@ The graph can be seen in the Figure \ref{load_test_multiple_projects}.
     \centering
     \begin{tikzpicture}
         \begin{axis}[
-            xlabel=Time,
+            xlabel=Time (seconds),
             ylabel=Response time (ms),
             width=120mm,
             axis x line=bottom,

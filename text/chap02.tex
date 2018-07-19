@@ -297,7 +297,7 @@ newScore = maxPossibleScoreValue - score
 \end{equation}
 An efficient construction of minimal, acyclic and deterministic WFST is explained in \citep{Mihov01directconstruction}.
 
-\textbf{Example} – WFST with terms and weights: \newline
+\textbf{Example} – WFST with terms and weights \newline
 $CAR = 10, CARS = 15, CART = 5$ can be seen in the Figure \ref{wfst_example}.
 
 \begin{figure}[htbp]
@@ -469,8 +469,8 @@ The description of the test cases:
      The result can be seen in the Figure \ref{comp_mem}. The data was measured by calling method
      \textit{ramBytesUsed()} which is a custom method commonly implemented in Lucene's data structures.
      The drastic
-    difference is mainly due to WFST's implementation which was optimized to use as little memory as possible while
-    providing a very solid performance. Some of the WFST' optimizations:
+    difference is mainly due to WFST implementation which was optimized to use as little memory as possible while
+    providing a very solid performance. Some of the WFST optimizations:
     \begin{itemize}
         \item Storage in byte arrays. There is no need to keep references to the objects which take 8B on 64-bit computer
         but rather smaller identifiers. Also, differences in arc weights are mostly very small. The implementation
@@ -896,7 +896,7 @@ term1\ \hat{}\ 3\ \&\&\ term2
 It might be possible for complex queries to take this information and boost those suggested terms that are in the same
 document as boosted term. However, for now, the boost factor is ignored by the suggester.
 
-\subsection{Promoting Suggestions by the Previous Searches}
+\subsection{Promoting Suggestions Using Previous Searches}
 \label{promoting_on_previous_searches}
 The \textbf{reciprocal rank} of a query response is the multiplicative inverse of the rank of the first correct answer.
 That means, if the first correct answer was on the third place then reciprocal rank would be $\frac{1}{3}$.
@@ -1274,7 +1274,7 @@ access. Therefore, suggester must not allow unauthorized users to see suggestion
 \label{restricting_load}
 The Suggester may consume a significant amount of resources for some specific queries (mainly Phrase Queries).
 Therefore, the Suggester should
-respect the paradigm "best effort"\footnote{https://en.wikipedia.org/wiki/Best-effort\_delivery}. The suggestions are not
+respect the paradigm "best effort"\footnote{\url{https://en.wikipedia.org/wiki/Best-effort\_delivery}}. The suggestions are not
 an integral part of the search engine. Thus, if their resource requirements are too high, then they should not prevent
 users from using the basic OpenGrok functionality. As a result, the Suggester will try to find suggestions for some
 query up to some pre-defined time threshold and if it is not able to complete the request in this time limit, then
@@ -1349,6 +1349,7 @@ a project name for which to retrieve the data. Additional supported query parame
     \item \textbf{field} – field for which to retrieve data. Default: \textit{full}.
     \item \textbf{page} – page of data to retrieve.
     \item \textbf{pageSize} – how many results will be included in the page.
+    \item \textbf{all} – if specified to \texttt{true}, then all the data are retrieved.
 \end{itemize}
 
 The returned data are in the \textit{JSON} format and are sorted by the popularity in descending order. Example of returned data:
