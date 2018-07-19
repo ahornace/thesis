@@ -204,6 +204,27 @@ Similar sizes might be expected as in the Figure \ref{comp_suggester_size} if th
     \label{comp_suggester_size_demo}
 \end{figure}
 
+\subsection{Impact on CPU and Memory Usage}
+Impact on the CPU and memory usage along with the number of HTTP hits can be seen in the Figure \ref{demo}.
+In the figure there are multiple colored areas which signify:
+\begin{itemize}
+    \item The \textbf{red} area signifies the period during which the suggester functionality was enabled.
+    \item The \textbf{purple} area signifies a peak that occurred because the timeout functionality has not been
+    implemented yet and multiple users were writing the worst possible queries.
+    \item The \textbf{green} areas signify the minimum values.
+    \item The \textbf{blue} areas signify the maximum values.
+\end{itemize}
+It can be noted that the number of HTTP hits stayed roughly the same. There was not much traffic
+on the demo instance so the results might not be as accurate as would be desired. The memory usage did not change very much.
+However, it can be seen that the CPU usage maximum values increased.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=145mm]{../img/demo.png}
+    \caption{CPU usage, used memory, and HTTP hits metrics provided by JavaMelody during a month time period}
+    \label{demo}
+\end{figure}
+
 \section{Load Testing}
 Apache JMeter\footnote{\url{https://jmeter.apache.org}} was used for load testing.
 The testing was performed on the same machine as described in Attachment \ref{benchmark_attachment}.
